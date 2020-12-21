@@ -57,9 +57,8 @@ export TERMINAL='alacritty'
 export BROWSER="firefox"
 export FILE="lf"
 export TERM="xterm-256color"    # For getting proper colors
-export EDITOR="emacsclient -t -a ''"        # $EDITOR use Emacs in terminal
-export VISUAL="emacsclient -c -a emacs"     # $VISUAL use Emacs in GUI mode
-
+export EDITOR="emacsclient -t -a ''"      # $EDITOR use Emacs in terminal
+export VISUAL="emacsclient -c -a emacs"   # $VISUAL use Emacs in GUI mode
 
 ### CHANGE TITLE OF TERMINALS
 case ${TERM} in

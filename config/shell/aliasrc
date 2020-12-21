@@ -116,13 +116,6 @@ alias gwd='git diff --no-ext-diff'
 alias gwr='git reset --soft'
 alias gws='git status --short'
 
-###########
-# Editors #
-###########
-
-alias e='$EDITOR'
-alias v='$EDITOR'
-
 ########
 # Misc #
 ########
