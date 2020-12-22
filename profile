@@ -7,7 +7,7 @@ _have() { which "$1" &>/dev/null; }
 
 # Detect which platform we are on
 _islinux=false
-[[ "$(uname -s)" =~ Linux||GNU||GNU/* ]] && _islinux=true
+[[ "$(uname -s)" =~ Linux ]] && _islinux=true
 _ismac=false
 [[ "$(uname -s)" =~ Darwin ]] && _ismac=true
 _isubuntu=false

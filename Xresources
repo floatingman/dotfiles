@@ -9,7 +9,8 @@ Xft.lcdfilter: lcdfilter
 Xft.hintstyle:  hintfull
 Xft.autohint:   1
 
-
+! Every shell is a login shell by default (for inclusion of all necessary environment variables)
+XTerm*loginshell: true
 XTerm.termName: xterm-256color
 XTerm.vt100.locale: true
 XTerm.vt100.faceName: Fira Code:size=FONT_SIZE

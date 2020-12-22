@@ -14,7 +14,12 @@ alias .5='cd ../../../../..'
 
 # vim and emacs
 alias vim="nvim"
-alias em="/usr/bin/emacs -nw"
+if $_ismac; then
+   alias em="/usr/local/bin/emacs -nw"
+else
+   alias em="/usr/bin/emacs -nw"
+fi
+
 alias emacs="emacsclient -c -a 'emacs'"
 alias doomsync="~/.emacs.d/bin/doom sync"
 alias doomdoctor="~/.emacs.d/bin/doom doctor"
