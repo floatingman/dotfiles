@@ -60,3 +60,6 @@ syncthing --no-browser &
 
 # Start mpd
 mpd &
+
+# Start emacs
+/usr/bin/emacs --daemon

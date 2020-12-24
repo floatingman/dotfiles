@@ -28,8 +28,6 @@ super + w
 	$BROWSER
 super + shift + w
 	$TERMINAL -e sudo -A nmtui
-super + shift + g
-	gimp
 
 # Et cetera...
 super + grave
