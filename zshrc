@@ -202,7 +202,7 @@ export SDKMAN_DIR="${HOME}/.sdkman"
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 # load private things if there
-[ -f "~/.zsh_private" ] && source ~/.zsh_private
+[ -f "$HOME/.zsh_private" ] && source $HOME/.zsh_private
 
 ### SETTING THE STARSHIP PROMPT ###
 eval "$(starship init zsh)"
