@@ -2,8 +2,7 @@ command=~/.local/bin/statusbar/$BLOCK_NAME
 separator_block_width=15
 markup=pango
 
-[motivation]
-command=$HOME/bin/motivation
+[sb-motivation]
 interval=900
 
 # [record]
@@ -11,20 +10,20 @@ interval=900
 # interval=once
 # signal=9
 
-[music]
+[sb-music]
 label=🎼
 interval=once
 signal=11
 
-[news]
+[sb-news]
 label=📰
 interval=once
 signal=6
 
-[iplocate]
+[sb-iplocate]
 interval=30
 
-[pacpackages]
+[sb-pacpackages]
 label=📦
 interval=once
 signal=8
@@ -33,7 +32,7 @@ signal=8
 # interval=20
 # signal=7
 
-[weather]
+[sb-weather]
 interval=18000
 signal=5
 
@@ -42,7 +41,7 @@ signal=5
 # interval=180
 # signal=12
 
-[memory]
+[sb-memory]
 interval=30
 label=🧠
 
@@ -50,32 +49,32 @@ label=🧠
 interval=15
 label=💻
 
-[disk]
+[sb-disk]
 interval=60
-command=disk /
+command=sb-disk /
 
-[disk]
+[sb-disk]
 interval=60
-command=disk /home 🏠
+command=sb-disk /home 🏠
 
-[volume]
+[sb-volume]
 interval=once
 signal=10
 
-[battery]
-command=battery BAT0
+[sb-battery]
+command=sb-battery BAT0
 interval=5
 
-[battery]
-command=battery BAT1
+[sb-battery]
+command=sb-battery BAT1
 interval=5
 
-[clock]
+[sb-clock]
 label=📅
 interval=30
 
-[internet]
+[sb-internet]
 interval=10
 
-[help]
+[sb-help]
 interval=once

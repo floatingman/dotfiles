@@ -190,34 +190,48 @@ custom_cursor_colors: true
 # gruvbox_dark.yaml
 # Colors (Gruvbox dark)
 colors:
-  # COLORSCHEME: tomorrow_night_bright.yaml
+  # COLORSCHEME: blood_moon.yaml
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0x000000'
-    foreground: '0xeaeaea'
+    background: '0x10100E'
+    foreground: '0xC6C6C4'
 
   # Normal colors
   normal:
-    black: '0x000000'
-    red: '0xd54e53'
-    green: '0xb9ca4a'
-    yellow: '0xe6c547'
-    blue: '0x7aa6da'
-    magenta: '0xc397d8'
-    cyan: '0x70c0ba'
-    white: '0x424242'
+    black: '0x10100E'
+    red: '0xC40233'
+    green: '0x009F6B'
+    yellow: '0xFFD700'
+    blue: '0x0087BD'
+    magenta: '0x9A4EAE'
+    cyan: '0x20B2AA'
+    white: '0xC6C6C4'
 
   # Bright colors
   bright:
-    black: '0x666666'
-    red: '0xff3334'
-    green: '0x9ec400'
-    yellow: '0xe7c547'
-    blue: '0x7aa6da'
-    magenta: '0xb77ee0'
-    cyan: '0x54ced6'
-    white: '0x2a2a2a'
+    black: '0x696969'
+    red: '0xFF2400'
+    green: '0x03C03C'
+    yellow: '0xFDFF00'
+    blue: '0x007FFF'
+    magenta: '0xFF1493'
+    cyan: '0x00CCCC'
+    white: '0xFFFAFA'
+  cursor:
+    text: '0xd8d8d8'
+    cursor: '0xd8d8d8'
+
+  # Normal colors
+  dim:
+    black: '0x232323'
+    red: '0x74423f'
+    green: '0x5e6547'
+    yellow: '0x8b7653'
+    blue: '0x556b79'
+    magenta: '0x6e4962'
+    cyan: '0x5c8482'
+    white: '0x828282'
 background_opacity: 1
 
 # Key bindings
@@ -314,27 +328,27 @@ background_opacity: 1
 #   - AppKeypad
 #
 key_bindings:
-  - { key: V,        mods: Control|Shift,       action: Paste                        }
-  - { key: C,        mods: Control|Shift,       action: Copy                         }
-  - { key: L,        mods: Control,       action: ClearLogNotice                         }
-  - { key: L,        mods: Control,       chars: "\x0c"                         }
+  - {key: V, mods: Control|Shift, action: Paste}
+  - {key: C, mods: Control|Shift, action: Copy}
+  - {key: L, mods: Control, action: ClearLogNotice}
+  - {key: L, mods: Control, chars: "\f"}
 #  - { key: Q,        mods: Command,       action: Quit                         }
 #  - { key: N,        mods: Command,       action: SpawnNewInstance             }
 #  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
 #
-  - { key: Home,     mods: Shift,          action: ScrollToTop, mode: ~Alt }
+  - {key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt}
 #  - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
-  - { key: End,      mods: Shift,           action: ScrollToBottom, mode: ~Alt   }
+  - {key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt}
 #  - { key: End,                           chars: "\x1b[F",   mode: ~AppCursor  }
-  - { key: Key0,     mods: Control,       action: ResetFontSize                      }
-  - { key: Equals,   mods: Control,       action: IncreaseFontSize                   }
-  - { key: Plus,     mods: Control,       action: IncreaseFontSize                   }
-  - { key: Minus,    mods: Control,       action: DecreaseFontSize                   }
-  - { key: Minus,    mods: Control,       action: DecreaseFontSize                   }
-  - { key: PageUp,   mods: Shift,         action: ScrollPageUp, mode: ~Alt           }
+  - {key: Key0, mods: Control, action: ResetFontSize}
+  - {key: Equals, mods: Control, action: IncreaseFontSize}
+  - {key: Plus, mods: Control, action: IncreaseFontSize}
+  - {key: Minus, mods: Control, action: DecreaseFontSize}
+  - {key: Minus, mods: Control, action: DecreaseFontSize}
+  - {key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt}
 #  - { key: PageUp,   mods: Control,       chars: "\x1b[5;5~"                   }
 #  - { key: PageUp,                        chars: "\x1b[5~"                     }
-  - { key: PageDown, mods: Shift,         action: ScrollPageDown, mode: ~Alt           }
+  - {key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt}
 #  - { key: PageDown, mods: Control,       chars: "\x1b[6;5~"                   }
 #  - { key: PageDown,                      chars: "\x1b[6~"                     }
 #  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
@@ -372,10 +386,10 @@ key_bindings:
 #  - { key: F12,                           chars: "\x1b[24~"                    }
 #  - { key: Back,                          chars: "\x7f"                        }
 #  - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
-  - { key: Insert,   mods: Shift,          action: PasteSelection                      }
+  - {key: Insert, mods: Shift, action: PasteSelection}
 #  - { key: Delete,                        chars: "\x1b[3~"                     }
-  - { key: Paste,                           action: Paste }
-  - { key: Copy,                            action: Copy }
+  - {key: Paste, action: Paste}
+  - {key: Copy, action: Copy}
 #
     # shortcuts for tmux. the leader key is control-b (0x02)
   # - {key: W, mods: Command, chars: "\x01&"}                                       # close tab (kill)
