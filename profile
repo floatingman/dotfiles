@@ -101,8 +101,8 @@ export WEECHAT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/weechat"
 #
 # DPI
 #
-if [ -e ~/.dpi ]; then
-  source ~/.dpi
+if [[ -e $HOME/.dpi ]]; then
+  source $HOME/.dpi
 fi
 
 # less/man colors

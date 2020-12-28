@@ -478,9 +478,9 @@ live_config_reload: true
 # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
 # Entries in shell.args are passed unmodified as arguments to the shell.
 shell:
-  #program: /bin/bash
-  # args:
-  #   - --command=tmux
+  program: /bin/zsh
+  args:
+     - --login
 
 debug:
   # Should display the render timer
@@ -507,4 +507,3 @@ debug:
   ref_test: false
 
 # vim: nospell
-
