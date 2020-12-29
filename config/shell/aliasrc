@@ -1,3 +1,26 @@
+#############
+# Utilities #
+#############
+
+# is $1 installed?
+_have() { which "$1" &>/dev/null; }
+
+# Detect which platform we are on
+_islinux=false
+[[ "$(uname -s)" =~ Linux ]] && _islinux=true
+_ismac=false
+[[ "$(uname -s)" =~ Darwin ]] && _ismac=true
+_isubuntu=false
+[[ "$(uname -v)" =~ Ubuntu ]] && _isubuntu=true
+_isarch=false
+[[ -f /etc/arch-release ]] && _isarch=true
+# Detect if gui is running
+_isxrunning=false
+[[ -n "$DISPLAY" ]] && _isxrunning=true
+# Detect if root
+_isroot=false
+[[ $UID -eq 0 ]] && _isroot=true
+
 ########
 # Core #
 ########
@@ -27,27 +50,46 @@ alias doomupgrade="~/.emacs.d/bin/doom upgrade"
 alias doompurge="~/.emacs.d/bin/doom purge"
 
 # pacman and yay
-alias p="sudo pacman"
-alias pacx="sudo pacman --remove"
-alias pacX="sudo pacman --remove --nosave --recursive"
-alias pacsyu='sudo pacman -Syyu'                 # update only standard pkgs
-alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
-alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
-alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+if _have pacman; then
+    alias p="sudo pacman"
+    alias pacx="sudo pacman --remove"
+    alias pacX="sudo pacman --remove --nosave --recursive"
+    alias pacsyu='sudo pacman -Syyu'                 # update only standard pkgs
+    alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+    alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+fi
 
-# get fastest mirrors
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+if _have yay; then
+    alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
+    alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
+fi
 
-# Changing "ls" to "exa"
-alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first'  # long format
-alias lt='exa -aT --color=always --group-directories-first' # tree listing
-alias l.='exa -a | egrep "^\."'
+if _have reflector; then
+    # get fastest mirrors
+    alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+    alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+    alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+    alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+fi
+
+if _have exa; then
+    # Changing "ls" to "exa"
+    alias ls='exa -al --color=always --group-directories-first' # my preferred listing
+    alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+    alias ll='exa -l --color=always --group-directories-first'  # long format
+    alias lla='exa -la --color=always --group-directories-first' # list all files long format
+    alias lr='exa -R'          # Lists human readable sizes, recursively.
+    alias lt='exa -aT --color=always --group-directories-first' # tree listing
+    alias lz='exa -l --reverse --sort=size --color=always --group-directories-first'
+    alias l.='exa -a | egrep "^\."'
+else
+    alias ls='ls -al --color=always --group-directories-first' # my preferred listing
+    alias la='ls -a --color=always --group-directories-first'  # all files and dirs
+    alias ll='ls -l --color=always --group-directories-first'  # long format
+    alias lla='ls -la --color=always --group-directories-first'  # long format
+    alias lt='ls -aT --color=always --group-directories-first' # tree listing
+    alias l.='ls -a | egrep "^\."'
+fi
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -60,9 +102,7 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 alias mkdir='mkdir -p'
-alias lr='l -R'          # Lists human readable sizes, recursively.
 alias ka='killall'       # Shorten kill all
-
 
 # adding flags
 alias df='df -h'                          # human-readable sizes
@@ -78,13 +118,21 @@ alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 alias pscpu='ps auxf | sort -nr -k 3'
 alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 
+if _have prettyping; then
+    alias ping='prettyping --nolegend'
+fi
+alias ducks="du -sch .i[!.]* * |sort -rh |head -10" # print top 10 largest files in pwd
+alias sps="ps aux | grep -v grep | grep"    # search and display processes by keyword
+alias df='df -h'
+
 ###########
 # Udiskie #
 ###########
-
-alias um='udiskie-mount -r'
-alias uu='udiskie-umount'
-alias up='um -p "builtin:tty"'
+if _have udiskie-mount; then
+    alias um='udiskie-mount -r'
+    alias uu='udiskie-umount'
+    alias up='um -p "builtin:tty"'
+fi
 
 #######
 # Git #
@@ -121,6 +169,13 @@ alias gwd='git diff --no-ext-diff'
 alias gwr='git reset --soft'
 alias gws='git status --short'
 
+if _have tig; then
+   alias t='tig status'
+fi
+
+# cd into git root dir
+alias cdr='cd $(git rev-parse --show-toplevel)'
+
 ########
 # Misc #
 ########
@@ -151,15 +206,17 @@ alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 
 # youtube-dl
-alias yta-aac="youtube-dl --extract-audio --audio-format aac "
-alias yta-best="youtube-dl --extract-audio --audio-format best "
-alias yta-flac="youtube-dl --extract-audio --audio-format flac "
-alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
-alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
-alias yta-opus="youtube-dl --extract-audio --audio-format opus "
-alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
-alias yta-wav="youtube-dl --extract-audio --audio-format wav "
-alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+if _have youtube-dl; then
+    alias yta-aac="youtube-dl --extract-audio --audio-format aac "
+    alias yta-best="youtube-dl --extract-audio --audio-format best "
+    alias yta-flac="youtube-dl --extract-audio --audio-format flac "
+    alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
+    alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
+    alias yta-opus="youtube-dl --extract-audio --audio-format opus "
+    alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
+    alias yta-wav="youtube-dl --extract-audio --audio-format wav "
+    alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+fi
 
 # switch between shells
 alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"

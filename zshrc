@@ -1,18 +1,111 @@
-### EXPORT
+###########
+# Aliases #
+###########
+[ -f ~/.config/shell/aliasrc ] && . $HOME/.config/shell/aliasrc
+
+###########
+# History #
+###########
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.cache/zsh/history
 export HISTORY_IGNORE="(ls|l|ll|lt|[bf]g|exit|reset|clear|cd|cd ..|cd ../|pwd|date|* --help)"
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+# ignore duplication command history list
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+# share command history data
+setopt share_history
 
-### SET VI MODE ###
-# Comment this line out to enable default emacs-like bindings
-bindkey -v
+##################
+# AUTOCOMPLETION #
+##################
+# enable completion
+autoload -Uz compinit
+compinit
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+autoload bashcompinit
+bashcompinit
 
-### PATH
-# Loaded in .profile
+zmodload -i zsh/complist
+
+WORDCHARS=''
+
+unsetopt menu_complete   # do not autoselect the first completion entry
+unsetopt flowcontrol
+setopt auto_menu         # show completion menu on successive tab press
+setopt complete_in_word
+setopt always_to_end
+
+# autocompletion with an arrow-key driven interface
+zstyle ':completion:*:*:*:*:*' menu select
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+        adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
+        clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
+        gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
+        ldap lp mail mailman mailnull man messagebus  mldonkey mysql nagios \
+        named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
+        operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
+        rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
+        usbmux uucp vcsa wwwrun xfs '_*'
+
+zstyle '*' single-ignored show
+
+# Automatically update PATH entries
+zstyle ':completion:*' rehash true
+
+# Keep directories and files separated
+zstyle ':completion:*' list-dirs-first true
+
+# ===================
+#    KEY BINDINGS
+# ===================
+# Use emacs-like key bindings by default:
+bindkey -e
+
+# [Ctrl-r] - Search backward incrementally for a specified string. The string
+# may begin with ^ to anchor the search to the beginning of the line.
+bindkey '^r' history-incremental-search-backward
+
+if [[ "${terminfo[kpp]}" != "" ]]; then
+  bindkey "${terminfo[kpp]}" up-line-or-history       # [PageUp] - Up a line of history
+fi
+
+if [[ "${terminfo[knp]}" != "" ]]; then
+  bindkey "${terminfo[knp]}" down-line-or-history     # [PageDown] - Down a line of history
+fi
+
+if [[ "${terminfo[khome]}" != "" ]]; then
+  bindkey "${terminfo[khome]}" beginning-of-line      # [Home] - Go to beginning of line
+fi
+
+if [[ "${terminfo[kend]}" != "" ]]; then
+  bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
+fi
+if [[ "${terminfo[kcbt]}" != "" ]]; then
+  bindkey "${terminfo[kcbt]}" reverse-menu-complete   # [Shift-Tab] - move through the completion menu backwards
+fi
+
+bindkey '^?' backward-delete-char                     # [Backspace] - delete backward
+if [[ "${terminfo[kdch1]}" != "" ]]; then
+  bindkey "${terminfo[kdch1]}" delete-char            # [Delete] - delete forward
+else
+  bindkey "^[[3~" delete-char
+  bindkey "^[3;5~" delete-char
+  bindkey "\e[3~" delete-char
+fi
 
 ### SHORTCUTS
 # Load aliases and shortcuts if existent.
@@ -23,86 +116,6 @@ bindkey -v
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(   command-not-found
-            emacs
-            git
-            history
-            zsh-interactive-cd
-        )
-
-source $ZSH/oh-my-zsh.sh
-
-
-# Load Aliases
-
-[ -f ~/.config/shell/aliasrc ] && . $HOME/.config/shell/aliasrc
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
@@ -174,6 +187,67 @@ bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
 if [ -f /etc/bash.command-not-found ]; then
     . /etc/bash.command-not-found
 fi
+
+
+
+# ===================
+#    MISC SETTINGS
+# ===================
+
+# automatically remove duplicates from these arrays
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
+
+# only exit if we're not on the last pane
+
+exit() {
+  if [[ -z $TMUX ]]; then
+    builtin exit
+    return
+  fi
+
+  panes=$(tmux list-panes | wc -l)
+  wins=$(tmux list-windows | wc -l)
+  count=$(($panes + $wins - 1))
+  if [ $count -eq 1 ]; then
+    tmux detach
+  else
+    builtin exit
+  fi
+}
+
+function switchgo() {
+  version=$1
+  if [ -z $version ]; then
+    echo "Usage: switchgo [version]"
+    return
+  fi
+
+  if ! command -v "go$version" > /dev/null 2>&1; then
+    echo "version does not exist, downloading with commands: "
+    echo "  go get golang.org/dl/go${version}"
+    echo "  go${version} download"
+    echo ""
+
+    go get "golang.org/dl/go${version}"
+    go${version} download
+  fi
+
+  go_bin_path=$(command -v "go$version")
+  ln -sf "$go_bin_path" "$GOBIN/go"
+  echo "Switched to ${go_bin_path}"
+}
+
+# ===================
+#    PLUGINS
+# ===================
+[ -r "$HOME/.zsh_plugins.sh" ] && source $HOME/.zsh_plugins.sh
+
+# ===================
+#    THIRD PARTY
+# ===================
+# brew install jump
+# https://github.com/gsamokovarov/jump
+#eval "$(jump shell)"
 
 #########
 # pyenv #

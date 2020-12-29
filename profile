@@ -1,6 +1,6 @@
-#
-# Utilities
-#
+#############
+# Utilities #
+#############
 
 # is $1 installed?
 _have() { which "$1" &>/dev/null; }
@@ -37,9 +37,9 @@ _source () {
     . "$file"
 }
 
-#
-# Path
-#
+########
+# Path #
+########
 if $_ismac; then
   [[ -r "$HOME/bin" ]] && export PATH="$PATH:$(du -I .git "$HOME/bin" | cut -f2 | tr '\n' ':')"
   [[ -r "$HOME/.bin" ]] && export PATH="$PATH:$(du -I .git "$HOME/.bin" | cut -f2 | tr '\n' ':')"
@@ -48,11 +48,9 @@ else
     [[ -r "$HOME/.local/bin" ]] && export PATH="$PATH:$(du --exclude=.git "$HOME/.local/bin" | cut -f2 | tr '\n' ':')"
 fi
 
-unsetopt PROMPT_SP
-
-#
-# Default programs
-#
+####################
+# Default programs #
+####################
 export TERMINAL='alacritty'
 export BROWSER="firefox"
 export FILE="lf"
@@ -70,10 +68,9 @@ case ${TERM} in
     ;;
 esac
 
-
-#
-# Default directories
-#
+#######################
+# Default directories #
+#######################
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -85,14 +82,18 @@ export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
 export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
 export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/password-store"
-export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
-export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison"
 
-#
-# DPI
-#
+######
+# Go #
+######
+export GOBIN="$HOME/go/bin"
+export PATH="$GOBIN:$HOME/.cargo/bin:$PATH"
+
+#######
+# DPI #
+#######
 if [[ -e $HOME/.dpi ]]; then
   source $HOME/.dpi
 fi
@@ -112,7 +113,6 @@ export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 # Other program settings
 export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
-#export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 export MOZ_USE_XINPUT2="1"		# Mozilla smooth scrolling/touchpads.
 export AWT_TOOLKIT="MToolkit wmname LG3D"	#May have to install wmname
 export _JAVA_AWT_WM_NONREPARENTING=1	# Fix for Java applications in dwm
@@ -202,6 +202,7 @@ ex=🎯:\
 # Language
 #
 export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 #
 # Python
