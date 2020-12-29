@@ -5,3 +5,4 @@ zsh-users/zsh-history-substring-search
 chrissicool/zsh-256color
 robbyrussell/oh-my-zsh path:plugins/vi-mode
 pigmonkey/notes.sh
+urbainvaes/fzf-marks
