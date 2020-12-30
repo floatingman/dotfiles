@@ -1,8 +1,3 @@
-mafredri/zsh-async
-sindresorhus/pure
-zsh-users/zsh-completions
-zsh-users/zsh-history-substring-search
-chrissicool/zsh-256color
-robbyrussell/oh-my-zsh path:plugins/vi-mode
-pigmonkey/notes.sh
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
 urbainvaes/fzf-marks
