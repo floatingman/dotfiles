@@ -6,8 +6,10 @@
 "                                                                 /___/
 "
 "***********************************************************************************
-" Set leader to space bar
-let mapleader= "\\"
+" This comes first, beacuse we have mappings that depend on leader
+" With a map leader it's possible to do extra key combinations
+" i.e: <leader>w saves the current file
+let mapleader= ","
 
 " Colorscheme
 " If you have vim >=8.0 or Neovim >= 0.1.5
