@@ -15,11 +15,8 @@ if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
 endif
 call plug#begin('~/.config/nvim/plugged')
 
-" lets be sensible
-"Plug 'tpope/vim-sensible'
 
 " Syntax Highlighting
-" Plug 'w0rp/ale'
 Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ekalinin/Dockerfile.vim'
@@ -95,11 +92,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " vim-hexcolor
 Plug 'etdev/vim-hexcolor'
 
-" Statusbar
-"Plug 'itchyny/lightline.vim'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-
 " Custom start page
 Plug 'mhinz/vim-startify'
 
@@ -107,14 +99,11 @@ Plug 'mhinz/vim-startify'
 Plug 'pearofducks/ansible-vim'
 
 "" Searching
-" Plug 'rking/ag.vim'
-" Plug 'gabesoft/vim-ags'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
 Plug 'pbogut/fzf-mru.vim'
-" Plug 'jremmen/vim-ripgrep'
 Plug 'mhinz/vim-grepper'
 
 "" Color Schemes
