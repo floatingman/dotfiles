@@ -48,8 +48,10 @@ blueman-applet &
 # Start compost manager
 xcompmgr &
 
+# Don't sleep when playing videos
 ~/bin/lightson+ -d 2 &
 
+# Password manager
 keepassxc &
 
 # Start wallpaper changer
@@ -60,6 +62,9 @@ syncthing --no-browser &
 
 # Start mpd
 mpd &
+
+# Start xfce4-power-manager
+xfce4-power-manager &
 
 # Start emacs
 /usr/bin/emacs --daemon

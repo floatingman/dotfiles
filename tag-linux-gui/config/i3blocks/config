@@ -5,11 +5,6 @@ markup=pango
 [sb-motivation]
 interval=900
 
-# [record]
-# command=cat /tmp/recordingicon
-# interval=once
-# signal=9
-
 [sb-music]
 label=🎼
 interval=once
@@ -20,61 +15,15 @@ label=📰
 interval=once
 signal=6
 
-#[sb-iplocate]
-#interval=30
-
 [sb-pacpackages]
 label=📦
 interval=once
 signal=8
 
-# [torrent]
-# interval=20
-# signal=7
-
 [sb-weather]
 interval=18000
 signal=5
 
-# [mailbox]
-# label=📬
-# interval=180
-# signal=12
-
-#[sb-memory]
-#interval=30
-#label=🧠
-
-#[sb-cpu]
-#interval=15
-#label=💻
-
-#[sb-disk]
-#interval=60
-#command=sb-disk /
-
-#[sb-disk]
-#interval=60
-#command=sb-disk /home 🏠
-
-[sb-volume]
-interval=once
-signal=10
-
-[sb-battery]
-command=sb-battery BAT0
-interval=5
-
-[sb-battery]
-command=sb-battery BAT1
-interval=5
-
 [sb-clock]
 label=📅
 interval=30
-
-[sb-internet]
-interval=10
-
-#[sb-help]
-#interval=once
