@@ -48,20 +48,62 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-(package! all-the-icons-dired)
-(package! async)
+
+;; completion/company
+(package! prescient)
+(package! company-prescient)
+
+;; completion/ivy
+(package! all-the-icons-ivy)
+(package! counsel-tramp)
+
+;; emacs/dired
 (package! dired-open)
+(package! diredfl)
+(package! all-the-icons-dired)
+(package! peep-dired)
+
+;; feature/snippets
+(package! yasnippet-snippets)
+
+;; lang/apache
+(package! apache-mode)
+
+;; lang/pkgbuild
+(package! pkgbuild-mode)
+
+;; lang/nginx
+(package! nginx-mode)
+
+;; lang/org
+(package! ob-http)
+
+;; lang/systemd
+(package! systemd)
+
+;; lang/sh
+(package! flycheck-checkbashisms)
+
+;; tools/tldr
+(package! tldr)
+
+;; ui/modeline
+(package! doom-modeline)
+(package! anzu)
+(package! evil-anzu)
+
+;; ui/indent-guides
+(package! highlight-indent-guides)
+
+(package! async)
 (package! dmenu)
 (package! elfeed)
-(package! emms)
 (package! emojify)
 (package! evil-tutor)
 (package! ivy-posframe)
 (package! mastodon)
 (package! org-bullets)
-(package! peep-dired)
 (package! rainbow-mode)
 (package! resize-window)
-(package! tldr)
 (package! wc-mode)
 (package! writeroom-mode)
