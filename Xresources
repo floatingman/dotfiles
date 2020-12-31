@@ -1,7 +1,7 @@
 #include ".Xresources.h"
 ! font settings
-!Xft.dpi:        $DPI
-Xft.dpi:        96
+Xft.dpi:        $DPI
+!Xft.dpi:        96
 Xft.rgba:       rgb
 Xft.antialias:  1
 Xft.hinting:    1

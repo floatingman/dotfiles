@@ -1,1 +1,1 @@
-EXCLUDES="Makefile README.md README.org EMACS.org DESKTOP.org test.sh install.sh mac-os.sh tags build hooks bashrc.d backgrounds update-dotfiles"
+EXCLUDES="Makefile README.md README.org EMACS.org DESKTOP.org test.sh install.sh mac-os.sh tags build hooks bashrc.d backgrounds update-dotfiles zsh_plugins.txt"
