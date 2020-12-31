@@ -20,8 +20,8 @@ label=📰
 interval=once
 signal=6
 
-[sb-iplocate]
-interval=30
+#[sb-iplocate]
+#interval=30
 
 [sb-pacpackages]
 label=📦
@@ -41,21 +41,21 @@ signal=5
 # interval=180
 # signal=12
 
-[sb-memory]
-interval=30
-label=🧠
+#[sb-memory]
+#interval=30
+#label=🧠
 
-[cpu]
-interval=15
-label=💻
+#[sb-cpu]
+#interval=15
+#label=💻
 
-[sb-disk]
-interval=60
-command=sb-disk /
+#[sb-disk]
+#interval=60
+#command=sb-disk /
 
-[sb-disk]
-interval=60
-command=sb-disk /home 🏠
+#[sb-disk]
+#interval=60
+#command=sb-disk /home 🏠
 
 [sb-volume]
 interval=once
@@ -76,5 +76,5 @@ interval=30
 [sb-internet]
 interval=10
 
-[sb-help]
-interval=once
+#[sb-help]
+#interval=once

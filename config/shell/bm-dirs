@@ -13,3 +13,4 @@ sc  $HOME/.local/bin
 src $HOME/.local/src
 syn $HOME/Syncs
 vv  ${XDG_VIDEOS_DIR:-$HOME/Videos}
+dot $HOME/.dotfiles

@@ -285,6 +285,14 @@ Plug 'tpope/vim-speeddating'
 "
 Plug 'AndrewRadev/splitjoin.vim'
 
+" Paste code from your terminal without setting paste mode
+"
+Plug 'ConradIrwin/vim-bracketed-paste'
+
+" Easily change case of words using vim motions
+"
+Plug 'arthurxavierx/vim-caser'
+
 " Read man pages with power
 "
 Plug 'jez/vim-superman'

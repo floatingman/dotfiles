@@ -13,6 +13,7 @@ sc="cd /home/dnewman/.local/bin && ls -a" \
 src="cd /home/dnewman/.local/src && ls -a" \
 syn="cd /home/dnewman/Syncs && ls -a" \
 vv="cd /home/dnewman/Videos && ls -a" \
+dot="cd /home/dnewman/.dotfiles && ls -a" \
 bf="$EDITOR /home/dnewman/.config/shell/bm-files" \
 bd="$EDITOR /home/dnewman/.config/shell/bm-dirs" \
 cfx="$EDITOR /home/dnewman/.config/x11/xresources" \
