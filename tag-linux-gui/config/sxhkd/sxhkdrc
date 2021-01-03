@@ -1,6 +1,10 @@
 #########
 # Basic #
 #########
+# Reload sxhkd
+super + shift + r
+      pkill -USR1 -x sxhkd && dunstify -r 500 "SXHKD" "Config Reloaded"
+
 super + Return
       $TERMINAL
 
@@ -143,7 +147,7 @@ XF86AudioMicMute
 
 # Change volume
 XF86Audio{Raise,Lower}Volume
-    pulseaudio-ctl {up,down} 2
+    pulseaudio-ctl {up,down} 10 
 
 # # Change volume
 # super + {k,j}
