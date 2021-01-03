@@ -52,6 +52,7 @@
 ;; completion/company
 (package! prescient)
 (package! company-prescient)
+(package! company-lsp)
 
 ;; completion/ivy
 (package! all-the-icons-ivy)
@@ -66,8 +67,21 @@
 ;; feature/snippets
 (package! yasnippet-snippets)
 
+;; lang/syntax checking
+(package! flycheck)
+
+;; Completion
+(package! lsp-mode)
+(package! lsp-ui)
+
 ;; lang/apache
 (package! apache-mode)
+
+;; Lang/erlang
+(package! erlang)
+
+;; Lang/graphql
+(package! graphql-mode)
 
 ;; lang/pkgbuild
 (package! pkgbuild-mode)
@@ -76,7 +90,12 @@
 (package! nginx-mode)
 
 ;; lang/org
+(package! org)
 (package! ob-http)
+(package! ob-ipython)
+
+;; Lang/Rust
+(package! flycheck-rust)
 
 ;; lang/systemd
 (package! systemd)
@@ -86,6 +105,12 @@
 
 ;; tools/tldr
 (package! tldr)
+
+;; tools/indention
+(package! aggressive-indent)
+
+;; tools/docker
+(package! dockerfile-mode)
 
 ;; ui/modeline
 (package! doom-modeline)

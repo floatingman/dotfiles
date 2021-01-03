@@ -17,6 +17,31 @@
 (setq user-mail-address "dan@danlovesprogramming.com")
 #+END_SRC
 
+** Core
+
+*** Load user functions
+Keeping user defined functions in a separate file
+#+BEGIN_SRC emacs-lisp
+(load! "+functions")
+(load! "+theming")
+(load! "+commands")
+#+END_SRC
+
+*** Keybinds
+**** Global Keybinds
+***** Leader keybinds
+#+BEGIN_SRC emacs-lisp
+(map! :leader
+      (:prefix "TAB"
+       :desc "Rename workspace"       "r"  #'+workspace/rename)
+      (:prefix "f"
+       :desc "Find remote file"      "R" #'counsel-tramp
+       :desc "Find file in dotfiles" "t" #'+daniel/find-in-dotfiles
+       :desc "Browse dotfiles"       "T" #'+daniel/browse-dotfiles)
+      (:prefix "t"
+       :desc "Rainbow mode" "r" #'rainbow-mode))
+#+END_SRC
+
 ** Doom fonts
 Doom exposes five (optional) variables for controlling fonts in Doom. Here
 are the three important ones:
@@ -49,56 +74,8 @@ available. You can either set `doom-theme' or manually load a theme with the
 (map! :leader
       :desc "Load new theme"
       "h t" #'counsel-load-theme)
-#+END_SRC
-
-** IVY
-
-*** IVY-POSFRAME
-Ivy-posframe is an ivy extension, which lets ivy use posframe to show its candidate menu.  Some of the settings below involve:
-+ ivy-posframe-display-functions-alist -- sets the display position for specific programs
-+ ivy-posframe-height-alist -- sets the height of the list displayed for specific programs
-
-Available functions (positions) for 'ivy-posframe-display-functions-alist'
-+ ivy-posframe-display-at-frame-center
-+ ivy-posframe-display-at-window-center
-+ ivy-posframe-display-at-frame-bottom-left
-+ ivy-posframe-display-at-window-bottom-left
-+ ivy-posframe-display-at-frame-bottom-window-center
-+ ivy-posframe-display-at-point
-+ ivy-posframe-display-at-frame-top-center
-
-=NOTE:= If the setting for 'ivy-posframe-display' is set to 'nil' (false), anything that is set to 'ivy-display-function-fallback' will just default to their normal position in Doom Emacs (usually a bottom split).  However, if this is set to 't' (true), then the fallback position will be centered in the window.
-
-#+BEGIN_SRC emacs-lisp
-(setq ivy-posframe-display-functions-alist
-      '((swiper                     . ivy-posframe-display-at-point)
-        (complete-symbol            . ivy-posframe-display-at-point)
-        (counsel-M-x                . ivy-display-function-fallback)
-        (counsel-esh-history        . ivy-posframe-display-at-window-center)
-        (counsel-describe-function  . ivy-display-function-fallback)
-        (counsel-describe-variable  . ivy-display-function-fallback)
-        (counsel-find-file          . ivy-display-function-fallback)
-        (counsel-recentf            . ivy-display-function-fallback)
-        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
-        (dmenu                      . ivy-posframe-display-at-frame-top-center)
-        (nil                        . ivy-posframe-display))
-      ivy-posframe-height-alist
-      '((swiper . 20)
-        (dmenu . 20)
-        (t . 10)))
-(ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
-#+END_SRC
-
-*** IVY KEYBINDINGS
-By default, Doom Emacs does not use 'SPC v', so the format I use for these bindings is 'SPC v' plus 'key'.
-
-#+BEGIN_SRC emacs-lisp
-(map! :leader
-      :desc "Ivy push view"
-      "v p" #'ivy-push-view
-      :leader
-      :desc "Ivy switch view"
-      "v s" #'ivy-switch-view)
+(after! doom-themes
+  (setq doom-neotree-file-icons t))
 #+END_SRC
 
 ** EVALUATE ELISP EXPRESSIONS
@@ -130,11 +107,58 @@ Changing some keybindings from their defaults to better fit with Doom Emacs, and
       "e r" #'eval-region)
 #+END_SRC
 
+** Lsp
+#+BEGIN_SRC emacs-lisp
+(use-package! lsp-mode
+  :hook
+  (haskell-mode . lsp)
+  (python-mode . lsp)
+  (rustic-mode . lsp)
+  (rust-mode . lsp)
+  (reason-mode . lsp)
+  :config
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "reason-language-server")
+                    :major-modes '(reason-mode)
+                    :notification-handlers (ht ("client/registerCapability" 'ignore))
+                    :priority 1
+                    :server-id 'reason-ls))
+  :commands
+  lsp)
+
+(use-package! lsp-ui
+  :commands
+  lsp-ui-mode)
+
+(use-package! company-lsp
+  :commands company-lsp)
+#+END_SRC
+
 ** Org Mode
 If you use `org' and don't want your org files in the default location below,
 change `org-directory'. It must be set before org loads! Doom Emacs uses 'SPC t' for "toggle" commands, so I choose 'SPC t t' for toggle-truncate-lines.
 #+BEGIN_SRC emacs-lisp
-(setq org-directory "~/Documents/org/")
+(use-package! org
+  :config
+  (setq org-agenda-files (file-expand-wildcards "~/Documents/org/*.org"))
+  (setq org-directory (expand-file-name "~/Documents/org"))
+  (setq org-cycle-separator-lines 1)
+  (defvar +org-dir (expand-file-name "~/Documents/org"))
+  (setq org-capture-templates
+        '(("c" "Code Task" entry (file+headline "~/Documents/org/todo.org" "Coding Tasks")
+           "* TODO %?\n Entered on: %U - %a\n")
+          ("t" "Task" entry (file+headline "~/Documents/org/todo.org" "Tasks")
+           "* TODO %?\n Entered on: %U")
+          ("n" "Note" entry (file+datetree "~/Documents/org/todo.org")
+           "* %?\n\n"))))
+#+END_SRC
+
+** Neotree
+#+BEGIN_SRC emacs-lisp
+(after! neotree
+  (setq doom-themes-neotree-file-icons 'icons)
+  (setq doom-themes-neotree-enable-file-icons 'icons)
+  (setq neo-theme 'icons))
 #+END_SRC
 
 ** Line numbers
@@ -145,6 +169,32 @@ numbers are disabled. For relative line numbers, set this to `relative'.
 (map! :leader
       :desc "Toggle truncate lines"
       "t t" #'toggle-truncate-lines)
+#+END_SRC
+
+** Indent guides
+*** Define package
+#+BEGIN_SRC emacs-lisp
+(use-package! highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode))
+#+END_SRC
+*** Use characters for indent guides
+#+BEGIN_SRC emacs-lisp
+(after! highlight-indent-guides
+  (setq highlight-indent-guides-method 'character))
+#+END_SRC
+*** Use responsive highlights
+Highlight indentation based on current line
+#+BEGIN_SRC emacs-lisp
+(after! highlight-indent-guides
+  (setq highlight-indent-guides-character ?\┆))
+#+END_SRC
+*** Set colors
+#+BEGIN_SRC emacs-lisp
+(after! highlight-indent-guides
+  (setq highlight-indent-guides-auto-enabled 'top)
+  (set-face-attribute 'highlight-indent-guides-odd-face nil :inherit 'highlight-indentation-odd-face)
+  (set-face-attribute 'highlight-indent-guides-even-face nil :inherit 'highlight-indentation-even-face)
+  (set-face-foreground 'highlight-indent-guides-character-face (doom-color 'base5)))
 #+END_SRC
 
 ** Bookmarks and Buffers
