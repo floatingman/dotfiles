@@ -36,8 +36,8 @@
 " Binds
 "
 
-" Comment toggler for Reddit and Hacker News
-bind ;c hint -c [class*="expand"],[class="togg"]
+" Comment toggler for Reddit, Hacker News and Lobste.rs
+bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
 
 " GitHub pull request checkout command to clipboard (only works if you're a collaborator or above)
 bind yp composite js document.getElementById("clone-help-step-1").textContent.replace("git checkout -b", "git checkout -B").replace("git pull ", "git fetch ") + "git reset --hard " + document.getElementById("clone-help-step-1").textContent.split(" ")[3].replace("-","/") | yank
@@ -48,6 +48,11 @@ bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//
 " As above but execute it and open terminal in folder
 bind ,g js let uri = document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git"); tri.native.run("cd ~/projects; git clone " + uri + "; cd \"$(basename \"" + uri + "\" .git)\"; st")
 
+
+" make d take you to the tab you were just on (I find it much less confusing)
+bind d composite tab #; tabclose #
+bind D tabclose
+
 " I like wikiwand but I don't like the way it changes URLs
 bindurl wikiwand.com yy composite js document.location.href.replace("wikiwand.com/en","wikipedia.org/wiki") | clipboard yank
 
@@ -55,8 +60,8 @@ bindurl wikiwand.com yy composite js document.location.href.replace("wikiwand.co
 bindurl reddit.com gu urlparent 4
 
 " Only hint search results on Google and DDG
-bindurl www.google.com f hint -Jc .rc > .r > a
-bindurl www.google.com F hint -Jbc .rc>.r>a
+bindurl www.google.com f hint -Jc .rc > div > a
+bindurl www.google.com F hint -Jbc .rc > div > a
 
 bindurl ^https://duckduckgo.com f hint -Jc [class=result__a]
 bindurl ^https://duckduckgo.com F hint -Jbc [class=result__a]
@@ -69,10 +74,10 @@ unbind --mode=ex <C-c>
 
 " Handy multiwindow/multitasking binds
 bind gd tabdetach
-bind gD composite tabduplicate | tabdetach
+bind gD composite tabduplicate; tabdetach
 
 " Make yy use canonical / short links on the 5 websites that support them
-bind yy clipboard yankshort
+bind yy clipboard yankcanon
 
 " Stupid workaround to let hint -; be used with composite which steals semi-colons
 command hint_focus hint -;
@@ -81,7 +86,7 @@ command hint_focus hint -;
 bind ;C composite hint_focus; !s xdotool key Menu
 
 " Julia docs' built in search is bad
-set searchurls.julia https://www.google.com/search?q=site:http://docs.julialang.org/en/v1.0%20
+set searchurls.julia https://www.google.com/search?q=site:http://docs.julialang.org/en/v1%20
 
 "
 " Misc settings
@@ -147,6 +152,24 @@ command translate js let googleTranslateCallback = document.createElement('scrip
 autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
 " Mosquito nets won't make themselves
 autocmd DocStart ^http(s?)://www.amazon.co.uk js tri.excmds.urlmodify("-t", "www", "smile")
+
+" Isolate Facebook in its own container
+" set auconcreatecontainer true
+" autocontain facebook\.com facebook
+
+" Search urls
+set searchurls.alternativeto https://alternativeto.net/browse/search/?q=
+set searchurls.boardgamegeek https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=
+set searchurls.boardgameprices https://boardgameprices.com/compare-prices-for?q=
+set searchurls.booksprice https://booksprice.com/compare.do?inputData=
+set searchurls.chambersbiog https://chambers.co.uk/search/?query=%s&title=biog
+set searchurls.chambersdict https://chambers.co.uk/search/?query=%s&title=21st
+set searchurls.chambersthes https://chambers.co.uk/search/?query=%s&title=thes
+set searchurls.ebay https://www.ebay.com/sch/i.html?_nkw=
+set searchurls.etymonline https://www.etymonline.com/search?q=
+set searchurls.goodreads https://www.goodreads.com/search?q=
+set searchurls.oeis https://oeis.org/search?q=
+set searchurls.powerthesaurus https://www.powerthesaurus.org/_search?q=
 
 " For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
 " vim: set filetype=tridactyl
