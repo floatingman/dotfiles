@@ -1,36 +1,20 @@
-" bovine3dom's dogfood
-
-" WARNING: This file defines and runs a command called fixamo_quiet. If you
-" also have a malicious addon that operates on `<all_urls>` installed this
-" will allow it to steal your firefox account credentials!
-"
-" With those credentials, an attacker can read anything in your sync account,
-" publish addons to the AMO, etc, etc.
-"
-" Without this command a malicious addon can steal credentials from any site
-" that you visit that is not in the restrictedDomains list.
-"
-" You should comment out the fixamo lines unless you are entirely sure that
-" they are what you want.
-"
-" The advantage of running the command is that you can use the tridactyl
-" interface on addons.mozilla.org and other restricted sites.
-
-" Provided only as an example.
-" Do not install/run without reading through as you may be surprised by some
-" of the settings.
-
-" May require the latest beta builds.
-
-" Move this to $XDG_CONFIG_DIR/tridactyl/tridactylrc (that's
-" ~/.config/tridactyl/tridactylrc to mere mortals) or ~/.tridactylrc and
-" install the native messenger (:installnative in Tridactyl). Run :source to
-" get it in the browser, or just restart.
-
 " NB: If you want "vim-like" behaviour where removing a line from
 " here makes the setting disappear, uncomment the line below.
 
-"sanitise tridactyllocal tridactylsync
+sanitise tridactyllocal tridactylsync
+
+"
+" Aliases
+"
+alias tabsort jsb browser.tabs.query({}).then(tabs => tabs.sort((t1, t2) => t1.url.localeCompare(t2.url)).forEach((tab, index) => browser.tabs.move(tab.id, {index})))
+alias tabuniq jsb browser.tabs.query({}).then(tabs => browser.tabs.remove(tabs.filter((tab, index) => tabs.slice(index + 1).find(t => t.url == tab.url)).map(tab => tab.id)))
+alias logall js let l=prompt() ; Object.keys(tri.config.get("logging")).forEach(k => tri.config.set("logging", k, l))
+alias playAllVideos js tri.native.run("mpv --really-quiet --ontop --keepaspect-window --profile=protocol.http " + Array.from(document.querySelectorAll("a, iframe, video")).reduce((s, e) => {let r=(/^https?:\/\/((www.)?youtu((\.be\/)|(be\.com\/((embed\/)|(watch\?v=))))[^ ]+)|(.+\.webm)$/);let l="";if(e.tagName=="IFRAME")l=e.src.match(r);else if(e.tagName=="A")l=e.href.match(r)||e.innerText.match(r);else if(e.tagName=="VIDEO")l=[e.currentSrc?e.currentSrc:e.src];console.log(l);return s+(l && l.length > 0 && s.indexOf(l[0])<0?"'"+l[0]+"' ":"")},""))
+alias gitclone jsb -p tri.native.run("git clone --depth=1 '" + JS_ARG + "' /home/dnewman/Repos/" + JS_ARG.split("/").slice(-1))
+alias rsssave jsb -p tri.native.run('cat >> ~/.config/newsboat/urls', JS_ARG + "\n")
+alias openGithubNotifications composite js Array.from(document.querySelectorAll("li.list-group-item > span:nth-child(1) > a:nth-child(2)")).map(e => e.href) | jsb -p JS_ARG.forEach(url => tri.excmds.tabopen(url))
+alias mktn js tri.native.run(`mkdir -v "$HOME/Repos/${document.location.href.split("/").slice(-1)[0]}"`).then(r=>Array.from(document.querySelectorAll("#Files a")).forEach(a=>fetch(a.href).then(r=>r.text()).then(t=>tri.native.write(`${r.content.match(/'.*'\n/)[0].slice(1,-2)}/${a.href.split("/").slice(-1)[0]}`,t))))
+
 
 "
 " Binds
@@ -46,7 +30,7 @@ bind yp composite js document.getElementById("clone-help-step-1").textContent.re
 bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
 
 " As above but execute it and open terminal in folder
-bind ,g js let uri = document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git"); tri.native.run("cd ~/projects; git clone " + uri + "; cd \"$(basename \"" + uri + "\" .git)\"; st")
+bind ,g js let uri = document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git"); tri.native.run("cd ~/Repos; git clone " + uri + "; cd \"$(basename \"" + uri + "\" .git)\"; st")
 
 
 " make d take you to the tab you were just on (I find it much less confusing)
@@ -84,6 +68,21 @@ command hint_focus hint -;
 
 " Open right click menu on links
 bind ;C composite hint_focus; !s xdotool key Menu
+
+bind <A-v> playAllVideos
+
+
+bind O composite url2args | fillcmdline open
+bind gh followpage prev
+bind gl followpage next
+bind gc composite js window.location.href | gitclone
+bind ;gc hint -qW gitclone
+bind H tabprev
+bind L tabnext
+bind K forward
+bind J back
+bind y clipboard yankshort
+bind Y hint -p
 
 " Julia docs' built in search is bad
 set searchurls.julia https://www.google.com/search?q=site:http://docs.julialang.org/en/v1%20

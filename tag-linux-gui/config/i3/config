@@ -191,13 +191,18 @@ bindsym $mod+Shift+9	move container to workspace $ws9
 #bindsym $mod+Shift+0	move container to workspace $ws10
 
 for_window [class="Pinentry"] sticky enable
-for_window [class="sent"] border pixel 0px
 for_window [title="GIMP Startup"] move workspace $ws5
 for_window [class="Gimp"] move workspace $ws5
 for_window [window_role="GtkFileChooserDialog"] resize set 800 600
 for_window [window_role="GtkFileChooserDialog"] move position center
-for_window [title="Default - Wine desktop"] floating enable
-
+for_window [class="feh"]                    floating enable
+for_window [class="mpv"]                    floating enable
+for_window [class="arandr"]                 floating enable
+for_window [class="Arandr"]                 floating enable
+for_window [class="Screenkey"]              floating enable
+for_window [class="Lxappearance"]           floating enable
+for_window [class="Floating Xterm"]         floating enable
+for_window [title="Terminator Preferences"] floating enable
 # Bindings to make the webcam float and stick.
 for_window [title="mpvfloat"] floating enable
 for_window [title="mpvfloat"] sticky enable
