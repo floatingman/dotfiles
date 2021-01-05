@@ -2,6 +2,7 @@
 #+AUTHOR: Daniel Newman
 #+STARTUP: showeverything
 #+PROPERTY: header-args :tangle yes :cache yes :results silent :padline no
+#+EXPORT_FILE_NAME: README
 
 * Configuration
 
@@ -54,17 +55,22 @@ presentations or streaming.
 They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 font string. You generally only need these two:
 #+BEGIN_SRC emacs-lisp
-(setq doom-font (font-spec :family "Fantasque Sans Mono" :size 15)
-      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 15)
-      doom-big-font (font-spec :family "Fantasque Sans Mono" :size 24))
-(after! doom-themes
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t))
-(custom-set-faces!
-  '(font-lock-comment-face :slant italic)
-  '(font-lock-keyword-face :slant italic))
+(when (equal system-type 'gnu/linux)
+  (setq doom-font (font-spec :family "JetBrains Mono" :size 20 :weight 'normal)
+        doom-big-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)))
+(when (equal system-type 'windows-nt)
+  (setq doom-font (font-spec :family "InputMono" :size 18)
+        doom-big-font (font-spec :family "InputMono" :size 22)))
 #+END_SRC
 
+For terminal emacs usage, I want to try out this font
+#+begin_src emacs-lisp
+(when (equal (window-system) nil)
+  (and
+   (bind-key "C-<down>" #'_org/insert-item-below)
+   (setq doom-theme nil)
+   (setq doom-font (font-spec :family "Roboto Mono" :size 20))))
+#+end_src
 ** Doom Theme
 There are two ways to load a theme. Both assume the theme is installed and
 available. You can either set `doom-theme' or manually load a theme with the

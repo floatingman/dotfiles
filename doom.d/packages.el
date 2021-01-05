@@ -92,8 +92,18 @@
 ;; lang/org
 (package! org)
 (package! ob-http)
-(package! ob-ipython)
+(package! org-bullets)
+(package! org-web-tools)
+;(package! helm-org-rifle)
+(package! org-edna)
+(package! ox-reveal)
+(package! ox-pandoc)
 
+
+;; Lang/Python
+(package! ob-ipython)
+(package! anaconda-mode)
+(package! company-anaconda)
 ;; Lang/Rust
 (package! flycheck-rust)
 
@@ -120,15 +130,7 @@
 ;; ui/indent-guides
 (package! highlight-indent-guides)
 
-(package! async)
-(package! dmenu)
+;; misc/tools
 (package! elfeed)
-(package! emojify)
-(package! evil-tutor)
-(package! ivy-posframe)
-(package! mastodon)
-(package! org-bullets)
-(package! rainbow-mode)
-(package! resize-window)
-(package! wc-mode)
-(package! writeroom-mode)
+(package! elfeed-org)
+(package! deadgrep)
