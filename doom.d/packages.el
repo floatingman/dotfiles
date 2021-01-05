@@ -50,9 +50,6 @@
 ;(unpin! t)
 
 ;; completion/company
-(package! prescient)
-(package! company-prescient)
-(package! company-lsp)
 
 ;; completion/ivy
 (package! all-the-icons-ivy)
@@ -70,10 +67,6 @@
 ;; lang/syntax checking
 (package! flycheck)
 
-;; Completion
-(package! lsp-mode)
-(package! lsp-ui)
-
 ;; lang/apache
 (package! apache-mode)
 
@@ -90,15 +83,16 @@
 (package! nginx-mode)
 
 ;; lang/org
-(package! org)
 (package! ob-http)
 (package! org-bullets)
 (package! org-web-tools)
-;(package! helm-org-rifle)
+(package! helm-org-rifle)
 (package! org-edna)
 (package! ox-reveal)
 (package! ox-pandoc)
-
+(package! org-ql)
+(package! org-multi-wiki)
+(package! helm-org-multi-wiki)
 
 ;; Lang/Python
 (package! ob-ipython)

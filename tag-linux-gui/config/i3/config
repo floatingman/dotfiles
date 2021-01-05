@@ -30,7 +30,7 @@ bindsym $mod+n border normal
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font xft:URWGothic-Book 11
-font pango:Inconsolata Regular 10
+font pango:iosevka 11
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -59,7 +59,6 @@ bar {
 }
 
 # #---Basic Bindings---# #
-bindsym $mod+Shift+Return	exec --no-startup-id samedir
 
 bindsym $mod+Shift+space 	floating toggle
 bindsym $mod+space		focus mode_toggle
@@ -73,8 +72,6 @@ bindsym $mod+Shift+Delete	exec --no-startup-id lmc truemute ; exec --no-startup-
 # #---Letter Key Bindings---# #
 bindsym $mod+q			[con_id="__focused__" instance="^(?!dropdown_).*$"] kill
 bindsym $mod+Shift+q		[con_id="__focused__" instance="^(?!dropdown_).*$"] exec --no-startup-id kill -9 `xdotool getwindowfocus getwindowpid`
-
-# bindsym $mod+Shift+r		exec --no-startup-id winresize
 
 bindsym $mod+t			split toggle
 bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
@@ -110,12 +107,14 @@ bindsym $mod+Shift+h		move left 30
 
 bindsym $mod+j			focus down
 bindsym $mod+Shift+j		move down 30
+bindsym $mod+Ctrl+j     move workspace to output left
 
 bindsym $mod+k			focus up
 bindsym $mod+Shift+k		move up 30
 
 bindsym $mod+l			focus right
 bindsym $mod+Shift+l		move right 30
+bindsym $mod+Ctrl+l     move workspace to output right
 
 bindsym $mod+z			gaps outer current plus 5
 bindsym $mod+Shift+z		gaps outer current minus 5
@@ -131,6 +130,12 @@ bindsym $mod+Shift+n		floating toggle; sticky toggle; exec --no-startup-id hover
 
 bindsym $mod+Shift+p [instance="keepassxc"] scratchpad show, move position center
 for_window [instance="keepassxc"] floating enable, resize set 800 800, move scratchpad, border pixel 5
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
 
 # #---Workspace Bindings---# #
 workspace_auto_back_and_forth yes
