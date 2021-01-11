@@ -91,20 +91,14 @@ super + F1
 	groff -mom $HOME/.local/share/larbs/readme.mom -Tpdf | zathura -
 # F2 is restart in i3 right now.
 # Change display
-super + F3
+XF86Display
 	displayselect
 # Hibernate
 super + F4
 	prompt 'Hibernate computer?' 'sudo systemctl suspend'
 # Restart/rescan wifi/eth networks
-super + F5
+XF86WLAN
 	sudo -A systemctl restart NetworkManager
-# Start torrent daemon/open interface
-super + F6
-	torwrap
-# toggle torrent daemon
-super + F7
-	td-togggle
 # sync email
 super + F8
 	mailsync
@@ -147,7 +141,7 @@ XF86AudioMicMute
 
 # Change volume
 XF86Audio{Raise,Lower}Volume
-    pulseaudio-ctl {up,down} 10 
+    pulseaudio-ctl {up,down} 10
 
 # # Change volume
 # super + {k,j}
@@ -221,8 +215,8 @@ super + shift + m
 #     betterlockscreen -l
 
 # # Toggle trackpad
-# XF86TouchpadToggle
-#     toggle-touchpad.sh
+XF86Tools
+    toggle-touchpad.sh
 
 # XF86Launch1
 #     toggle-touchpad.sh

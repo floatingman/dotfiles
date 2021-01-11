@@ -1,37 +1,8 @@
-#+TITLE: Daniel Newman's Doom Emacs Configuration
-#+AUTHOR: Daniel Newman
-#+STARTUP: showeverything
-#+PROPERTY: header-args :tangle yes :cache yes :results silent :padline no
-#+EXPORT_FILE_NAME: README
-
-* Requirements
-These are some items that are required outside of the normal DOOM EMACS
-installation, before you can use this config. The idea here is to keep this
-minimum so as much of this is close to regular DOOM EMACS.
-1. *SQLITE3 Installation*: You will need to install sqlite3, typicalled installed via your package manager as ~sudo apt install sqlite3~
-2. I use a few different monospace fonts: [[https://input.fontbureau.com/download/][Input]], [[http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.tar.bz2][DejaVu]], [[https://github.com/tonsky/FiraCode][FiraCode]], [[google:IBM Plex Mono font Download][IBM Plex Mono]] and [[google:Roboto Mono Font Download][Roboto Mono]].
-
-* Configuration
-
-** Personal Information
-
-*** Set full name and email
-#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Daniel Newman"
       user-mail-address "dan@danlovesprogramming.com"
       )
-#+END_SRC
-
-** Core
-
-*** Display time in modeline
-#+BEGIN_SRC emacs-lisp
 (display-time-mode 1)
 (setq display-time-day-and-date t)
-#+END_SRC
-
-*** Undo settings
-#+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode 1)
 (setq undo-limit 80000000
       evil-want-fine-undo t
@@ -45,17 +16,9 @@ minimum so as much of this is close to regular DOOM EMACS.
  uniquify-buffer-name-style 'forward
  window-combination-resize t
  x-stretch-cursor nil)
-#+END_SRC
-
-Now I add my default folders and files that I want emacs/org-mode to use:
-#+BEGIN_SRC emacs-lisp
 (setq diary-file "~/Documents/org/diary.org")
 (setq org-directory "~/Documents/org/")
 (setq projectile-project-search-path "~/Repos/")
-#+END_SRC
-
-Next we configure popup-rules and default fonts.
-#+BEGIN_SRC emacs-lisp
 (after! org (set-popup-rule! "^\\*lsp-help" :side 'bottom :size .30 :select t)
   (set-popup-rule! "*helm*" :side 'right :size .30 :select t)
   (set-popup-rule! "*Org QL View:*" :side 'right :size .25 :select t)
@@ -63,34 +26,16 @@ Next we configure popup-rules and default fonts.
   (set-popup-rule! "*eww*" :side 'right :size .50 :select t)
   (set-popup-rule! "*CAPTURE-*" :side 'left :size .30 :select t)
   (set-popup-rule! "*Org Agenda*" :side 'top :size .30 :select t))
-#+END_SRC
-
-*** Load user functions
-Keeping user defined functions in a separate file
-#+BEGIN_SRC emacs-lisp
 (load! "+functions")
 (load! "+theming")
 (load! "+commands")
 (load! "org-helpers")
 (load! "org-task-automation.el")
-#+END_SRC
-
-*** Keybinds
-
-**** Global Keybinds
-
-***** Leader keybinds
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       (:prefix "f"
        :desc "Find remote file"      "R" #'counsel-tramp
        :desc "Find file in dotfiles" "t" #'+daniel/find-in-dotfiles
        :desc "Browse dotfiles"       "T" #'+daniel/browse-dotfiles))
-#+END_SRC
-
-***** Org-mode keybinds
-Additional key bindings
-#+BEGIN_SRC emacs-lisp
 (bind-key "<f6>" #'link-hint-copy-link)
 (bind-key "<f12>" #'org-cycle-agenda-files)
 (map! :after org
@@ -116,39 +61,17 @@ Additional key bindings
       :map org-agenda-mode-map
       :localleader
       :desc "Filter" "f" #'org-agenda-filter)
-#+END_SRC
-
-** Doom fonts
-Doom exposes five (optional) variables for controlling fonts in Doom. Here
-are the three important ones:
-
-+ `doom-font'
-+ `doom-variable-pitch-font'
-+ `doom-big-font' -- used for `doom-big-font-mode'; use this for
-presentations or streaming.
-
-They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-font string. You generally only need these two:
-#+BEGIN_SRC emacs-lisp
 (when (equal system-type 'gnu/linux)
   (setq doom-font (font-spec :family "JetBrains Mono" :size 20 :weight 'normal)
         doom-big-font (font-spec :family "JetBrains Mono" :size 22 :weight 'normal)))
 (when (equal system-type 'windows-nt)
   (setq doom-font (font-spec :family "InputMono" :size 18)
         doom-big-font (font-spec :family "InputMono" :size 22)))
-#+END_SRC
-
-For terminal emacs usage, I want to try out this font
-#+begin_src emacs-lisp
 (when (equal (window-system) nil)
   (and
    (bind-key "C-<down>" #'_org/insert-item-below)
    (setq doom-theme nil)
    (setq doom-font (font-spec :family "Roboto Mono" :size 20))))
-#+end_src
-
-*** Change Font
-#+BEGIN_SRC emacs-lisp
 (defun nm/emacs-change-font ()
   "Change font based on available font list."
   (interactive)
@@ -161,43 +84,18 @@ For terminal emacs usage, I want to try out this font
   (doom/reload-font))
 
 (defvar nm/font-family-list '("JetBrains Mono" "Roboto Mono" "VictorMono Nerd Font Mono" "Fira Code" "Hack" "Input Mono" "Anonymous Pro" "Cousine" "PT Mono" "DejaVu Sans Mono" "Victor Mono" "Liberation Mono"))
-#+END_SRC
-
-** Doom Theme
-There are two ways to load a theme. Both assume the theme is installed and
-available. You can either set `doom-theme' or manually load a theme with the
-`load-theme' function. This is the default:
-#+BEGIN_SRC emacs-lisp
 (setq doom-theme 'doom-tomorrow-night)
 (map! :leader
       :desc "Load new theme"
       "h t" #'counsel-load-theme)
 (after! doom-themes
   (setq doom-neotree-file-icons t))
-#+END_SRC
-
-*** Easy theme switcher
-#+begin_src emacs-lisp
 (defvar doom-fav-themes '("doom-one" "doom-solarized-dark" "doom-dracula" "doom-vibrant" "doom-city-lights" "doom-moonlight" "doom-horizon" "doom-old-hope" "doom-oceanic-next" "doom-monokai-pro" "doom-material" "doom-henna" "doom-gruvbox" "doom-one-light" "doom-gruvbox-light" "doom-solarized-light" "doom-flatwhite" "chocolate"))
 (defun nm/load-theme ()
   (interactive)
   (ivy-read "Load custom theme: " doom-fav-themes
             :action #'counsel-load-theme-action
             :caller 'counsel-load-theme))
-#+end_src
-
-** EVALUATE ELISP EXPRESSIONS
-Changing some keybindings from their defaults to better fit with Doom Emacs, and to avoid conflicts with my window managers which sometimes use the control key in their keybindings.  By default, Doom Emacs does not use 'SPC e' for anything, so I choose to use the format 'SPC e' plus 'key' for these (I also use 'SPC e' for 'eww' keybindings).
-
-| COMMAND         | DESCRIPTION                                    | KEYBINDING |
-|-----------------+------------------------------------------------+------------|
-| eval-buffer     | /Evaluate elisp in buffer/                       | SPC e b    |
-| eval-defun      | /Evaluate the defun containing or after point/   | SPC e d    |
-| eval-expression | /Evaluate an elisp expression/                   | SPC e e    |
-| eval-last-sexp  | /Evaluate elisp expression before point/         | SPC e l    |
-| eval-region     | /Evaluate elisp in region/                       | SPC e r    |
-
-#+Begin_src emacs-lisp
 (map! :leader
       :desc "Evaluate elisp in buffer"
       "e b" #'eval-buffer
@@ -213,18 +111,6 @@ Changing some keybindings from their defaults to better fit with Doom Emacs, and
       :leader
       :desc "Evaluate elisp in region"
       "e r" #'eval-region)
-#+END_SRC
-
-Uses org-babel to tangle all of my source code blocks back to _config.el_, this
-makes it easy so that I can write my changes from config.org or config.el.
-[[file:attachments/workspace.png]]
-
-** Org-Mode
-
-*** New Changes
-
-***** Bullet Journal
-#+begin_src emacs-lisp
 (defun nm/capture-bullet-journal ()
   "Finds bullet journal headlin to nest capture headline under."
   (let* ((date (format-time-string "%Y-%m-%d %a")))
@@ -232,19 +118,6 @@ makes it easy so that I can write my changes from config.org or config.el.
     (unless (re-search-forward (format "^*+\s%s" date) nil t)
       (goto-char (point-max))
       (insert (format "* %s %s" date "[/]")))))
-#+end_src
-
-***** Org-Agenda Functions for Condition checks
-So another pain point has been maintaining my task items. So i'm always looking
-for ways to tweak or adjust how I can automate or simply task management, and my
-agenda setup. So this next piece adds some functions to run condition checks for
-tasks that are in a NEXT state, or a Inbox or waiting to be defined state.
-
-For this piece, i've used bits and pieces from Doc Norang's ~org-helper.el~. The
-idea is to mimic the GTD methodology from the org-agenda view so all aspects of
-it can be controlled from the agenda.
-
-#+begin_src emacs-lisp
 (defun nm/skip-non-stuck-projects ()
   "Skip trees that are not stuck projects."
   (save-restriction
@@ -262,9 +135,6 @@ it can be controlled from the agenda.
                 next-headline
               nil))
         next-headline))))
-#+end_src
-
-#+begin_src emacs-lisp
 (defun nm/project-tasks-ready ()
   "Skip trees that are not projects"
       (let ((next-headline (save-excursion (outline-next-heading)))
@@ -282,11 +152,6 @@ it can be controlled from the agenda.
      ((nm/is-scheduled-p) t)
      ((nm/exist-context-tag-p) t)
      ((nm/checkbox-active-exist-p) t))))
-#+end_src
-
-Great, so that takes care of my project tasks that are ready to be worked, now I
-need something for standalone tasks.
-#+begin_src emacs-lisp
 (defun nm/standard-tasks-ready ()
   "Show non-project tasks. Skip project and sub-project tasks, habits, and project related tasks."
   (save-restriction
@@ -298,10 +163,6 @@ need something for standalone tasks.
        ((bh/is-project-subtree-p) next-headline)
        ((and (bh/is-task-p) (not (nm/has-next-condition))) subtree-end)
        (t nil)))))
-#+end_src
-
-For project tasks that are stuck:
-#+begin_src emacs-lisp
 (defun nm/stuck-projects ()
   "Returns t when a project has no defined next actions for any of its subtasks."
   (let ((next-headline (save-excursion (outline-next-heading)))
@@ -310,10 +171,6 @@ For project tasks that are stuck:
         (cond
          ((and (bh/is-project-subtree-p) (not (nm/has-next-condition))) nil))
       subtree-end)))
-#+end_src
-
-For tasks that are ready to be refiled:
-#+begin_src emacs-lisp
 (defun nm/tasks-refile ()
   "Returns t if the task is not part of a project and has no next state conditions."
   (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
@@ -321,10 +178,6 @@ For tasks that are ready to be refiled:
     (cond
      ((nm/has-next-condition) next-heading)
      ((bh/is-project-p) subtree-end))))
-#+end_src
-
-***** Capturing to a Projects Timeframe
-#+begin_src emacs-lisp
 (defun nm/capture-project-timeframes ()
   "Captures under the given projects timeframe headline."
   (let ((p-name (ivy-completing-read "Select file: " (find-lisp-find-files "~/Documents/org/gtd/" "\.org$")))
@@ -338,10 +191,6 @@ For tasks that are ready to be refiled:
     (newline 2)
     (insert (format "** %s %s" (format-time-string "[%Y-%m-%d %a %H:%M]") c-name))
     (newline)))
-#+end_src
-
-***** Capturing Web Resources
-#+begin_src emacs-lisp
 ;; This function was found on a stackoverflow post -> https://stackoverflow.com/questions/6681407/org-mode-capture-with-sexp
  (defun get-page-title (url)
   "Get title of web page, whose url can be found in the current line"
@@ -362,29 +211,6 @@ For tasks that are ready to be refiled:
     (setq web_title_str (decode-coding-string web_title_str (intern
                                                              coding_charset))))
   (concat "[[" url "][" web_title_str "]]")))
-#+end_src
-
-***** Task Automation
-I got tired of manually setting task states to "NEXT" "PROJ" "TODO" so i've
-added a few functions to automate this for me.
-
-The *NEXT* state will be set if any of the following 3 conditions exist:
-1. Has a scheduled date assign to the task. (NOTE: We may want to add additional checks for expired task)
-2. Task has a context task assigned. (Context tags start with "@")
-3. Has an active checkbox that's not marked completed. \\
-[[file:attachments/next-states.gif]] \\
-[[file:attachments/context-tags.gif]]
-
-The PROJ state will become active upon the following conditions:
-1. Task has a child headline with a TODO-KEYWORD of any-type (TODO/NEXT/WAIT). \\
-[[file:attachments/projects.gif]]
-
-***** ID Completion
-I got tired of flipping back n forth between buffers, copying the ID of a
-headline, then jump back and paste that ID into my link. So now i'll have
-~org-refile-get-location~ fetch the ID for us when I call ~org-insert-link~.
-
-#+begin_src emacs-lisp
 (require 'find-lisp)
 (defun nm/org-id-prompt-id ()
   "Prompt for the id during completion of id: link."
@@ -400,19 +226,6 @@ headline, then jump back and paste that ID into my link. So now i'll have
       (org-insert-link nil (concat "id:" id) name))))
 
 (after! org (org-link-set-parameters "id" :complete #'nm/org-id-prompt-id))
-#+end_src
-
-***** Quick Note Find Headline
-Another pain point i've been constantly facing is quickly taking a note and
-storing it in the appropriate location without losing focus on what i'm
-currently working on. This is common when on calls or meetings and you need to
-make a note for another task item you're working.
-
-So with that, I added a new function tied to the quick note capture-template
-key, which will prompt for a headline from any of your task files that exist in
-"~~/Documents/org/gtd/~".
-
-#+BEGIN_SRC emacs-lisp
 (defun nm/org-capture-log ()
   "Initiate the capture system and find headline to capture under."
   (let* ((org-agenda-files (find-lisp-find-files "~/Documents/org/gtd/" "\.org$"))
@@ -429,13 +242,6 @@ key, which will prompt for a headline from any of your task files that exist in
   (interactive)
   (outline-next-heading)
   (forward-char -1))
-#+END_SRC
-
-***** Daily Task Adder
-This function will create a new headline, and nest the checkitem underneath the
-headline specified by DATE chosen during capture. This will also set a scheduled
-date on the headline.
-#+begin_src emacs-lisp
 (defun nm/org-capture-to-task-file ()
   "Capture file to your default tasks file, and prompts to select a date where to file the task file to."
   (let* ((child-l nil)
@@ -457,11 +263,6 @@ date on the headline.
       (unless (re-search-forward (format "%s %s %s" child-l heading date) end t)
         (newline 2)
         (insert (format "%s %s %s %s" child-l heading date "[/]"))))))
-#+end_src
-
-***** Org-mode Formatting
-Eventually this will turn into a suite of functions that will clean-up the formatting of any org-mode document, and standardize to a common format that is believed to be standardized by the community. Reddit post will come eventually to discuss, and a link will be updated in this section when that comes.
-#+begin_src emacs-lisp
 (defun nm/add-newline-between-headlines ()
   ""
   (when (equal major-mode 'org-mode)
@@ -489,14 +290,6 @@ Eventually this will turn into a suite of functions that will clean-up the forma
   (org-map-entries #'nm/add-newline-between-headlines t 'file))
 
 (add-hook 'org-insert-heading-hook #'nm/newlines-between-headlines)
-#+end_src
-
-***** Journal Capture Template
-I need a way to make a dynamic template that will let me capture various types
-of information: meeting notes, calls, conversations, things i'm working on,
-etc.. Eventually this function will contain several mini templates inside of it
-that are called when initiated.
-#+begin_src emacs-lisp
 (defun nm/capture-to-journal ()
   "When org-capture-template is initiated, it creates the respected headline structure."
   (let ((file "~/Documents/org/gtd/journal.org")
@@ -511,10 +304,6 @@ that are called when initiated.
       (progn (goto-char (point-max)) (newline) (insert "* Journal")))
     (unless (re-search-forward (format "** %s" (format-time-string "%b '%y")) (save-excursion (org-end-of-subtree)) t)
       (progn (org-end-of-subtree t) (newline) (insert (format "** %s" (format-time-string "%b '%y")))))))
-#+end_src
-
-***** Setting up my productivity layout
-#+begin_src emacs-lisp
 (defun nm/setup-productive-windows (arg1 arg2)
   "Delete all other windows, and setup our ORGMODE production window layout."
   (interactive)
@@ -544,10 +333,6 @@ that are called when initiated.
       :leader
       :prefix ("TAB" . "workspace")
       :desc "Load ORGMODE Setup" "," #'nm/productive-window)
-#+end_src
-
-***** Return Indirect Buffer
-#+BEGIN_SRC emacs-lisp
 (defun nm/get-headlines-org-files (arg &optional indirect)
   "Searches org-directory for headline and returns results to indirect buffer
    ARG being a directory to search and optional INDIRECT should return t if you
@@ -585,16 +370,6 @@ that are called when initiated.
       :prefix ("s" . "search")
       :desc "Outline Org-Directory" "c" #'nm/search-headlines-org-directory
       :desc "Outline GTD directory" "!" #'nm/search-headlines-org-tasks-directory)
-#+END_SRC
-
-*** Core Org-mode settings
-Here we add any requirements before org-mode starts to load. Some key notes here to make note of:
-1. org-image-actual-width will use the function to try and set the image size to a % of your display's width.
-2. hl-todo-mode enabled for ORGMODE. All of my notes are stored under my parent org-directory along with my GTD tasks, but I don't necesarily like to add tasks to my notes files, or see them appear in my org-agenda. So instead I add the keywords where I need to make a note, or something I need to follow-up on and use the magit-todos-list to see what follow-up items I have to complete.
-
-NOTE [2021-01-03 Sun] - i'm going to try swapping log notes going after drawers to see how I like it...
-
-#+BEGIN_SRC emacs-lisp
 (require 'org-habit)
 (require 'org-id)
 (require 'org-checklist)
@@ -617,17 +392,9 @@ NOTE [2021-01-03 Sun] - i'm going to try swapping log notes going after drawers 
 (add-hook 'org-mode-hook 'turn-off-auto-fill)
 (add-hook 'org-mode-hook 'hl-todo-mode)
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
-#+END_SRC
-
-*** Agenda settings
-First set a few defaults for the agenda buffer
-#+begin_src emacs-lisp
 (setq org-agenda-todo-ignore-scheduled nil
       org-agenda-tags-todo-honor-ignore-options t
       org-agenda-fontify-priorities t)
-#+end_src
-This first stage is how I track what's on my list of things to complete
-#+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands nil)
 (push '("o" "overview"
         ((agenda ""
@@ -680,19 +447,6 @@ This first stage is how I track what's on my list of things to complete
                ((org-tags-match-list-sublevels nil)
                                         ;(org-agenda-skip-function 'nm/tasks-refile)
                 (org-agenda-overriding-header "Ready to Refile"))))) org-agenda-custom-commands)
-#+END_SRC
-
-*** Capture Templates
-What templates do I need available for quick capture of information?
-1. Checklists
-2. Bullet Journel
-3. Journal
-4. Notes
-5. Resources
-
-Task items can be a few different things, and there's the whole GTD which i'm trying my best to follow. Sometimes I may have a task item that I simply need to remind myself to complete, and just need to check it off a list acknowledging I've completed it and other times I need an actual task item to capture and track data in.
-
-#+begin_src emacs-lisp
 (setq org-capture-templates '(("c" " checklist")
                               ("g" " gtd")
                               ("b" " bullet journal")
@@ -718,9 +472,6 @@ Task items can be a few different things, and there's the whole GTD which i'm tr
 
 (push '("rr" " research literature" entry (file+function "~/Documents/org/gtd/websources.org" nm/enter-headline-websources) "* READ %(get-page-title (current-kill 0))") org-capture-templates)
 (push '("rf" " rss feed" entry (file+function "~/Documents/org/elfeed.org" nm/return-headline-in-file) "* %^{link}") org-capture-templates)
-#+end_src
-
-#+begin_src emacs-lisp
 (defun nm/find-project-file ()
   "Find and open project file."
   (nm/find-file-or-create "~/Documents/org/gtd/projects/"))
@@ -746,21 +497,8 @@ Task items can be a few different things, and there's the whole GTD which i'm tr
   (save-excursion (find-file file-arg) (goto-char (point-min))
                   (unless (re-search-forward (format "* %s" (upcase headline-arg)) nil t)
                     (goto-char (point-max)) (insert (format "* %s" (upcase headline-arg))) (org-set-property "CATEGORY" (downcase headline-arg)))) t)
-#+end_src
-
-*** Clock Settings
-#+begin_src emacs-lisp
 (after! org (setq org-clock-continuously t)) ; Will fill in gaps between the last and current clocked-in task.
-#+end_src
-
-*** Default tags
-I don’t like to shift my eyes back n forth when i’m scanning data, so I keep my columns one space after the headline.
-#+begin_src emacs-lisp
 (setq org-tags-column 0)
-#+end_src
-
-I like to keep a list of predefined context tags, this helps speed the assignment process up and also keep things consistent.
-#+begin_src emacs-lisp
 (setq org-tag-alist '(("@home")
                       ("@computer")
                       ("@email")
@@ -773,19 +511,10 @@ I like to keep a list of predefined context tags, this helps speed the assignmen
                       ("@purchase")
                       ("@payment")
                       ("@place")))
-#+end_src
-
-I also like to use tags to specify when a task is one of the following: delegated, waiting, someday, remember.
-
-#+begin_src emacs-lisp
 (push '("delegated") org-tag-alist)
 (push '("waiting") org-tag-alist)
 (push '("someday") org-tag-alist)
 (push '("remember") org-tag-alist)
-#+end_src
-
-*** Export Settings
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-html-head-include-scripts t
                   org-export-with-toc t
                   org-export-with-author t
@@ -799,10 +528,6 @@ I also like to use tags to specify when a task is one of the following: delegate
                   org-export-with-properties nil
                   org-export-with-smart-quotes t
                   org-export-backends '(pdf ascii html latex odt md pandoc)))
-#+END_SRC
-
-Embed images into the exported HTML files.
-#+BEGIN_SRC emacs-lisp
 (defun replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
@@ -816,21 +541,6 @@ Embed images into the exported HTML files.
                (insert-file-contents-literally source)
               (buffer-string)))
             (file-name-nondirectory source))))
-#+END_SRC
-
-*** Keywords
-After much feedback and discussing with other users, I decided to simplify the
-keyword list to make it simple. Defining a project will now focus on the tag
-word *:project:* so that all child task are treated as part of the project.
-| Keyword | Description                                                  |
-|---------+--------------------------------------------------------------|
-| \TODO   | Task has actionable items defined and ready to be worked.    |
-| HOLD    | Has actionable items, but is on hold due to various reasons. |
-| NEXT    | Is ready to be worked and should be worked on soon.          |
-| DONE    | Task is completed and closed.                                |
-| KILL    | Abandoned or terminated.                                     |
-
-#+BEGIN_SRC emacs-lisp
 (custom-declare-face '+org-todo-active  '((t (:inherit (bold font-lock-constant-face org-todo)))) "")
 (custom-declare-face '+org-todo-project '((t (:inherit (bold font-lock-doc-face org-todo)))) "")
 (custom-declare-face '+org-todo-onhold  '((t (:inherit (bold warning org-todo)))) "")
@@ -855,10 +565,6 @@ word *:project:* so that all child task are treated as part of the project.
         ("REFILE" . +org-todo-onhold)
         ("PROJ" . +org-todo-project)
         ("TODO" . +org-todo-active)))
-#+END_SRC
-
-*** Loading agenda settings
-#+begin_src emacs-lisp
 (after! org (setq org-agenda-diary-file "~/Documents/org/diary.org"
                   org-agenda-dim-blocked-tasks t ; grays out task items that are blocked by another task (EG: Projects with subtasks)
                   org-agenda-use-time-grid nil
@@ -874,23 +580,11 @@ word *:project:* so that all child task are treated as part of the project.
                   org-habit-show-habits t))
 
 (after! org (setq org-agenda-files (append (file-expand-wildcards "~/Documents/org/gtd/*.org") (file-expand-wildcards "~/Documents/org/gtd/*/*.org"))))
-#+end_src
-
-*** Logging and Drawers
-Next, we like to keep a history of our activity of a task so we *track* when
-changes occur, and we also keep our notes logged in *their own drawer*. Optionally
-you can also add the following in-buffer settings to override the
-=org-log-into-drawer= function. ~#+STARTUP: logdrawer~ or ~#+STARTUP: nologdrawer~
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-log-into-drawer t
                   org-log-done 'time
                   org-log-repeat 'time
                   org-log-redeadline 'note
                   org-log-reschedule 'note))
-#+END_SRC
-
-*** Looks and Feels
-#+begin_src emacs-lisp
 (after! org (setq org-hide-emphasis-markers t
                   org-hide-leading-stars t
                   org-list-demote-modify-bullet '(("+" . "-") ("1." . "a.") ("-" . "+"))))
@@ -901,16 +595,7 @@ you can also add the following in-buffer settings to override the
 
 (when (require 'org-fancy-priorities nil 'noerror)
   (setq org-fancy-priorities-list '("⚑" "❗" "⬆")))
-#+end_src
-
-*** Properties
-I like to have properties inherited from their parent.
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-use-property-inheritance t))
-#+END_SRC
-
-*** Publishing
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-publish-project-alist
                   '(("attachments"
                      :base-directory "~/Documents/org/"
@@ -946,20 +631,9 @@ I like to have properties inherited from their parent.
                      :auto-preamble t
                      :with-toc t)
                     ("myprojectweb" :components("attachments" "notes" "ROAM")))))
-#+END_SRC
-
-*** Module Settings
-
-**** company mode
-#+BEGIN_SRC emacs-lisp
 (after! org
   (set-company-backend! 'org-mode '(company-yasnippet company-elisp))
   (setq company-idle-delay 0.25))
-#+END_SRC
-
-**** DEFT
-When this variable is set to ~t~ your deft directory will be updated to your projectile-project root's folder when switching projects, and the deft buffer's contents will be refreshed.
-#+BEGIN_SRC emacs-lisp
 (setq deft-use-projectile-projects t)
 (defun zyro/deft-update-directory ()
   "Updates deft directory to current projectile's project root folder and updates the deft buffer."
@@ -969,10 +643,6 @@ When this variable is set to ~t~ your deft directory will be updated to your pro
 (when deft-use-projectile-projects
   (add-hook 'projectile-after-switch-project-hook 'zyro/deft-update-directory)
   (add-hook 'projectile-after-switch-project-hook 'deft-refresh))
-#+END_SRC
-
-Configuring DEFT default settings
-#+BEGIN_SRC emacs-lisp
 (use-package deft
   :bind (("<f8>" . deft))
   :commands (deft deft-open-file deft-new-file-named)
@@ -1023,11 +693,6 @@ Configuring DEFT default settings
 (provide 'my-deft-title)
 
 (advice-add 'deft-parse-title :around #'my-deft/parse-title-with-directory-prepended)
-#+END_SRC
-
-**** Graphs and Chart Modules
-Eventually I would like to have org-mind-map generating charts like Sacha's [[https://pages.sachachua.com/evil-plans/][evil-plans]].
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-ditaa-jar-path "~/.emacs.d/.local/straight/repos/org-mode/contrib/scripts/ditaa.jar"))
 
 (use-package gnuplot
@@ -1049,31 +714,14 @@ Eventually I would like to have org-mind-map generating charts like Sacha's [[ht
   :defer
   :config
   (setq plantuml-jar-path (expand-file-name "~/.doom.d/plantuml.jar")))
-#+END_SRC
-
-**** Journal
-#+BEGIN_SRC emacs-lisp
 (after! org (setq org-journal-dir "~/Documents/org/gtd/journal/"
                   org-journal-enable-agenda-integration t
                   org-journal-file-type 'monthly
                   org-journal-carryover-items "TODO=\"TODO\"|TODO=\"NEXT\"|TODO=\"PROJ\"|TODO=\"STRT\"|TODO=\"WAIT\"|TODO=\"HOLD\""))
-#+END_SRC
-
-**** Pandoc
-#+BEGIN_SRC emacs-lisp
 (setq org-pandoc-options '((standalone . t) (self-contained . t)))
-#+END_SRC
-
-**** Reveal
-#+BEGIN_SRC emacs-lisp
 (require 'ox-reveal)
 (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
 (setq org-reveal-title-slide nil)
-#+END_SRC
-
-**** ROAM
-These are my default ROAM settings
-#+begin_src emacs-lisp
 (setq org-roam-tag-sources '(prop last-directory))
 (setq org-roam-db-location "~/Documents/org/roam.db")
 (setq org-roam-directory "~/Documents/org/")
@@ -1105,10 +753,6 @@ These are my default ROAM settings
         :file-name "gtd/projects/%<%Y%m%d%H%M>-${slug}"
         :head "#+title: ${title}\n#+roam_tags: %^{tags}\n\n%?"
         :unnarrowed t) org-roam-capture-templates)
-#+end_src
-
-**** ROAM Server
-#+begin_src emacs-lisp
 (use-package org-roam-server
   :ensure t
   :config
@@ -1121,12 +765,6 @@ These are my default ROAM settings
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
-#+end_src
-
-**** Custom Functions
-
-**** Archive keeping Structure
-#+begin_src emacs-lisp
 (defadvice org-archive-subtree (around fix-hierarchy activate)
   (let* ((fix-archive-p (and (not current-prefix-arg)
                              (not (use-region-p))))
@@ -1169,10 +807,6 @@ These are my default ROAM settings
               (widen)
               (org-end-of-subtree t t)
               (org-paste-subtree level tree-text))))))))
-#+end_src
-
-**** Custom Faces
-#+begin_src emacs-lisp
 (defface org-logbook-note
   '((t (:foreground "LightSkyBlue")))
   "Face for printr function")
@@ -1180,11 +814,6 @@ These are my default ROAM settings
 (font-lock-add-keywords
  'org-mode
  '(("\\w+\s\\w+\s\\w+\s\\[\\w+-\\w+-\\w+\s\\w+\s\\w+:\\w+\\] \\\\\\\\" . 'org-logbook-note )))
-#+end_src
-
-**** Clarify Tasks
-Clarify task will take a list of property fields and pass them to ~nm/org-clarify-task-properties~ to update task items which are missing those property fields.
-#+BEGIN_SRC emacs-lisp
 (defun nm/org-get-headline-property (arg)
   "Extract property from headline and return results."
   (interactive)
@@ -1383,10 +1012,6 @@ Skip project and sub-project tasks, habits, and project related tasks."
       :localleader
       :prefix ("j" . "nicks functions")
       :desc "Clarify properties" "c" #'nm/org-clarify-metadata)
-#+END_SRC
-
-**** Capture System
-#+begin_src emacs-lisp
 (defun nm/org-capture-system ()
   "Capture stuff."
   (interactive)
@@ -1427,11 +1052,6 @@ Skip project and sub-project tasks, habits, and project related tasks."
   (interactive)
   (outline-next-heading)
   (forward-char -1))
-#+end_src
-
-**** Org Templates
-Org Templates are good for easily adding source blocks to an org file
-#+BEGIN_SRC emacs-lisp
 ;; This is needed as of Org 9.2
 (require 'org-tempo)
 
@@ -1442,10 +1062,6 @@ Org Templates are good for easily adding source blocks to an org file
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
-#+END_SRC
-
-** Elfeed
-#+BEGIN_SRC emacs-lisp
 (use-package elfeed-org
   :defer
   :config
@@ -1459,81 +1075,31 @@ Org Templates are good for easily adding source blocks to an org file
 ;; (elfeed-org)
 ;; (setq elfeed-db-directory "~/.elfeed/")
 ;; (setq rmh-elfeed-org-files (list "~/.elfeed/elfeed.org"))
-#+END_SRC
-
-** Neotree
-#+BEGIN_SRC emacs-lisp
 (after! neotree
   (setq doom-themes-neotree-file-icons 'icons)
   (setq doom-themes-neotree-enable-file-icons 'icons)
   (setq neo-theme 'icons))
-#+END_SRC
-
-** Line numbers
-This determines the style of line numbers in effect. If set to `nil', line
-numbers are disabled. For relative line numbers, set this to `relative'.
-#+BEGIN_SRC emacs-lisp
 (setq display-line-numbers-type t)
 (map! :leader
       :desc "Toggle truncate lines"
       "t t" #'toggle-truncate-lines)
-#+END_SRC
-
-** Indent guides
-
-*** Define package
-#+BEGIN_SRC emacs-lisp
 (use-package! highlight-indent-guides
   :hook (prog-mode . highlight-indent-guides-mode))
-#+END_SRC
-
-*** Use characters for indent guides
-#+BEGIN_SRC emacs-lisp
 (after! highlight-indent-guides
   (setq highlight-indent-guides-method 'character))
-#+END_SRC
-
-*** Use responsive highlights
-Highlight indentation based on current line
-#+BEGIN_SRC emacs-lisp
 (after! highlight-indent-guides
   (setq highlight-indent-guides-character ?\┆))
-#+END_SRC
-
-*** Set colors
-#+BEGIN_SRC emacs-lisp
 (after! highlight-indent-guides
   (setq highlight-indent-guides-auto-enabled 'top)
   (set-face-attribute 'highlight-indent-guides-odd-face nil :inherit 'highlight-indentation-odd-face)
   (set-face-attribute 'highlight-indent-guides-even-face nil :inherit 'highlight-indentation-even-face)
   (set-face-foreground 'highlight-indent-guides-character-face (doom-color 'base5)))
-#+END_SRC
-
-** Bookmarks and Buffers
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       :desc "List bookmarks"
       "b L" #'list-bookmarks
       :leader
       :desc "Save current bookmarks to bookmark file"
       "b w" #'bookmark-save)
-#+END_SRC
-
-** DIRED
-Dired is the file manager within emacs. Below, I setup keybindings for image previews (peep-dired). Doom Emacs does not use 'SPC d' for any of its keybindings, so I've chosen the format of 'SPC d' plus 'key'.
-
-| COMMAND                                   | DESCRIPTION                                     | KEYBINDING |
-|-------------------------------------------+-------------------------------------------------+------------|
-| dired                                     | /Open dired file manager/                         | SPC d d    |
-| dired-jump                                | /Jump to current directory in dired/              | SPC d j    |
-| (in dired) peep-dired                     | /Toggle image previews within dired/              | SPC d p    |
-| (in dired) dired-view-file                | /View file in dired/                              | SPC d v    |
-| (in dired) dired-up-directory             | /Go up in the directory tree/                     | h          |
-| (in dired) dired-find-file                | /Go down in the directory tree (or open if file)/ | l          |
-| (in peep-dired-mode) peep-dired-next-file | /Move to next file in peep-dired-mode/            | j          |
-| (in peep-dired-mode) peep-dired-prev-file | /Move to previous file in peep-dired-mode/        | k          |
-
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       :desc "Dired"
       "d d" #'dired
@@ -1566,30 +1132,6 @@ Dired is the file manager within emacs. Below, I setup keybindings for image pre
                               ("png" . "sxiv")
                               ("mkv" . "mpv")
                               ("mp4" . "mpv")))
-#+END_SRC
-
-** Miscellaneous Configuration
-Here are some additional functions/macros that could help you configure Doom:
-
-- `load!' for loading external *.el files relative to this one
-- `use-package!' for configuring packages
-- `after!' for running code after a package has loaded
-- `add-load-path!' for adding directories to the `load-path', relative to
-this file. Emacs searches the `load-path' when you load packages with
-`require' or `use-package'.
-- `map!' for binding new keys
-
-To get information about any of these functions/macros, move the cursor over
-the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-This will open documentation for it, including demos of how they are used.
-
-You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-they are implemented.
-
-*** Secrets
-Load secrets from here...
-#+BEGIN_SRC emacs-lisp
 (let ((secrets (expand-file-name "secrets.el" doom-private-dir)))
 (when (file-exists-p secrets)
   (load secrets)))
-#+END_SRC

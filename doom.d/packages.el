@@ -83,21 +83,19 @@
 (package! nginx-mode)
 
 ;; lang/org
-(package! ob-http)
-(package! org-bullets)
 (package! org-web-tools)
-(package! helm-org-rifle)
 (package! org-edna)
 (package! ox-reveal)
 (package! ox-pandoc)
-(package! org-ql)
-(package! org-multi-wiki)
-(package! helm-org-multi-wiki)
+(package! ox-twbs)
+(package! org-roam-server)
+(package! org-roam)
 
 ;; Lang/Python
 (package! ob-ipython)
 (package! anaconda-mode)
 (package! company-anaconda)
+
 ;; Lang/Rust
 (package! flycheck-rust)
 
@@ -128,3 +126,4 @@
 (package! elfeed)
 (package! elfeed-org)
 (package! deadgrep)
+(package! graphviz-dot-mode)
