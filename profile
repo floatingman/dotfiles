@@ -51,7 +51,7 @@ fi
 ######################
 # Local Applications #
 ######################
-[[ -r "$HOME/apps" ]] && _add_to_path "$HOME/apps"
+[[ -r "$HOME/apps/apache-jmeter-5.4/bin" ]] && _add_to_path "$HOME/apps/apache-jmeter-5.4/bin"
 
 ####################
 # Default programs #
