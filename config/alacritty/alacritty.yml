@@ -190,34 +190,34 @@ custom_cursor_colors: true
 # gruvbox_dark.yaml
 # Colors (Gruvbox dark)
 colors:
-  # COLORSCHEME: blood_moon.yaml
+  # COLORSCHEME: solarized_dark.yaml
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0x10100E'
-    foreground: '0xC6C6C4'
+    background: '0x002b36'
+    foreground: '0x839496'
 
   # Normal colors
   normal:
-    black: '0x10100E'
-    red: '0xC40233'
-    green: '0x009F6B'
-    yellow: '0xFFD700'
-    blue: '0x0087BD'
-    magenta: '0x9A4EAE'
-    cyan: '0x20B2AA'
-    white: '0xC6C6C4'
+    black: '0x073642'
+    red: '0xdc322f'
+    green: '0x859900'
+    yellow: '0xb58900'
+    blue: '0x268bd2'
+    magenta: '0xd33682'
+    cyan: '0x2aa198'
+    white: '0xeee8d5'
 
   # Bright colors
   bright:
-    black: '0x696969'
-    red: '0xFF2400'
-    green: '0x03C03C'
-    yellow: '0xFDFF00'
-    blue: '0x007FFF'
-    magenta: '0xFF1493'
-    cyan: '0x00CCCC'
-    white: '0xFFFAFA'
+    black: '0x002b36'
+    red: '0xcb4b16'
+    green: '0x586e75'
+    yellow: '0x657b83'
+    blue: '0x839496'
+    magenta: '0x6c71c4'
+    cyan: '0x93a1a1'
+    white: '0xfdf6e3'
   cursor:
     text: '0xd8d8d8'
     cursor: '0xd8d8d8'
@@ -480,7 +480,7 @@ live_config_reload: true
 shell:
   program: /bin/zsh
   args:
-     - --login
+    - --login
 
 debug:
   # Should display the render timer
