@@ -225,7 +225,7 @@ function switchgo() {
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
-#  eval "$(register-python-argcomplete pipx)"
+  eval "$(register-python-argcomplete pipx)"
 fi
 
 if [[ -r "$HOME/.rbenv" ]]; then
@@ -243,6 +243,11 @@ export NVM_DIR="$HOME/.nvm"
 export SDKMAN_DIR="${HOME}/.sdkman"
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# Python PDM
+if _have pdm; then
+    export PYTHONPATH='/home/dnewman/.local/pipx/venvs/pdm/lib/python3.9/site-packages/pdm/pep582':$PYTHONPATH
+fi
 
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source $HOME/.zsh_private
