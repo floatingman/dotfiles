@@ -45,7 +45,7 @@ inoremap kj <ESC>
 
 " function keys
 map <F1> :set number!<CR> :set relativenumber!<CR>
-nmap <F2> :call <SID>SynStack()<CR>
+nmap <F2> :NERDTreeToggle<CR>
 set pastetoggle=<F3>
 map <F5> :set cursorline!<CR>
 
