@@ -52,7 +52,7 @@ xcompmgr &
 ~/bin/lightson+ -d 2 &
 
 # Password manager
-keepassxc &
+bitwarden-desktop &
 
 # Start wallpaper changer
 ~/bin/wallpaper.sh &
