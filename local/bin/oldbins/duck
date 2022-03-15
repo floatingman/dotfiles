@@ -1,0 +1,8 @@
+#!/bin/sh
+
+duck () {
+  url=$(urlencode "$*")
+  lynx "duckduckgo.com/lite?q=$url"
+}
+
+duck "$*"
