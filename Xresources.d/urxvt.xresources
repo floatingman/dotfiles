@@ -1,0 +1,78 @@
+! LOGIN SHELLLLLLLLLLLLLLLLLL!!!!!!!!!!!
+! Set $TERM variable
+URxvt.termName: rxvt-unicode-256color
+
+! Uncomment this if things break
+!URxvt.loginShell: true
+
+! perl library
+URxvt.perl-lib: ~/.urxvt/ext
+
+! reclaim ctrl+shift
+URxvt.iso14755: false
+URxvt*iso14755_52: false
+
+*utf8:                  1
+*saveLines:             999999
+
+URxvt.cursorUnderline: true
+URxvt.cursorBlink:     1
+URxvt.scrollBar:       false
+
+! enabled clipboard and selectable URLs
+URxvt.perl-ext-common:  default,matcher,clipboard,selection-to-clipboard,url-select,resize-font
+
+! activate resize font
+URxvt.resize-font.smaller: C-Down
+URxvt.resize-font.bigger: C-Up
+
+! set copy/paste shortcuts
+! Clipboard
+!URxvt.clipboard.autocopy: true
+!URxvt.clipboard.autocopy: xclip -i -selection clipboard
+!URxvt.clipboard.autocopy: xclip -o -selection clipboard
+
+!! Control-Shift-C for copy
+URxvt.keysym.C-C: perl:clipboard:copy
+URxvt.keysym.C-V: perl:clipboard:paste
+URxvt.keysym.Control-v: perl:clipboard:paste
+
+! configure selectable URLs
+URxvt.url-launcher:         /usr/bin/xdg-open
+URxvt.matcher.button:       1
+URxvt.url-select.underline: true
+
+!! get option over to work
+URxvt.keysym.M-Left:        \033[1;5D
+URxvt.keysym.M-Right:       \033[1;5C
+URxvt.keysym.Control-Left:  \033[1;5D
+URxvt.keysym.Control-Right: \033[1;5C
+
+! FONT
+!URxvt*font: xft:Fira Code:style=Retina:pixelsize=12:antialias=true:hinting=true
+URxvt.font:                       9x15,xft:TerminessTTFNerdFontMono
+
+! Font Spacing
+URxvt.letterSpace: 0
+
+! Transparency
+URxvt.depth: 32
+URxvt*background: rgba:0000/0000/0200/c800
+
+! Scrollbar
+URxvt*scrollBar: true
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+URxvt*scrollBar_right: true
+URxvt*scrollstyle: plain
+URxvt*scrollColor: #343D46
+URxvt*jumpScroll: false
+
+!! Bells
+URxvt.urgentOnBell: true
+URxvt.visualBell:   false
+*bellIsUrgent:      true
+
+URxvt*mouseWheelScrollPage: true
+URxvt.intensityStyles: false
