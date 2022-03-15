@@ -1,0 +1,422 @@
+#############
+# Utilities #
+#############
+
+# is $1 installed?
+_have() { which "$1" &>/dev/null; }
+
+# Detect which platform we are on
+_islinux=false
+[[ "$(uname -s)" =~ Linux ]] && _islinux=true
+_ismac=false
+[[ "$(uname -s)" =~ Darwin ]] && _ismac=true
+_isubuntu=false
+[[ "$(uname -v)" =~ Ubuntu ]] && _isubuntu=true
+_isarch=false
+[[ -f /etc/arch-release ]] && _isarch=true
+# Detect if gui is running
+_isxrunning=false
+[[ -n "$DISPLAY" ]] && _isxrunning=true
+# Detect if root
+_isroot=false
+[[ $UID -eq 0 ]] && _isroot=true
+
+##########
+# Editor #
+##########
+# vim and emacs
+if $_ismac; then
+   alias em="/usr/local/bin/emacs -nw"
+else
+   alias em="/usr/bin/emacs -nw"
+fi
+alias \
+  v="$EDITOR" \
+  sv="sudo $EDITOR" \
+  v.="vim ."
+  cssh='$EDITOR ~/.ssh/config' \
+  caws='$EDITOR -p $HOME/.aws/{credentials,config}' \
+  ckube='$EDITOR $HOME/.kube/config'
+if [ "${NVIM_LISTEN_ADDRESS}." != "." ]; then
+  alias \
+    h='nvr -o' \
+    s='nvr -O' \
+    t='nvr --remote-tab'
+fi
+
+# Suffix alias
+alias -s txt=$EDITOR
+alias -s {js,json}=$EDITOR
+alias -s md=$EDITOR
+alias -s {toml}=$EDITOR
+alias -s {yml,yaml}=$EDITOR
+alias -s lua=$EDITOR
+
+######################
+# Package Management #
+######################
+if [[ ! "$OSTYPE" =~ "darwin" ]]
+then
+  version=$(cat /etc/issue)
+  if if [[ $version =~ "Manjaro" || $version =~ "Arch Linux" ]]
+  then
+    alias \
+        pacup='sudo pacman -Syu' \
+        pacin='sudo pacman -S' \
+        pacls='pacman -Q' \
+        pacse='pacman -Ss' \
+        pacrm='sudo pacman -Rss' \
+        paccl='sudo pacman -Rsn $(${AUR_MANAGER:-pacman} -Qdtq)'
+    alias p="sudo pacman"
+    alias paci='sudo pacman -S'               # install
+    alias pachi='sudo pacman -Ql'             # Pacman Has Installed - what files where installed in a package
+    alias pacs='sudo pacman -Ss'              # search
+    alias pacr='sudo pacman -R'               # remove package but not dependencies
+    alias pacrr='sudo pacman -Rs'             # remove package with unused dependencies by other softwares
+    alias pacrc='sudo pacman -Sc'             # remove pacman's cache
+    alias pacro='pacman -Rns $(pacman -Qtdq)'
+    alias pacrl='rm /var/lib/pacman/db.lck'   # pacman remove locks
+    alias pacls="sudo pacman -Qe"
+    alias pacc='sudo pacman -Sc'
+    alias paccc='sudo pacman -Scc'            # empty the whole cache
+    alias pacx="sudo pacman --remove"
+    alias pacX="sudo pacman --remove --nosave --recursive"
+    alias pacsyu='sudo pacman -Syyu'                 # update only standard pkgs
+    alias unlock="sudo rm /var/lib/pacman/db.lck"    # remove pacman lock
+    alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+    # For when keys break
+    alias archlinx-fix-keys="sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys"
+  elif [[ $version =~ "SUSE" ]]
+  then
+          alias \
+        pacup='sudo zypper up' \
+        pacin='sudo zypper in' \
+        pacls='rpm -qa' \
+        pacshow='sudo rpm -qi' \
+        pacfiles='sudo rpm -ql' \
+        pacse='zypper se' \
+        pacrm='sudo zypper rm -u' \
+        pacdisup='sudo zypper dup' \
+        pacrepos='sudo zypper lr'
+  else
+      alias \
+        pacup='sudo apt-get update && sudo apt-get upgrade' \
+        pacin='sudo apt-get install' \
+        pacls='dpkg --get-selections' \
+        pacse='sudo apt-cache search' \
+        pacrm='sudo apt-get remove' \
+        pacautorm='sudo apt-get autoremove' \
+        pacdisup='sudo apt-get update && sudo apt-get dist-upgrade' \
+        pacpurge='sudo apt-get purge'
+  fi
+  alias lf='lfrun'
+fi
+
+if _have yay; then
+    alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
+    alias yaysyu="yay -Syu --noconfirm"              # update standard pkgs and AUR pkgs
+fi
+
+if _have reflector; then
+    # get fastest mirrors
+    alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+    alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+    alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+    alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+fi
+
+if $_ismac; then
+  alias \
+  pacup='brew upgrade' \
+  pacin='brew install' \
+  pacls='brew list' \
+  pacse='brew search' \
+  pacrm='brew uninstall'
+fi
+
+#########
+# Shell #
+#########
+alias \
+  srcbash='source $HOME/.bashrc' \
+  srczsh='source $HOME/.zshrc' \
+  cls="clear" \
+  ..='cd ..' \
+  cd3='cd ../../..' \
+  cd4='cd ../../../..' \
+  cd5='cd ../../../../../' \
+  cdl='cd /$HOME/Downloads/' \
+  tree1='tree -L 1' \
+  tree2='tree -L 2' \
+  ls='ls -hN --color=auto --group-directories-first' \
+  ll='ls -lh' \
+  lla='ls -alh' \
+  lsym='ls -l `\find . -maxdepth 1 -type l -print`'
+  if [[ "$OSTYPE" =~ "darwin"* ]]
+  then
+    alias ccopy='pbcopy'
+    alias cpaste='pbpaste'
+  else
+    alias ccopy='xclip -selection clipboard'
+    alias cpaste='xclip -selection clipboard -o'
+  fi
+
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+
+if _have exa; then
+    # Changing "ls" to "exa"
+    alias lla='exa -la --color=always --group-directories-first' # list all files long format
+    alias lz='exa -al --reverse --sort=size --color=always --group-directories-first' # sort by size
+    alias l.='exa -a | egrep "^\."'
+    alias ls='exa --color=auto'
+    alias lsl='exa -l'
+    alias ll='exa -lahF'
+    alias lls='exa -lahFtr'
+    alias la='exa -a'
+else
+    alias ls='ls --color=auto'
+    alias lsl='ls -l'
+    alias ll='ls -lahF'
+    alias lls='ls -lahFtr'
+    alias la='ls -a'
+    alias lla='ls -la --color=always --group-directories-first'  # long format
+    alias l.='ls -a | egrep "^\."'
+fi
+
+# Colorize grep output (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias ag='sag'
+
+# confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
+alias rm30='find * -mtime +30 -exec rm {} \;' # remove files older than 30 days
+
+alias mkdir='mkdir -p'
+alias ka='killall'       # Shorten kill all
+
+# adding flags
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias lynx='lynx -cfg=~/.lynx/lynx.cfg -lss=~/.lynx/lynx.lss -vikeys'
+alias vifm='./.config/vifm/scripts/vifmrun'
+
+## get top process eating memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+## get top process eating cpu ##
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+if _have prettyping; then
+    alias ping='prettyping --nolegend'
+fi
+alias ducks="du -sch .i[!.]* * |sort -rh |head -10" # print top 10 largest files in pwd
+alias sps="ps aux | grep -v grep | grep"    # search and display processes by keyword
+alias df='df -h'
+
+###########
+# Udiskie #
+###########
+if _have udiskie-mount; then
+    alias um='udiskie-mount -r'
+    alias uu='udiskie-umount'
+    alias up='um -p "builtin:tty"'
+fi
+
+#######
+# Git #
+#######
+alias \
+  gst='git status' \
+  gs='git status' \
+  gc='git commit' \
+  push='git push' \
+  pull='git pull' \
+  gd='git diff' \
+  gl='git log --ext-diff -u' \
+  gco='git checkout' \
+  gcm='git checkout master' \
+  gcs='git checkout staging' \
+  gcd='git checkout develop' \
+  gcp='git checkout production' \
+  gcn='git checkout -b' \
+  gt='gitui' \
+  gwR='git reset --hard' \
+  gwd='git diff --no-ext-diff' \
+  gwr='git reset --soft' \
+  gws='git status --short'
+
+# Github
+alias \
+  ghweb='gh browse' \
+  ghstat='gh auth status' \
+  ghpr='gh pr list'
+
+
+alias gitignoreall="git status --porcelain | grep '^??' | cut -c4- >> .gitignore"
+
+if _have tig; then
+   alias t='tig status'
+fi
+
+# cd into git root dir
+alias cdr='cd $(git rev-parse --show-toplevel)'
+
+# systemd
+alias mach_list_systemctl="systemctl list-unit-files --state=enabled"
+alias SS="sudo systemctl"
+
+########
+# Misc #
+########
+alias calcurse="calcurse -D ~/.config/calcurse"
+alias http-serve='python -m http.server'
+alias bc='bc -lq'
+alias utc='env TZ="UTC" date'
+alias weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
+alias ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/zshnameddirrc"
+alias path='echo $PATH | tr ":" "\n" | nl' # human readable path
+iowaiting() {
+    watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')"
+}
+
+# Merge Xresources
+alias merge='xrdb -merge ~/.Xresources'
+
+# get error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+# gpg encryption
+# verify signature for isos
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+# receive the key of a developer
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+
+# youtube-dl
+if _have youtube-dl; then
+    alias yta-aac="youtube-dl --extract-audio --audio-format aac "
+    alias yta-best="youtube-dl --extract-audio --audio-format best "
+    alias yta-flac="youtube-dl --extract-audio --audio-format flac "
+    alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
+    alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
+    alias yta-opus="youtube-dl --extract-audio --audio-format opus "
+    alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
+    alias yta-wav="youtube-dl --extract-audio --audio-format wav "
+    alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+fi
+
+# MPV
+if _have mpv; then
+   # Create a playlist and play all files in directory
+   alias mpvplaylist="mpv ./ --idle=once --script-opts=playlistmanager-loadfiles_on_start=yes"
+fi
+
+# switch between shells
+alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
+alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
+alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
+
+# termbin
+alias tb="nc termbin.com 9999"
+
+# cheat
+cheat() {
+    curl --location --silent "cheat.sh/$1?style=default" | ${PAGER:-less};
+}
+
+###############
+# Colorscheme #
+###############
+# Set alacritty terminal colors
+LIGHT_COLOR='solarized_light.yaml'
+DARK_COLOR='solarized_dark.yaml'
+
+alias day="alacritty-colorscheme -V apply $LIGHT_COLOR"
+alias night="alacritty-colorscheme -V apply $DARK_COLOR"
+alias toggle="alacritty-colorscheme -V toggle $LIGHT_COLOR $DARK_COLOR"
+
+# Interactively enable sdkman to manage java versions
+alias mach_java_mode="export SDKMAN_DIR="$HOME/.sdkman" && [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh""
+
+###############
+# X11 Helpers #
+###############
+alias xpropc='xprop | grep WM_CLASS' # display xprop class
+
+###########
+# GO Lang #
+###########
+alias gob="go build"
+alias gor="go run"
+alias goc="go clean -i"
+alias gta="go test ./..."       # go test all
+alias gia="go install ./..."    # go install all
+alias gosrc="$GOPATH/src/" # golang src
+alias gobin="$GOPATH/bin/" # golang bin
+
+########
+# lynx #
+########
+
+alias lynx='lynx -vikeys -accept_all_cookies'
+
+# +--------+
+# | docker |
+# +--------+
+alias dockls="docker container ls | awk '{print $NF}'"                          # display names of running containers
+alias dockstats='docker stats $(docker ps -q)'                                  # stats on images
+alias dockimg='docker images'                                                   # list images installed
+alias dockprune='docker system prune -a'                                        # prune everything
+alias docker-stop-all='docker stop $(docker ps -a -q)'
+alias docker-remove-all-container='docker rm $(docker ps -a -q)'
+alias docker-remove-all-images='docker rmi $(docker images -q)'
+# +----------------+
+# | docker-compose |
+# +----------------+
+
+alias dockceu='docker-compose run --rm -u $(id -u):$(id -g)'                    # run as the host user
+alias dockce='docker-compose run --rm'
+
+alias docker-compose-dev='docker-compose -f docker-compose-dev.yml' # run a different config file than the default one
+
+# Kubernetes
+which kubectx > /dev/null && alias kx='kubectx'
+which kubens > /dev/null && alias kns='kubens'
+which kubectl > /dev/null && alias k='kubectl'
+which kubectl > /dev/null && alias srckubectl='source <(kubectl completion zsh)'
+which helm > /dev/null && alias srchelm='source <(helm completion zsh)'
+
+# Cloud
+which awless > /dev/null && alias srcawless='source <(awless completion zsh)'
+which aws_zsh_completer.sh > /dev/null && alias srcaws='source aws_zsh_completer.sh'
+
+# +------+
+# | tmux |
+# +------+
+
+alias tmuxk='tmux kill-session -t'
+alias tmuxa='tmux attach -t'
+alias tmuxl='tmux list-sessions'
+
+# +-------+
+# | tmuxp |
+# +-------+
+
+alias mux='tmuxp load'
+
+
+
+
+alias tf='terraform'
