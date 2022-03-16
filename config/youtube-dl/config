@@ -1,0 +1,5 @@
+--restrict-filenames
+--console-title
+--ignore-errors
+--no-check-certificate
+--cookies $HOME/Dropbox/backup/youtube-dl/cookies.txt
