@@ -42,7 +42,7 @@
 # - none: neither borders nor title bar
 # - transparent: title bar, transparent background and title bar buttons
 # - buttonless: title bar, transparent background, but no title bar buttons
-#decorations: full
+decorations: full
 
 # Startup Mode (changes require restart)
 #
@@ -53,7 +53,7 @@
 #
 # Values for `startup_mode` (macOS only):
 #   - SimpleFullscreen
-#startup_mode: Maximized
+startup_mode: Windowed
 
 # Window title
 # title: Alacritty
