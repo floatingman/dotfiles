@@ -42,7 +42,7 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 HISTFILE="$HOME/.zhistory"
 HISTSIZE=10000
 SAVEHIST=10000
-export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer" ".mkv" ".avi" ".mp4") # Exclude certain file types from History - Requires plugin 
+export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer" ".mkv" ".avi" ".mp4") # Exclude certain file types from History - Requires plugin
 
 # case insensitive autocompletion
 zstyle ":completion:*" matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*"
