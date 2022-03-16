@@ -1,7 +1,7 @@
 # Profiling zsh start
 # zmodload zsh/zprof
 
-stty -ixonly                # disable ctrl-s and ctrl-q
+stty -ixon                # disable ctrl-s and ctrl-q
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

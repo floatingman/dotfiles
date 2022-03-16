@@ -231,7 +231,7 @@ colors:
     - {index: 19, color: '0xd5c4a1'}
     - {index: 20, color: '0x665c54'}
     - {index: 21, color: '0x3c3836'}
-window.opacity: 1
+window.opacity: .5
 
 # Key bindings
 #

@@ -6,7 +6,6 @@ Xft.antialias: true
 Xft.hinting:   true
 Xft.rgba:      rgb
 Xft.autohint:  false
-Xft.lcdfilter: lcddefault
 
 XTerm*background:        #222D31
 XTerm*foreground:        #d8d8d8
