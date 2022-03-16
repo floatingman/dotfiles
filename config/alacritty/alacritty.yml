@@ -13,7 +13,8 @@
 # `infocmp xterm-256color`.
 # TERM: xterm-256color
 
-# window:
+window:
+  opacity: 0.9
 # Window dimensions (changes require restart)
 #
 # Specified in number of columns/lines, not pixels. If both are zero this
@@ -186,52 +187,51 @@ colors:
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0x282a36'
-    foreground: '0xf8f8f2'
+    background: "0x282a36"
+    foreground: "0xf8f8f2"
 
   # Normal colors
   normal:
-    black: '0x000000'
-    red: '0xff5555'
-    green: '0x50fa7b'
-    yellow: '0xf1fa8c'
-    blue: '0xbd93f9'
-    magenta: '0xff79c6'
-    cyan: '0x8be9fd'
-    white: '0xbbbbbb'
+    black: "0x000000"
+    red: "0xff5555"
+    green: "0x50fa7b"
+    yellow: "0xf1fa8c"
+    blue: "0xbd93f9"
+    magenta: "0xff79c6"
+    cyan: "0x8be9fd"
+    white: "0xbbbbbb"
 
   # Bright colors
   bright:
-    black: '0x555555'
-    red: '0xff5555'
-    green: '0x50fa7b'
-    yellow: '0xf1fa8c'
-    blue: '0xcaa9fa'
-    magenta: '0xff79c6'
-    cyan: '0x8be9fd'
-    white: '0xffffff'
+    black: "0x555555"
+    red: "0xff5555"
+    green: "0x50fa7b"
+    yellow: "0xf1fa8c"
+    blue: "0xcaa9fa"
+    magenta: "0xff79c6"
+    cyan: "0x8be9fd"
+    white: "0xffffff"
   cursor:
-    text: '0xffffff'
-    cursor: '0x4d4d4c'
+    text: "0xffffff"
+    cursor: "0x4d4d4c"
 
   # Normal colors
   dim:
-    black: '0x232323'
-    red: '0x74423f'
-    green: '0x5e6547'
-    yellow: '0x8b7653'
-    blue: '0x556b79'
-    magenta: '0x6e4962'
-    cyan: '0x5c8482'
-    white: '0x828282'
+    black: "0x232323"
+    red: "0x74423f"
+    green: "0x5e6547"
+    yellow: "0x8b7653"
+    blue: "0x556b79"
+    magenta: "0x6e4962"
+    cyan: "0x5c8482"
+    white: "0x828282"
   indexed_colors:
-    - {index: 16, color: '0xaf3a03'}
-    - {index: 17, color: '0xd65d0e'}
-    - {index: 18, color: '0xebdbb2'}
-    - {index: 19, color: '0xd5c4a1'}
-    - {index: 20, color: '0x665c54'}
-    - {index: 21, color: '0x3c3836'}
-window.opacity: .5
+    - { index: 16, color: "0xaf3a03" }
+    - { index: 17, color: "0xd65d0e" }
+    - { index: 18, color: "0xebdbb2" }
+    - { index: 19, color: "0xd5c4a1" }
+    - { index: 20, color: "0x665c54" }
+    - { index: 21, color: "0x3c3836" }
 
 # Key bindings
 #
@@ -327,27 +327,27 @@ window.opacity: .5
 #   - AppKeypad
 #
 key_bindings:
-  - {key: V, mods: Control|Shift, action: Paste}
-  - {key: C, mods: Control|Shift, action: Copy}
-  - {key: L, mods: Control, action: ClearLogNotice}
-  - {key: L, mods: Control, chars: "\f"}
-  - {key: Q, mods: Control|Shift, action: Quit}
-  - {key: N, mods: Control|Shift, action: SpawnNewInstance}
-  - {key: Return, mods: Control|Shift, action: ToggleFullscreen}
+  - { key: V, mods: Control|Shift, action: Paste }
+  - { key: C, mods: Control|Shift, action: Copy }
+  - { key: L, mods: Control, action: ClearLogNotice }
+  - { key: L, mods: Control, chars: "\f" }
+  - { key: Q, mods: Control|Shift, action: Quit }
+  - { key: N, mods: Control|Shift, action: SpawnNewInstance }
+  - { key: Return, mods: Control|Shift, action: ToggleFullscreen }
   #
-  - {key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt}
+  - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
   #  - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
-  - {key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt}
+  - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
   #  - { key: End,                           chars: "\x1b[F",   mode: ~AppCursor  }
-  - {key: Key0, mods: Control, action: ResetFontSize}
-  - {key: Equals, mods: Control, action: IncreaseFontSize}
-  - {key: Plus, mods: Control, action: IncreaseFontSize}
-  - {key: Minus, mods: Control, action: DecreaseFontSize}
-  - {key: Minus, mods: Control, action: DecreaseFontSize}
-  - {key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt}
+  - { key: Key0, mods: Control, action: ResetFontSize }
+  - { key: Equals, mods: Control, action: IncreaseFontSize }
+  - { key: Plus, mods: Control, action: IncreaseFontSize }
+  - { key: Minus, mods: Control, action: DecreaseFontSize }
+  - { key: Minus, mods: Control, action: DecreaseFontSize }
+  - { key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt }
   #  - { key: PageUp,   mods: Control,       chars: "\x1b[5;5~"                   }
   #  - { key: PageUp,                        chars: "\x1b[5~"                     }
-  - {key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt}
+  - { key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt }
   #  - { key: PageDown, mods: Control,       chars: "\x1b[6;5~"                   }
   #  - { key: PageDown,                      chars: "\x1b[6~"                     }
   #  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
@@ -385,10 +385,10 @@ key_bindings:
   #  - { key: F12,                           chars: "\x1b[24~"                    }
   #  - { key: Back,                          chars: "\x7f"                        }
   #  - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
-  - {key: Insert, mods: Shift, action: PasteSelection}
+  - { key: Insert, mods: Shift, action: PasteSelection }
   #  - { key: Delete,                        chars: "\x1b[3~"                     }
-  - {key: Paste, action: Paste}
-  - {key: Copy, action: Copy}
+  - { key: Paste, action: Paste }
+  - { key: Copy, action: Copy }
 #
 # shortcuts for tmux. the leader key is control-b (0x02)
 # - {key: W, mods: Command, chars: "\x01&"}                                       # close tab (kill)
@@ -405,8 +405,8 @@ mouse:
   # The `double_click` and `triple_click` settings control the time
   # alacritty should wait for accepting multiple clicks as one double
   # or triple click.
-  double_click: {threshold: 300}
-  triple_click: {threshold: 300}
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: true
@@ -431,7 +431,7 @@ mouse:
   # modifiers: Control|Shift
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: true
@@ -452,7 +452,7 @@ selection:
 # All available `mods` and `action` values are documented in the key binding
 # section.
 mouse_bindings:
-  - {mouse: Middle, action: PasteSelection}
+  - { mouse: Middle, action: PasteSelection }
 
 cursor:
   # Cursor style
