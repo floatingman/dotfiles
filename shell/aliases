@@ -285,8 +285,6 @@ alias calcurse="calcurse -D ~/.config/calcurse"
 alias http-serve='python -m http.server'
 alias bc='bc -lq'
 alias utc='env TZ="UTC" date'
-alias weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
-alias ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/zshnameddirrc"
 alias path='echo $PATH | tr ":" "\n" | nl' # human readable path
 iowaiting() {
     watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')"
