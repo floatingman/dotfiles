@@ -188,3 +188,5 @@ fi;
 
 # Profiling zsh
 # zprof
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

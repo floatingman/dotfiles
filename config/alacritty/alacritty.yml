@@ -327,78 +327,18 @@ colors:
 #   - AppKeypad
 #
 key_bindings:
-  - { key: V, mods: Control|Shift, action: Paste }
-  - { key: C, mods: Control|Shift, action: Copy }
-  - { key: L, mods: Control, action: ClearLogNotice }
-  - { key: L, mods: Control, chars: "\f" }
-  - { key: Q, mods: Control|Shift, action: Quit }
-  - { key: N, mods: Control|Shift, action: SpawnNewInstance }
-  - { key: Return, mods: Control|Shift, action: ToggleFullscreen }
-  #
-  - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
-  #  - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
-  - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
-  #  - { key: End,                           chars: "\x1b[F",   mode: ~AppCursor  }
+  - { key: V, mods: Alt, action: Paste }
+  - { key: C, mods: Alt, action: Copy }
+  - { key: Insert, mods: Shift, action: PasteSelection }
   - { key: Key0, mods: Control, action: ResetFontSize }
-  - { key: Equals, mods: Control, action: IncreaseFontSize }
   - { key: Plus, mods: Control, action: IncreaseFontSize }
   - { key: Minus, mods: Control, action: DecreaseFontSize }
-  - { key: Minus, mods: Control, action: DecreaseFontSize }
+  - { key: L, mods: Control, action: ClearLogNotice }
+  - { key: L, mods: Control, chars: "\f" }
+  - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
+  - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
   - { key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt }
-  #  - { key: PageUp,   mods: Control,       chars: "\x1b[5;5~"                   }
-  #  - { key: PageUp,                        chars: "\x1b[5~"                     }
   - { key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt }
-  #  - { key: PageDown, mods: Control,       chars: "\x1b[6;5~"                   }
-  #  - { key: PageDown,                      chars: "\x1b[6~"                     }
-  #  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
-  #  - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
-  #  - { key: Left,     mods: Alt,           chars: "\x1b[1;3D"                   }
-  #  - { key: Left,                          chars: "\x1b[D",   mode: ~AppCursor  }
-  #  - { key: Left,                          chars: "\x1bOD",   mode: AppCursor   }
-  #  - { key: Right,    mods: Shift,         chars: "\x1b[1;2C"                   }
-  #  - { key: Right,    mods: Control,       chars: "\x1b[1;5C"                   }
-  #  - { key: Right,    mods: Alt,           chars: "\x1b[1;3C"                   }
-  #  - { key: Right,                         chars: "\x1b[C",   mode: ~AppCursor  }
-  #  - { key: Right,                         chars: "\x1bOC",   mode: AppCursor   }
-  #  - { key: Up,       mods: Shift,         chars: "\x1b[1;2A"                   }
-  #  - { key: Up,       mods: Control,       chars: "\x1b[1;5A"                   }
-  #  - { key: Up,       mods: Alt,           chars: "\x1b[1;3A"                   }
-  #  - { key: Up,                            chars: "\x1b[A",   mode: ~AppCursor  }
-  #  - { key: Up,                            chars: "\x1bOA",   mode: AppCursor   }
-  #  - { key: Down,     mods: Shift,         chars: "\x1b[1;2B"                   }
-  #  - { key: Down,     mods: Control,       chars: "\x1b[1;5B"                   }
-  #  - { key: Down,     mods: Alt,           chars: "\x1b[1;3B"                   }
-  #  - { key: Down,                          chars: "\x1b[B",   mode: ~AppCursor  }
-  #  - { key: Down,                          chars: "\x1bOB",   mode: AppCursor   }
-  #  - { key: Tab,      mods: Shift,         chars: "\x1b[Z"                      }
-  #  - { key: F1,                            chars: "\x1bOP"                      }
-  #  - { key: F2,                            chars: "\x1bOQ"                      }
-  #  - { key: F3,                            chars: "\x1bOR"                      }
-  #  - { key: F4,                            chars: "\x1bOS"                      }
-  #  - { key: F5,                            chars: "\x1b[15~"                    }
-  #  - { key: F6,                            chars: "\x1b[17~"                    }
-  #  - { key: F7,                            chars: "\x1b[18~"                    }
-  #  - { key: F8,                            chars: "\x1b[19~"                    }
-  #  - { key: F9,                            chars: "\x1b[20~"                    }
-  #  - { key: F10,                           chars: "\x1b[21~"                    }
-  #  - { key: F11,                           chars: "\x1b[23~"                    }
-  #  - { key: F12,                           chars: "\x1b[24~"                    }
-  #  - { key: Back,                          chars: "\x7f"                        }
-  #  - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
-  - { key: Insert, mods: Shift, action: PasteSelection }
-  #  - { key: Delete,                        chars: "\x1b[3~"                     }
-  - { key: Paste, action: Paste }
-  - { key: Copy, action: Copy }
-#
-# shortcuts for tmux. the leader key is control-b (0x02)
-# - {key: W, mods: Command, chars: "\x01&"}                                       # close tab (kill)
-# - {key: T, mods: Command, chars: "\x01c"}                                       # new tab
-# - {key: RBracket, mods: Command|Shift, chars: "\x01n"}                          # select next tab
-# - {key: LBracket, mods: Command|Shift, chars: "\x01p"}                          # select previous tab
-# - {key: RBracket, mods: Command, chars: "\x01o"}                                # select next pane
-# - {key: LBracket, mods: Command, chars: "\x01;"}                                # select last (previously used) pane
-# - {key: F, mods: Command, chars: "\x01/"}                                       # search (upwards) (see tmux.conf)
-
 mouse:
   # Click settings
   #
@@ -477,7 +417,7 @@ live_config_reload: true
 # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
 # Entries in shell.args are passed unmodified as arguments to the shell.
 shell:
-  program: /bin/zsh
+  program: /usr/bin/zsh
   args:
     - --login
 
