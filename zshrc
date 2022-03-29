@@ -186,7 +186,9 @@ else
 	compinit -C;
 fi;
 
+# Load keychain
+eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp)
+
 # Profiling zsh
 # zprof
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

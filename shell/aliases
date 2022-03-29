@@ -34,7 +34,6 @@ alias \
   v="$EDITOR" \
   sv="sudo $EDITOR" \
   v.="vim ." \
-  vim="nvim" \
   cssh='$EDITOR ~/.ssh/config' \
   caws='$EDITOR -p $HOME/.aws/{credentials,config}' \
   ckube='$EDITOR $HOME/.kube/config'
