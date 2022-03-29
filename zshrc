@@ -10,6 +10,38 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# your project folder that we can `c [tab]` to
+export PROJECTS="$HOME/workspace"
+
+# path to the local dotfiles repository
+if [ -d "$HOME/.dotfiles" ]; then
+  export DOTFILES="$HOME/.dotfiles"
+else
+  echo "could not find ~/.dotfiles directory"
+  return
+fi
+
+# set platform name so that we can run scripts based on the OS
+unamestr=$(uname)
+if [[ "$unamestr" == 'Linux' ]]; then
+  platform='linux'
+  if [[ -d "/run/WSL" ]]; then
+    platform_wsl='true'
+  elif grep -q microsoft /proc/version; then
+    platform_wsl='true'
+  else
+    platform_wsl='false'
+  fi
+elif [[ "$unamestr" == 'Darwin' ]]; then
+  # shellcheck disable=SC2034
+  platform='macos'
+  # shellcheck disable=SC2034
+  platform_wsl='false'
+  if [[ `uname -m` == 'arm64' ]]; then
+    platform_apple_silicon='true'
+  fi
+fi
+unset unamestr
 ##############
 # Navigation #
 ##############
