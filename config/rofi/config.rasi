@@ -49,7 +49,6 @@ hide-scrollbar: true;
 /*	window-format: "{w}    {i}{c}   {t}";*/
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
-theme: "~/.config/rofi/themes/dracula.rasi";
 /*	max-history-size: 25;*/
 combi-hide-mode-prefix: true;
 /*	pid: "/run/user/1000/rofi.pid";*/
@@ -132,3 +131,5 @@ combi-hide-mode-prefix: true;
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
+
+@theme "~/.config/rofi/themes/dracula.rasi"
