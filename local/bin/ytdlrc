@@ -189,7 +189,7 @@ get_video_value() {
   say_debug "Grabbing '${1}' from '${3}'..."
 
   video_value=$(
-    yt-dlp \
+    youtube-dl \
       --force-ipv4 \
       --get-filename \
       --output "%(${1})s" \
@@ -206,7 +206,7 @@ get_video_value() {
 
 download_all_the_things() {
   # shellcheck disable=SC2086
-  yt-dlp \
+  youtube-dl \
     --force-ipv4 \
     --continue \
     --download-archive "$ytdl_archive_list" \
@@ -439,7 +439,7 @@ fi
 
 
 say_debug "Checking required commands..."
-required_commands="yt-dlp ffmpeg rclone"
+required_commands="youtube-dl ffmpeg rclone"
 for cmd in $required_commands; do
   if ! command_exists "$cmd"; then
     say_error "Command not found: ${cmd}"
