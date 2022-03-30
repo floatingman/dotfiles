@@ -271,6 +271,10 @@ if _have tig; then
    alias t='tig status'
 fi
 
+if _have lazygit; then
+  alias lg='lazygit'
+fi 
+
 # cd into git root dir
 alias cdr='cd $(git rev-parse --show-toplevel)'
 

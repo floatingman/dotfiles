@@ -1458,23 +1458,6 @@ lst() {
 }
 #}}}
 
-#-------- lazy git function {{{
-lg() {
-  git status 2> /dev/null
-  if [ $? -ne 0 ]; then
-    echo "Not in a git repo"
-    return 1
-  fi
-  echo "Continue to commit and push every change?"
-  select choice in "Yes" "No"; do
-    case $choice in
-      Yes ) git commit -am "$*" && git push; break;;
-      No ) exit;;
-    esac
-  done
-}
-#}}}
-
 #-------- gitag function {{{
 gtag() {
   git status 2>& /dev/null
