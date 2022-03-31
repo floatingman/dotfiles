@@ -187,21 +187,11 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 #     eval "$(pyenv virtualenv-init -)"
 # fi
 
-# Load keychain
-# eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp)
-
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source "$HOME/.zsh_private"
 
 # load mac things if there
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
-
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-bindkey '^ ' autosuggest-accept                                 # zsh autosuggestions completion
-
-# Change autosuggestion color see https://coderwall.com/p/pb1uzq/z-shell-colors
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=060'
 
 enable-fzf-tab
 
@@ -223,6 +213,3 @@ eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp)
 
 # Profiling zsh
 # zprof
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

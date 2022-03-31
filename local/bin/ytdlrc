@@ -38,7 +38,7 @@ ytdl_snatch_list="${ytdl_root_dir%/}/snatch.list"
 ytdl_archive_list="${ytdl_root_dir%/}/archive.list"
 
 # What video format(s) to grab
-ytdl_format="bestvideo+bestaudio/best"
+ytdl_format="(bestvideo[vcodec^=av01][height=2160][fps>30]/bestvideo[vcodec=vp9.2][height=2160][fps>30]/bestvideo[vcodec=vp9][height=2160][fps>30]/bestvideo[vcodec^=av01][height=2160]/bestvideo[vcodec=vp9.2][height=2160]/bestvideo[vcodec=vp9][height=2160]/bestvideo[height=2160]/bestvideo[vcodec^=av01][height=1440][fps>30]/bestvideo[vcodec=vp9.2][height=1440][fps>30]/bestvideo[vcodec=vp9][height=1440][fps>30]/bestvideo[vcodec^=av01][height=1440]/bestvideo[vcodec=vp9.2][height=1440]/bestvideo[vcodec=vp9][height=1440]/bestvideo[height=1440]/bestvideo[vcodec^=av01][height=1080][fps>30]/bestvideo[vcodec=vp9.2][height=1080][fps>30]/bestvideo[vcodec=vp9][height=1080][fps>30]/bestvideo[vcodec^=av01][height=1080]/bestvideo[vcodec=vp9.2][height=1080]/bestvideo[vcodec=vp9][height=1080]/bestvideo[height=1080]/bestvideo[vcodec^=av01][height=720][fps>30]/bestvideo[vcodec=vp9.2][height=720][fps>30]/bestvideo[vcodec=vp9][height=720][fps>30]/bestvideo[vcodec^=av01][height=720]/bestvideo[vcodec=vp9.2][height=720]/bestvideo[vcodec=vp9][height=720]/bestvideo[height=720]/bestvideo)+(bestaudio[acodec=opus]/bestaudio)/best"
 
 # Output template for downloaded filenames
 ytdl_output_template="%(uploader)s.%(upload_date)s.%(title)s.%(resolution)s.%(id)s.%(ext)s"
@@ -107,7 +107,7 @@ ytdl_lowercase_directories=false
 rclone_config="${HOME}/.config/rclone/rclone.conf"
 
 # Should we `copy` or `move` files?
-rclone_command="copy"
+rclone_command="move"
 
 # Where to store downloaded files on the rclone remote
 rclone_destination="perceptor:/mnt/media/Video/YouTube"
@@ -189,7 +189,7 @@ get_video_value() {
   say_debug "Grabbing '${1}' from '${3}'..."
 
   video_value=$(
-    youtube-dl \
+    yt-dlp \
       --force-ipv4 \
       --get-filename \
       --output "%(${1})s" \
@@ -198,7 +198,7 @@ get_video_value() {
       "$3"
   )
 
-  # Assign a default value if `youtube-dl` was unable to pull
+  # Assign a default value if `yt-dlp` was unable to pull
   # `playlist_title` from the video
   video_value="${video_value:-$ytdl_default_video_value}"
 }
@@ -206,7 +206,7 @@ get_video_value() {
 
 download_all_the_things() {
   # shellcheck disable=SC2086
-  youtube-dl \
+  yt-dlp \
     --force-ipv4 \
     --continue \
     --download-archive "$ytdl_archive_list" \
@@ -220,9 +220,12 @@ download_all_the_things() {
     --no-overwrites \
     --output "${ytdl_download_dir%/}/${video_value}/${ytdl_output_template}" \
     --restrict-filenames \
-    --sleep-request 1 \
-    --sleep-interval 5 \
+    --sleep-interval 10 \
     --max-sleep-interval 30 \
+    --embed-thumbnail \
+    --write-info-json \
+    --write-thumbnail \
+    --match-filter "!is_live & title != 'Liked videos' & title != 'Favorites'" \
     --extractor-args youtube:player_client=android \
     --throttled-rate 100K \
     --merge-output-format "mkv" \
