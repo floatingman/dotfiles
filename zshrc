@@ -76,58 +76,39 @@ HISTSIZE=10000
 SAVEHIST=10000
 export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer" ".mkv" ".avi" ".mp4") # Exclude certain file types from History - Requires plugin
 
-# case insensitive autocompletion
-zstyle ":completion:*" matcher-list "" "m:{a-z}={A-Z}" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=* l:|=*"
-zstyle ':completion:*' hosts off                                # ignore hosts file for ssh/scp autocompletion
-## Speed up completions
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
+# all of our zsh files
+typeset -U config_files
+config_files=($DOTFILES/zsh/*/*.zsh)
 
-# Theming section
-autoload -U compinit colors zcalc
-zmodload zsh/complist
-zstyle ':completion:*' menu select                              # to activate the menu, press tab twice
-unsetopt menu_complete                                          # do not autoselect the first completion entry
-unsetopt nomatch                                                # allow gloobing, e.g apt update kernel*
-setopt complete_aliases                                         # autocompletion CLI switches for aliases
-zstyle ':completion:*' list-colors ''                           # show colors on menu completion
-compinit -d
-colors
+# load the path files
+for file in ${(M)config_files:#*/path.zsh}; do
+  source "$file"
+done
 
-## Keybindings section
-bindkey -e # emacs style
-bindkey "^[[3~" delete-char                                  # Delete key
-bindkey '^[[2~' overwrite-mode                               # Insert key
-bindkey "^[[H"  beginning-of-line                            # Home
-bindkey "^[[F"  end-of-line                                  # End
-bindkey '^P' history-beginning-search-backward               # CTRL+p
-bindkey '^N' history-beginning-search-forward                # CTRL+n
-bindkey -s '^n' 'nova^M'                                     # Run nova with CTRL-n
-# Use vim keys to select autocompletion
-_comp_options+=(globdots)		# Include hidden files.
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-# edit command in editor
-autoload -z edit-command-line
-zle -N edit-command-line
-bindkey "^X^E" edit-command-line
+# load everything but the path and completion files
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
+  source "$file"
+done
+
+autoload -Uz compinit
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
+if [ $(date +'%j') != $updated_at ]; then
+  compinit
+else
+  compinit -C
+fi
+
+autoload -U +X bashcompinit && bashcompinit
+
+# load every completion after autocomplete loads
+for file in ${(M)config_files:#*/completion.zsh}; do
+  source "$file"
+done
+
+unset config_files
+
 
 bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd to selected directory
-
-##################
-# AUTOCOMPLETION #
-##################
-
-# asdf
-if [ -d $HOME/.asdf ]; then
-    . $HOME/.asdf/asdf.sh
-    # append completions to fpath
-    fpath=(${ASDF_DIR}/completions $fpath)
-fi
 
 # source zsh
 [ -f $HOME/.shell/zshenv ] && source $HOME/.shell/zshenv
@@ -168,24 +149,12 @@ zsh_add_plugin "MichaelAquilina/zsh-history-filter"
 # For more plugins: https://github.com/unixorn/awesome-zsh-plugins
 # More completions https://github.com/zsh-users/zsh-completions
 
-##################
-# HELP           #
-##################
-autoload -Uz run-help
-autoload -Uz run-help-git run-help-ip run-help-openssl run-help-p4 run-help-sudo run-help-svk run-help-svn
-
 # ===================
 #    MISC SETTINGS
 # ===================
 
 # automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
-
-# Pyenv
-# if [[ -r "$HOME/.pyenv" ]]; then
-#     eval "$(pyenv init -)"
-#     eval "$(pyenv virtualenv-init -)"
-# fi
 
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source "$HOME/.zsh_private"
@@ -195,18 +164,9 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
 enable-fzf-tab
 
-autoload bashcompinit
-bashcompinit
 export PATH="$PATH:$HOME/.bash-my-aws/bin"
 [ -f $HOME/.bash-my-aws/aliases ] && source ~/.bash-my-aws/aliases
 [ -f $HOME/.bash-my-aws/bash_completion.sh ] && source ~/.bash-my-aws/bash_completion.sh
-
-autoload -Uz +X compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-	compinit;
-else
-	compinit -C;
-fi;
 
 # Load keychain
 eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp)
