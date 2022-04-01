@@ -216,6 +216,7 @@ download_all_the_things() {
       $rclone_flags \
       $rclone_debug_flags" \
     --format "$ytdl_format" \
+    --ignore-config \
     --ignore-errors \
     --no-overwrites \
     --output "${ytdl_download_dir%/}/${video_value}/${ytdl_output_template}" \
@@ -227,7 +228,6 @@ download_all_the_things() {
     --write-thumbnail \
     --match-filter "!is_live & title != 'Liked videos' & title != 'Favorites'" \
     --extractor-args youtube:player_client=android \
-    --throttled-rate 100K \
     --merge-output-format "mkv" \
     "$ytdl_debug_flags" \
     $ytdl_subtitle_flags \
