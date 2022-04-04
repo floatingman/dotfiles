@@ -119,7 +119,6 @@ bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd t
 export _ZO_FZF_OPTS="$_FZF_DEFAULT_OPTS --select-1 --exit-0 --height=25% --reverse --no-sort --cycle"
 export _ZO_DATA_DIR=$HOME/.zoxide
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
-command -v fuck > /dev/null 2>&1 && eval "$(thefuck --alias)"
 command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 [ -d $HOME/.shell/forgit ] && source $HOME/.shell/forgit/forgit.plugin.zsh
 [ -d $HOME/.shell/kube-fzf ] && export PATH=$PATH:$HOME/.shell/kube-fzf/
