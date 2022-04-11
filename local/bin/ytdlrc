@@ -224,8 +224,7 @@ download_all_the_things() {
     --sleep-interval 10 \
     --max-sleep-interval 30 \
     --embed-thumbnail \
-    --write-info-json \
-    --write-thumbnail \
+    --cookies "~/Dropbox/backup/youtube-dl/cookies.txt" \
     --match-filter "!is_live & title != 'Liked videos' & title != 'Favorites'" \
     --extractor-args youtube:player_client=android \
     --merge-output-format "mkv" \
