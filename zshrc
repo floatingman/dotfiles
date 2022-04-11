@@ -158,7 +158,7 @@ export PATH="$PATH:$HOME/.bash-my-aws/bin"
 [ -f $HOME/.bash-my-aws/bash_completion.sh ] && source ~/.bash-my-aws/bash_completion.sh
 
 # Load keychain
-eval $(keychain --eval --quiet --noask --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw C2A50D1443DC83C25C1C0E46F30B951D85DBE1C0)
+eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw C2A50D1443DC83C25C1C0E46F30B951D85DBE1C0)
 
 # Profiling zsh
 # zprof
