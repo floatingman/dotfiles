@@ -34,17 +34,18 @@ repos:
       - id: check-case-conflict
 
       # Check that all executables start with a shebang line.
-      - id: check-executables-have-shebangs
-        exclude: >-
-          (?x)^(
-            functions/
-          )
+      # - id: check-executables-have-shebangs
+      #   exclude: >-
+      #     (?x)^(
+      #       functions/
+      #     )
 
   # Shell script formatting and coding style.
   - repo: https://github.com/syntaqx/git-hooks
     rev: v0.0.17
     hooks:
       - id: shellcheck
+        args: ["-S", "error"]
         exclude: >-
           (?x)^(
             .*\.zsh
@@ -65,7 +66,7 @@ repos:
   - repo: local
     hooks:
       - id: shell-config
-        name: check .bashrc and .zshrc config files
-        files: '^\.(bash|zsh)rc$'
-        entry: ./bin/check-shell-config.sh
+        name: check bashrc and zshrc config files
+        files: '^(bash|zsh)rc$'
+        entry: ./local/bin/check-shell-config.sh
         language: script

@@ -29,4 +29,4 @@ setopt APPEND_HISTORY            # Add to History
 
 
 # Used for HISTORY_FILTER_EXCLUDE plugin
-export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer" ".mkv" ".avi" ".mp4") 
+export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer" ".mkv" ".avi" ".mp4")

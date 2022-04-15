@@ -35,8 +35,7 @@ SITES=(
 )
 
 # Show usage for the script.
-usage()
-{
+usage() {
     echo "web-search is a script that opens a rofi browser with which you can"
     echo "search the web."
     echo ""
@@ -62,8 +61,7 @@ create_cache_dir() {
 
 # Create the cache files if they do not exist.
 create_cache_files() {
-    for site in "${!SITES[@]}"
-    do
+    for site in "${!SITES[@]}"; do
         if [ ! -f "$CACHE_DIR/$site.txt" ]; then
             touch "$CACHE_DIR/$site.txt"
         fi
@@ -74,17 +72,14 @@ create_cache_files() {
 #
 # If a config file exists, use the sites from that list, otherwise populate
 # the list with the sites from the $SITES variable.
-gen_sites_list()
-{
-    for site in "${!SITES[@]}"
-    do
+gen_sites_list() {
+    for site in "${!SITES[@]}"; do
         echo "$site"
     done
 }
 
 # Generate the list of previously used search queries.
-gen_queries_list()
-{
+gen_queries_list() {
     site=$1
 
     cat "$CACHE_DIR/$site.txt"
@@ -99,24 +94,22 @@ gen_queries_list()
 #  - The name of the file to write to, must be one of the options of sites in
 #    the SITES array.
 #  - The new line to input at the top of the new file.
-write_to_top()
-{
+write_to_top() {
     file=$1
     content=$2
 
     # Move old values to temporary file.
-    cat "$CACHE_DIR/$file.txt" > "$CACHE_DIR/tmp.txt"
+    cat "$CACHE_DIR/$file.txt" >"$CACHE_DIR/tmp.txt"
     # Print query to top.
-    echo "$content" > "$CACHE_DIR/$file.txt"
-    cat "$CACHE_DIR/tmp.txt" >> "$CACHE_DIR/$file.txt"
+    echo "$content" >"$CACHE_DIR/$file.txt"
+    cat "$CACHE_DIR/tmp.txt" >>"$CACHE_DIR/$file.txt"
     # Remove temporary file.
     rm "$CACHE_DIR/tmp.txt"
 
 }
 
 # Handle the query.
-handle_query()
-{
+handle_query() {
     site=$1
     query=$2
 
@@ -124,7 +117,7 @@ handle_query()
     # Check if the search query already exists.
     if grep -Fxq "$query" "$CACHE_DIR/$site.txt"; then
         # Remove the existing entry.
-        echo "$(cat "$CACHE_DIR/$site.txt" | grep -xv "$query")" > "$CACHE_DIR/$site.txt"
+        echo "$(cat "$CACHE_DIR/$site.txt" | grep -xv "$query")" >"$CACHE_DIR/$site.txt"
         # Write the new entry on top.
         write_to_top "$site" "$query"
     else
@@ -136,13 +129,11 @@ handle_query()
     $BROWSER "${SITES[$site]}$query"
 }
 
-main()
-{
+main() {
     create_cache_dir
     create_cache_files
 
-    if [ "$@" ]
-    then
+    if [ "$@" ]; then
         handle_query "google" "$@"
     else
         # Check if search engine set.
@@ -173,6 +164,6 @@ while getopts ":s:b:" o; do
             ;;
     esac
 done
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 main "$@"

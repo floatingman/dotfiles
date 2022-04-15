@@ -18,13 +18,11 @@ export LESS=-r
 export LEDGER_DIR=$HOME/data/obsidian/privat/ledger/
 export LEDGER_FILE=${LEDGER_DIR}main.ledger
 command -v go >/dev/null 2>&1 && export GOPATH=$HOME/.local/share/go && export PATH=$PATH:$(go env GOPATH)/bin
-command -v dyff > /dev/null 2>&1 && export KUBECTL_EXTERNAL_DIFF="dyff between --omit-header --set-exit-code"
+command -v dyff >/dev/null 2>&1 && export KUBECTL_EXTERNAL_DIFF="dyff between --omit-header --set-exit-code"
 
 # macons only
-if [[ "$OSTYPE" =~ "darwin" ]]
-then
-  if [[ x"$KITTY_PID" == "x" ]]
-  then
+if [[ "$OSTYPE" =~ "darwin" ]]; then
+  if [[ x"$KITTY_PID" == "x" ]]; then
     export TERMINAL=xterm
     export TERM=xterm
   else
@@ -61,13 +59,12 @@ command -v fd >/dev/null 2>&1 && export FZF_ALT_C_COMMAND='fd --type directory -
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # linux only
-if [[ "$OSTYPE" =~ "linux" ]]
-then
+if [[ "$OSTYPE" =~ "linux" ]]; then
   export TERM=screen-256color
   export TERMINAL=alacritty
   export BROWSER=firefox
   export BROWSERCLI=lynx
-export MAIL=/usr/bin/neomutt
+  export MAIL=/usr/bin/neomutt
   # Apps and Paths
   export QT_QPA_PLATFORMTHEME="qt5ct"
   export GTK2_RC_FILES="$HOME/.gtkrc-2.0"

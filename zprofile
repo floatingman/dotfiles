@@ -2,7 +2,7 @@
 
 if [ -d "/opt/homebrew" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-fi 
+fi
 
 if [ -d "$HOME/.pyenv" ]; then
   # Add pyenv to path if installed via Git

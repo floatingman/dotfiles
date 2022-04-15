@@ -1,25 +1,25 @@
 Xft.dpi: 72
 Xft.autohint: 0
-Xft.lcdfilter:  lcddefault
-Xft.hintstyle:  hintfull
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
 Xft.antialias: true
-Xft.hinting:   true
-Xft.rgba:      rgb
-Xft.autohint:  false
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
 
-XTerm*background:        #222D31
-XTerm*foreground:        #d8d8d8
-XTerm*pointerColor:      #1ABB9B
-XTerm*faceName:          Fixed
-XTerm*faceSize:          11
-XTerm*reverseVideo:      on
+XTerm*background:   #222D31
+XTerm*foreground:   #d8d8d8
+XTerm*pointerColor: #1ABB9B
+XTerm*faceName: Fixed
+XTerm*faceSize: 11
+XTerm*reverseVideo: on
 XTerm*selectToClipboard: true
 
-*pointerColorBackground:          #2B2C2B
-*pointerColorForeground:          #16A085
+*pointerColorBackground: #2B2C2B
+*pointerColorForeground: #16A085
 
 Xcursor.theme: xcursor-breeze
-Xcursor.size:                     0
+Xcursor.size: 0
 
 #include ".Xresources.d/urxvt.xresources"
 !#include ".Xresources.d/themes/gruvbox-dark.xresources"
