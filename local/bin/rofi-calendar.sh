@@ -45,12 +45,12 @@ case "$BLOCK_BUTTON" in
 esac
 
 case "$BLOCK_BUTTON" in
-    1|2|3)
+    1 | 2 | 3)
         counts_cal_lines
-        cal_command \
-            | sed "s#^#<span color='\#f17171'>#g;s#.#&</span>#24" \
-            | sed "s#\b${day_number// /}\b#<span bgcolor='\#2b83a6' color='\#ffffff'>${day_number// /}</span>#" \
-            | rofi \
+        cal_command |
+            sed "s#^#<span color='\#f17171'>#g;s#.#&</span>#24" |
+            sed "s#\b${day_number// /}\b#<span bgcolor='\#2b83a6' color='\#ffffff'>${day_number// /}</span>#" |
+            rofi \
                 -dmenu \
                 -width '-21' \
                 -lines "$cal_lines" \
@@ -65,7 +65,7 @@ case "$BLOCK_BUTTON" in
                 -p "$the_date" \
                 -a '0' \
                 -no-custom \
-                -markup-rows &> /dev/null
+                -markup-rows &>/dev/null
         ;;
 esac
 
