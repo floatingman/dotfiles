@@ -1,0 +1,71 @@
+---
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      # Check for files that contain merge conflict strings.
+      - id: check-merge-conflict
+
+      # Attempts to load all JSON files to verify syntax.
+      - id: check-json
+
+      # Attempts to load all YAML files to verify syntax.
+      - id: check-yaml
+
+      # Remove trailing whitespace from all files.
+      - id: trailing-whitespace
+        # Preserve Markdown hard line breaks.
+        args: ["--markdown-linebreak-ext=md"]
+
+      # Makes sure files end in a newline and only a newline.
+      - id: end-of-file-fixer
+
+      # Prevent giant files from being committed. Default is 500kB.
+      - id: check-added-large-files
+
+      # Forbid files which have a UTF-8 byte-order marker.
+      - id: check-byte-order-marker
+
+      # Check for files with names that would conflict on a case-insensitive
+      # filesystem like MacOS HFS+ or Windows FAT.
+      - id: check-case-conflict
+
+      # Check that all executables start with a shebang line.
+      - id: check-executables-have-shebangs
+        exclude: >-
+          (?x)^(
+            functions/
+          )
+
+  # Shell script formatting and coding style.
+  - repo: https://github.com/syntaqx/git-hooks
+    rev: v0.0.17
+    hooks:
+      - id: shellcheck
+        exclude: >-
+          (?x)^(
+            .*\.zsh
+          )
+      - id: shfmt
+        args: ["-l", "-w"]
+        verbose: false
+        exclude: >-
+          (?x)^(
+            .*\.zsh
+          )
+
+  # - repo: https://github.com/Calinou/pre-commit-luacheck
+  #   rev: v1.0.0
+  #   hooks:
+  #     - id: luacheck
+
+  - repo: local
+    hooks:
+      - id: shell-config
+        name: check .bashrc and .zshrc config files
+        files: '^\.(bash|zsh)rc$'
+        entry: ./bin/check-shell-config.sh
+        language: script
