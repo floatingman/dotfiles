@@ -46,7 +46,7 @@ xinput set-prop 10 361 0 0 0 0 1 3 2
 # Circular Scrolling
 # Synaptics Circular Scrolling (307)
 # boolean
-xinput set-prop 10 363 1
+xinput set-prop 10 363 0
 
 # Circular scrolling distance (speed?)
 # Synaptics Circular Scrolling Distance (308)
