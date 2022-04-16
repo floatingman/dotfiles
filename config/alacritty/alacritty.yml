@@ -183,12 +183,12 @@ font:
 # custom_cursor_colors: true
 
 colors:
-  # COLORSCHEME: solarized_light.yaml
+  # COLORSCHEME: solarized_dark.yaml
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0xfdf6e3'
-    foreground: '0x586e75'
+    background: '0x002b36'
+    foreground: '0x839496'
 
   # Normal colors
   normal:
