@@ -297,6 +297,9 @@ iowaiting() {
 # Useful
 alias replace_ws_with_underscore='for f in *\ *; do mv "$f" "${f// /_}"; done'
 alias weather-nashville='curl v2.wttr.in/Nashville'
+# Remove all dead symlinks in a directory
+alias rmdl='find . -xtype l -exec rm {} \;'
+
 
 # Merge Xresources
 alias merge='xrdb -merge ~/.Xresources'
