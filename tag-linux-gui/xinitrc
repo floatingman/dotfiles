@@ -1,0 +1,21 @@
+transmission-daemon &
+transmission-rss -f &
+mpd &
+mpDris2 &
+songname &
+udiskie &
+
+nm-applet &
+xrdb ~/.Xresources &
+picom -b --experimental-backends &
+hsetroot -cover ~/Syncs/wallpapers/Waiting_for_another_sunrise_by_lassekongo83.png &
+flameshot &
+fcitx -d &
+dunst &
+xbanish &
+sxhkd &
+xsetroot -cursor_name left_ptr &
+xrdb -load ~/.config/X11/xresources &
+xmodmap ~/.config/X11/xmodmap &
+
+exec awesome
