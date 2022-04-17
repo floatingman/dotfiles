@@ -8,21 +8,11 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
-export LEDGER_DIR=$HOME/data/obsidian/privat/ledger/
-export LEDGER_FILE=${LEDGER_DIR}main.ledger
 command -v go >/dev/null 2>&1 && export GOPATH=$HOME/.local/share/go && export PATH=$PATH:$(go env GOPATH)/bin
-command -v dyff >/dev/null 2>&1 && export KUBECTL_EXTERNAL_DIFF="dyff between --omit-header --set-exit-code"
+export TERMINAL=alacritty
 
 # macons only
 if [[ "$OSTYPE" =~ "darwin" ]]; then
-  if [[ x"$KITTY_PID" == "x" ]]; then
-    export TERMINAL=xterm
-    export TERM=xterm
-  else
-    export TERMINAL=kitty
-    export TERM=xterm-kitty
-  fi
-  alias ssh='kitty +kitten ssh'
   export BROWSER="open -a firefox"
   export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 fi
