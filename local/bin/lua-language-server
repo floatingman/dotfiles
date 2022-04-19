@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec "~/.local/bin/lua-language-server-2.6.7/bin/lua-language-server" "$@"
