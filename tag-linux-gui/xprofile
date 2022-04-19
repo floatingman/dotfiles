@@ -1,1 +1,28 @@
-/home/dnewman/.dotfiles/xprofile
+mpd &
+mpDris2 &
+udiskie &
+nm-applet &
+xrdb ~/.Xresources &
+picom -b --experimental-backends &
+
+# Blueman for bluetooth
+blueman-applet &
+
+# Launch the screen locker.
+xautolock -time 09 -locker "/usr/local/bin/lock" -detectsleep -secure -corners 0-00 -cornerdelay 3 -cornerredelay 20 &
+
+# Control volume with pasystray.
+pasystray &
+
+hsetroot -cover ~/Syncs/wallpapers/Waiting_for_another_sunrise_by_lassekongo83.png &
+flameshot &
+fcitx -d &
+dunst &
+xbanish &
+sxhkd &
+xsetroot -cursor_name left_ptr &
+xfce4-power-manager &
+touchpad_settings.sh &
+dropbox &
+syncthing &
+synergy &
