@@ -68,6 +68,7 @@ then
         pacrm='sudo pacman -Rss' \
         paccl='sudo pacman -Rsn $(${AUR_MANAGER:-pacman} -Qdtq)'
     alias p="sudo pacman"
+    alias pacman='sudo pacman --color always'
     alias paci='sudo pacman -S'               # install
     alias pachi='sudo pacman -Ql'             # Pacman Has Installed - what files where installed in a package
     alias pacs='sudo pacman -Ss'              # search
@@ -124,6 +125,15 @@ if _have reflector; then
     alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
     alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 fi
+
+if _have awesome; then
+  alias awrc='$EDITOR $HOME/.config/awesome/rc.lua'
+  alias awtheme='$EDITOR $HOME/.config/awesome/themes/copland/theme-personal.lua'
+  alias awdir='cd $HOME/.config/awesome'
+fi
+
+alias xi='xsel | xsel -i -b'
+alias xb='xsel -b | xsel'
 
 if $_ismac; then
   alias \
@@ -239,6 +249,8 @@ fi
 # Git #
 #######
 alias \
+  g='git'
+  gaa='git add --all'
   gst='git status' \
   gs='git status' \
   gc='git commit' \
