@@ -249,8 +249,8 @@ fi
 # Git #
 #######
 alias \
-  g='git'
-  gaa='git add --all'
+  g='git' \
+  gaa='git add --all' \
   gst='git status' \
   gs='git status' \
   gc='git commit' \
