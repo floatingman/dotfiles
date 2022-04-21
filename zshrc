@@ -11,7 +11,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # your project folder that we can `c [tab]` to
-export PROJECTS="$HOME/workspace"
+export PROJECTS="$HOME/workspace/github.com/floatingman"
 
 # path to the local dotfiles repository
 if [ -d "$HOME/.dotfiles" ]; then
