@@ -18,3 +18,6 @@ zstyle ':completion:*' insert-tab pending
 
 # menu if nb items > 2
 zstyle ':completion:*' menu select=2
+
+_projects() { _files -W $PROJECTS; }
+compdef _projects projects
