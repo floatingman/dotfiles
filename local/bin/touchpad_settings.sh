@@ -70,7 +70,7 @@ xinput set-prop "$touchpadID" 367 1
 # PalmMinWidth - Minimum finger width at which touch is  considered  a  palm
 # PalmMinZ - Minimum finger pressure at which touch is considered a palm
 # width, min z
-xinput set-prop "$touchpadID" 368 3 50
+xinput set-prop "$touchpadID" 368 2 25
 
 # Minimum pressure motion
 # Synaptics Pressure Motion (314)

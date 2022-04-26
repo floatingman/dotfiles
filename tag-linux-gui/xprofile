@@ -21,7 +21,6 @@ dunst &
 xbanish &
 sxhkd &
 xsetroot -cursor_name left_ptr &
-xfce4-power-manager &
 touchpad_settings.sh &
 dropbox &
 syncthing &
