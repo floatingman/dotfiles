@@ -1,14 +1,13 @@
-# Profiling zsh start
-# zmodload zsh/zprof
-
 stty -ixon                # disable ctrl-s and ctrl-q
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+###########
+# plugins #
+###########
+
+autoload -Uz compinit
+compinit
+
+source ~/.zsh_plugins.sh
 
 # your project folder that we can `c [tab]` to
 export PROJECTS="$HOME/workspace/github.com/floatingman"
@@ -111,10 +110,6 @@ bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd t
 [ -f $HOME/.shell/zsh-history-substring-search/zsh-history-substring-search.zsh ] && source $HOME/.shell/zsh-history-substring-search/zsh-history-substring-search.zsh
 [ -d $HOME/.shell/zsh-completions/ ] &&  fpath=($HOME/.shell/zsh-completions/src $fpath)
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[ -f $HOME/.shell/powerlevel10k/powerlevel10k.zsh-theme ] && source $HOME/.shell/powerlevel10k/powerlevel10k.zsh-theme
-
 # source apps
 export _ZO_FZF_OPTS="$_FZF_DEFAULT_OPTS --select-1 --exit-0 --height=25% --reverse --no-sort --cycle"
 export _ZO_DATA_DIR=$HOME/.zoxide
@@ -126,24 +121,9 @@ command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 [ -d $HOME/.config/broot/launcher/bash/br ] && source $HOME/.config/broot/launcher/bash/br
 
 
-###########
-# Plugins #
-###########
-
-# zsh_add_plugin "zsh-users/zsh-autosuggestions"
-# zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
-# zsh_add_plugin "hlissner/zsh-autopair"
-zsh_add_plugin "MichaelAquilina/zsh-history-filter"
-# zsh_add_completion "esc/conda-zsh-completion" false
-# For more plugins: https://github.com/unixorn/awesome-zsh-plugins
-# More completions https://github.com/zsh-users/zsh-completions
-
 # ===================
 #    MISC SETTINGS
 # ===================
-
-# automatically remove duplicates from these arrays
-typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source "$HOME/.zsh_private"
@@ -153,12 +133,49 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
 enable-fzf-tab
 
-export PATH="$PATH:$HOME/.bash-my-aws/bin"
-[ -f $HOME/.bash-my-aws/aliases ] && source ~/.bash-my-aws/aliases
-[ -f $HOME/.bash-my-aws/bash_completion.sh ] && source ~/.bash-my-aws/bash_completion.sh
-
 # Load keychain
 eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw C2A50D1443DC83C25C1C0E46F30B951D85DBE1C0)
 
-# Profiling zsh
-# zprof
+#########
+# Color #
+#########
+
+BASE16_SHELL="$HOME/library/src/base16-shell"
+BASE16_I3="$HOME/library/src/base16-i3"
+BASE16_XRESOURCES="$HOME/library/src/base16-xresources"
+BASE16_QUTEBROWSER="$HOME/library/src/base16-qutebrowser"
+BASE16_ZATHURA="$HOME/library/src/base16-zathura"
+BASE16_ROFI="$HOME/library/src/base16-rofi.pschyska"
+
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+theme() {
+    if [ -z "$1" ]; then
+        theme="gruvbox-dark-medium"
+    elif [[ "$1" == "day" ]]; then
+        theme="gruvbox-light-soft"
+    else
+        theme="$1"
+    fi
+    echo "$theme"
+    # set shell
+    _base16 "$BASE16_SHELL"/scripts/base16-"$theme".sh "$theme"
+    # set i3
+    i3config="$HOME/.config/i3/config"
+    sed -i '1,/## Colors/!d' "$i3config"
+    cat "$BASE16_I3"/colors/base16-"$theme".config >> "$i3config"
+    i3-msg -q reload
+    # set qutebrowser
+    cp "$BASE16_QUTEBROWSER/themes/minimal/base16-$theme.config.py" ~/.config/qutebrowser/theme.config.py
+    # set rofi
+    cp "$BASE16_ROFI/themes/base16-$theme.rasi" "$HOME/.config/rofi/theme.rasi"
+    # set xresources
+    xresources="$HOME/.Xresources"
+    sed -i '1,/! colors/!d' "$xresources"
+    cat "$BASE16_XRESOURCES"/xresources/base16-"$theme".Xresources >> "$xresources"
+    xrdb -load ~/.Xresources
+    # set zathura
+    zathurarc="$HOME/.config/zathura/zathurarc"
+    sed -i '1,/## Colors/!d' "$zathurarc"
+    cat "$BASE16_ZATHURA"/build_schemes/colors/base16-"$theme".config >> "$zathurarc"
+}

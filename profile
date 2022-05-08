@@ -1,15 +1,49 @@
-# Colored man pages
-export LESS_TERMCAP_mb=$'\E[01;32m'
-export LESS_TERMCAP_md=$'\E[01;32m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;47;34m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;36m'
-export LESS=-r
 
 command -v go >/dev/null 2>&1 && export GOPATH=$HOME/.local/share/go && export PATH=$PATH:$(go env GOPATH)/bin
+
 export TERMINAL=alacritty
+
+#
+# Editors
+#
+
+export EDITOR='vim'
+export VISUAL='vim'
+export PAGER='less'
+
+#
+# Language
+#
+
+export LANG='en_US.UTF-8'
+
+# Set the default Less options.
+# Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+# Remove -X and -F (exit if the content fits on one screen) to enable it.
+export LESS='-F -g -i -M -R -w -X -z-4 -#3 -N'
+
+# Find lesspipe
+if command -v lesspipe.sh >/dev/null 2>&1; then
+    lesspipe="lesspipe.sh"
+elif command -v lesspipe >/dev/null 2>&1; then
+    lesspipe="lesspipe"
+fi
+
+# Set the less input preprocessor.
+if [[ -z "$lesspipe" ]]; then
+  export LESSOPEN="| $lesspipe %s 2>&-"
+fi
+
+#
+# Temporary Files
+#
+
+if [[ ! -d "$TMPDIR" ]]; then
+  export TMPDIR="/tmp/$LOGNAME"
+  mkdir -p -m 700 "$TMPDIR"
+fi
+
+TMPPREFIX="${TMPDIR%/}/zsh"
 
 # macons only
 if [[ "$OSTYPE" =~ "darwin" ]]; then
@@ -18,28 +52,6 @@ if [[ "$OSTYPE" =~ "darwin" ]]; then
 fi
 
 export EXCLUDE_STRING=.git,node_modules/*,**/.git/*,.git/*,target/*,.idea/*,.vscode/*,.terraform/*,.gem/*,.cache,**/cache/*,**go/pkg/*
-
-# fzf
-export FZF_COMPLETION_TRIGGER=',,'
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# The first argument to the function ($1) is the base path to start traversal
-_fzf_compgen_path() {
-  fd --hidden --follow . "$1"
-}
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow . "$1"
-}
-# add support for ctrl+o to open selected file
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute:nvim {} > /dev/tty'"
-# Preview files
-export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-# Preview directories with tree
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-#command -v rg >/dev/null 2>&1 && export FZF_DEFAULT_COMMAND='rg --files --hidden --no-ignore-vcs --glob "!{$EXCLUDE_STRING}"'
-command -v fd >/dev/null 2>&1 && export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden'
-command -v fd >/dev/null 2>&1 && export FZF_ALT_C_COMMAND='fd --type directory --follow --hidden'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # linux only
 if [[ "$OSTYPE" =~ "linux" ]]; then
