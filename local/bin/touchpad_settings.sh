@@ -64,7 +64,7 @@ xinput set-prop "$touchpadID" 364 0.100007
 # See Two-finger width below
 # If palm detection should be enabled
 # boolean
-xinput set-prop "$touchpadID" 367 1
+xinput set-prop "$touchpadID" 367 0
 
 # Touchpad palm rejection
 # PalmMinWidth - Minimum finger width at which touch is  considered  a  palm
