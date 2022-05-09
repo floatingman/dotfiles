@@ -9,30 +9,45 @@
 general {
         colors = true
         interval = 5
-        color_good = "#2AA198"
-        color_bad = "#586E75"
-        color_degraded = "#DC322F"
-        separator = true
+        color_good = "#a3be8c"
+        color_bad = "#bf616a"
+        #color_good = "#2AA198"
+        #color_bad = "#586E75"
+        #color_degraded = "#DC322F"
+        #separator = true
 }
 
 # order += "ipv6"
-order += "cpu_usage"
-order += "load"
-order += "disk /"
+# order += "cpu_usage"
+order += "backlight"
+# order += "disk /"
 # order += "disk /home"
+order += "volume master"
 order += "wireless _first_"
 order += "ethernet _first_"
+# order += "memory"
 order += "battery all"
-order += "memory"
+order += "load"
 order += "tztime local"
+
+backlight {
+        cache_timeout = 5
+}
 
 cpu_usage {
         format = " cpu  %usage "
 }
 
 load {
-        format = " load %1min "
+        format = "%5min"
         # max_threshold = 0.3
+}
+
+volume master {
+    format = "♪: %volume"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
 }
 
 disk "/" {
@@ -52,22 +67,18 @@ ethernet _first_ {
 }
 
 battery all {
-        # format = "%status %percentage %remaining %emptytime"
-        format = " %status %percentage"
+        format = "%status %percentage %remaining"
+        # format = " %status %percentage"
         format_down = "No battery"
         last_full_capacity = true
         integer_battery_capacity = true
         # status_chr = ""
-        status_chr = "⚡"
-        # status_bat = "bat"
-        # status_bat = "☉"
-        status_bat = ""
-        # status_unk = "?"
+        status_chr = "⚡CHR"
+        status_bat = " BAT"
         status_unk = ""
-        # status_full = ""
-        status_full = "☻"
-        low_threshold = 15
-        threshold_type = time
+        status_full = "☻ FULL"
+        low_threshold = 10
+        # threshold_type = time
 }
 
 memory {
@@ -77,6 +88,6 @@ memory {
 }
 
 tztime local {
-        # format = "%Y-%m-%d %H:%M:%S"
-        format = " %d.%m. %H:%M "
+        format = "%Y-%m-%d %H:%M:%S"
+        #format = " %d.%m. %H:%M "
 }

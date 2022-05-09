@@ -1,17 +1,3 @@
-#---System Control---#
-# Restart hotkey damon
-super + shift + x
-  killandnotify "sxhkd" "Config reloaded" && sxhkd &
-
-super + shift + {r, s}
-  prompt {"Are you sure you would like to reboot?" "sudo reboot", "Are you sure you would like to shutdown" "sudo shutdown"}
-
-super + shift + c
-  toggleprogram "picom" "--experimental-backends"
-
-F7
-  toggletouch
-
 # Audio Control
 # Toggle mute
 XF86AudioMute
@@ -25,30 +11,29 @@ XF86AudioMicMute
 XF86Audio{Raise,Lower}Volume
     pactl set-sink-volume @DEFAULT_SINK@ {+,-}2%
 
-# Change screen brightness
-XF86MonBrightness{Up,Down}
-    light -{A,U} 5
+# Change volume
+super + {k,j}
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}2%
 
-# Brightness
-# super + {Right, Left}
-#   light {-A 5, -U 5} && polybar-msg hook backlight 1
+# Change volume, chunky
+super + shift + {k,j}
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}10%
 
-# Screenshots
-Print
-	flameshot full -p ~/pictures/screenshots
+# Toggle mpd
+super + 0
+    mpc -q toggle
 
-Print + shift
-	flameshot gui
+# Navigate mpd playlist
+super + {comma, period}
+    mpc -q {prev, next}
 
-Print + super
-	flameshot screen -p ~/pictures/screenshots
+# Display current mpd track
+super + slash
+    notify-send -u low "$(mpc -f "%title%" current)" "by $(mpc -f "%artist%" current)\non $(mpc -f "%album%" current) (#$(mpc -f "%track%" current))\n$(mpc -f "%originaldate%" current)"
 
-#---Application Launchers---#
-super + d
-  dmenu_run -fn "JetBrains Mono Medium-10"
-
-super + Return
-  $TERMINAL
+# Play the video URL in the clipboard
+super + m
+    play
 
 ################
 # Applications #
@@ -73,3 +58,96 @@ super + space
 # Launch window switcher
 alt + Tab
     rofi -show window
+
+
+# Launch password manager
+super + p
+    menu=$(echo -e "$HOME/.password-store\n$ALTPASSDIR" | rofi -dmenu); rofi-pass --root "${menu}"
+
+# Bookmark via pinboard
+super + d
+    alacritty --title pinit -e ~/bin/pinit
+
+# Launch rofi surfraw
+super + shift + f
+    surfraw-rofi
+
+# Launch rofi surfraw
+super + f
+    surfraw duckduckgo -j $(xclip -o -selection clipboard)
+
+# Launch qalculator
+super + c
+    qalculate-gtk
+
+# Launch rofi zeal
+super + z
+    rofi-zeal
+
+########
+# Misc #
+########
+
+# Lock the screen
+super + l
+    /usr/local/bin/lock
+
+# Lock the screen
+XF86ScreenSaver
+    /usr/local/bin/lock
+
+# Change screen brightness
+XF86MonBrightness{Up,Down}
+    light -{A,U} 5
+
+# Take a screenshot
+Print
+    flameshot full -p ~/www
+super + s
+    flameshot gui
+super + shift + s
+    teiler
+
+# OCR a screen selection.
+super + shift + t
+    convert x: -modulate 100,0 -resize 400% -set density 300 png:- | tesseract stdin stdout | xclip -selection clipboard
+
+# Generate a QR code from the clipboard
+super + q
+    qcode
+
+# Suspend (F12)
+super + XF86Explorer
+    systemctl suspend
+
+# Vim anywhere
+super + v
+    $HOME/library/src/vim-anywhere/bin/run
+
+
+#########
+# Mouse #
+#########
+
+button9
+    xte 'key Page_Up'
+
+button8
+    xte 'key Page_Down'
+
+
+#########
+# Dunst #
+#########
+
+# Close last message
+control + space
+    dunstctl close
+
+# Close all messages
+control + shift + space
+    dunstctl close-all
+
+# Redisplay last message
+control + grave
+    dunstctl history-pop

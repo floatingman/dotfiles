@@ -1,9 +1,16 @@
-mpd &
-mpDris2 &
+# Read the Xresources file if it exists
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+# Udiskie for mounting disks
 udiskie &
+
+# Restore the desktop background
+if [ -f ~/.fehbg ]; then
+    sh ~/.fehbg &
+fi
+
+# NetworkManager for managing networks
 nm-applet &
-xrdb ~/.Xresources &
-picom -b --experimental-backends &
 
 # Blueman for bluetooth
 blueman-applet &
@@ -14,14 +21,32 @@ xautolock -time 09 -locker "/usr/local/bin/lock" -detectsleep -secure -corners 0
 # Control volume with pasystray.
 pasystray &
 
-hsetroot -cover ~/Syncs/wallpapers/Waiting_for_another_sunrise_by_lassekongo83.png &
+# Start screenshoot tool
 flameshot &
-fcitx -d &
+
+# Notifications with dunst
 dunst &
-xbanish &
+
+# Hide the cursor when idle
+unclutter &
+
+# Bind keys with sxhkd
 sxhkd &
-xsetroot -cursor_name left_ptr &
+
+# Start Redshift to adjust colors
+redshift -g
+
+# Set touchpad settings
 touchpad_settings.sh &
+
+# Start dropbox
 dropbox &
+
+# Start syncthing
 syncthing &
+
+# Start synergy
 synergy &
+
+# Load the best monitor profile available
+autorandr --change --default mobile
