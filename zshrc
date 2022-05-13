@@ -136,9 +136,6 @@ enable-fzf-tab
 # Load keychain
 eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw C2A50D1443DC83C25C1C0E46F30B951D85DBE1C0)
 
-# Make tmux copy across machines
-precmd() { export p=`cat /tmp/clipboard` }
-
 #########
 # Color #
 #########
