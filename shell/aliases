@@ -232,7 +232,7 @@ alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 if _have prettyping; then
     alias ping='prettyping --nolegend'
 fi
-alias ducks="du -sch .i[!.]* * |sort -rh |head -10" # print top 10 largest files in pwd
+alias ducks="du -sch * |sort -rh |head -10" # print top 10 largest files in pwd
 alias sps="ps aux | grep -v grep | grep"    # search and display processes by keyword
 alias df='df -h'
 
