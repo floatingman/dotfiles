@@ -11,7 +11,6 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'jamessan/vim-gnupg'
-Plug 'roman/golden-ratio'
 Plug 'othree/html5.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ledger/vim-ledger'
