@@ -34,7 +34,7 @@ unclutter &
 sxhkd &
 
 # Start Redshift to adjust colors
-redshift -g
+redswitch -g
 
 # Set touchpad settings
 touchpad_settings.sh &
