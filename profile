@@ -94,4 +94,11 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   fi
 fi
 
+# SSH-AGENT
+# if [[ -e "XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
+#     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+# fi
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
 # vim: ft=sh
