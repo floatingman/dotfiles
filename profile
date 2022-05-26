@@ -66,9 +66,9 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   command -v paru >/dev/null 2>&1 && export AUR_MANAGER=paru
   command -v rustc >/dev/null 2>&1 && export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src" && export PATH=$PATH:~/.cargo/bin
   # i3wm SSH keys
-  if [ "$0" = "/etc/lightdm/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
-    export $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gnupg)
-  fi
+  # if [ "$0" = "/etc/lightdm/Xsession" -a "$DESKTOP_SESSION" = "i3" ]; then
+  #   export $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gnupg)
+  # fi
   # basedir defaults, in case they're not already set up.
   # http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
   if [[ -z "$XDG_DATA_HOME" ]]; then
