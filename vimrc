@@ -23,6 +23,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'morhetz/gruvbox'
+Plug 'hashivim/vim-terraform'
 call plug#end()
 
 

@@ -14,7 +14,7 @@ trackpointID=$(xinput list | grep "$trackpointString" | awk -F " " '{print $6}' 
 
 # Enable Touchpad
 # boolean
-xinput set-prop "$touchpadID" 187 1
+xinput set-prop "$touchpadID" "Device Enabled" 1
 
 # Touchpad finger
 # 32 bit, 3 values, low, high, press
@@ -22,15 +22,15 @@ xinput set-prop "$touchpadID" 187 1
 #      counts it as a release. Property: "Synaptics Finger"
 # High - When finger pressure  goes  above  this  value,  the  driver
 #              counts it as a touch. Property: "Synaptics Finger"
-xinput set-prop "$touchpadID" 346 54 54 0
+xinput set-prop "$touchpadID" "Synaptics Finger" 30 33 128
 
 # Tap Move
 # Synaptics Tap Move (292)
 # Maximum movement of the finger for detecting a tap
-xinput set-prop "$touchpadID" 348 122
+xinput set-prop "$touchpadID" "Synaptics Tap Move" 122
 
 # Increase two-finger pressure (less sensitivity)
-xinput set-prop "$touchpadID" 352 350
+xinput set-prop "$touchpadID" "Synaptics Two-Finger Pressure" 350
 
 # Two-finger width
 # Synaptics Two-Finger Width (297)
@@ -38,64 +38,67 @@ xinput set-prop "$touchpadID" 352 350
 #  of detecting finger  width  and  pressure
 # Width threshhold
 # Works best with PalmDetect off
-xinput set-prop "$touchpadID" 353 8
+xinput set-prop "$touchpadID" "Synaptics Two-Finger Width" 8
 
 # Scrolling speed
 # Synaptics Scrolling Distance (298)
 # Vertical/horiz move  distance of finger for scroll event
-xinput set-prop "$touchpadID" 354 -60 -60
+xinput set-prop "$touchpadID" "Synaptics Scrolling Distance" -60 -60
 
 # Mouse Click Emulation
 # Synaptics Tap Action (305)
-xinput set-prop "$touchpadID" 361 0 0 0 0 1 3 2
+xinput set-prop "$touchpadID" "Synaptics Tap Action" 0 0 0 0 1 3 2
 
 # Circular Scrolling
 # Synaptics Circular Scrolling (307)
 # boolean
-xinput set-prop "$touchpadID" 363 0
+xinput set-prop "$touchpadID" "Synaptics Circular Scrolling" 0
 
 # Circular scrolling distance (speed?)
 # Synaptics Circular Scrolling Distance (308)
 # Move  angle  (radians) of finger to generate a scroll event
-xinput set-prop "$touchpadID" 364 0.100007
+xinput set-prop "$touchpadID" "Synaptics Circular Scrolling Distance" 0.100007
 
 # Palm rejection
 # Synaptics Palm Detection (311)
 # See Two-finger width below
 # If palm detection should be enabled
 # boolean
-xinput set-prop "$touchpadID" 367 0
+xinput set-prop "$touchpadID" "Synaptics Palm Detection" 1
 
 # Touchpad palm rejection
 # PalmMinWidth - Minimum finger width at which touch is  considered  a  palm
 # PalmMinZ - Minimum finger pressure at which touch is considered a palm
 # width, min z
-xinput set-prop "$touchpadID" 368 2 25
+xinput set-prop "$touchpadID" "Synaptics Palm Dimensions" 2 25
 
 # Minimum pressure motion
 # Synaptics Pressure Motion (314)
 # Finger pressure at which min/max pressure motion factor is applied
 # min, max
-xinput set-prop "$touchpadID" 370 55 160
+xinput set-prop "$touchpadID" "Synaptics Pressure Motion" 55 160
 
 # Tap-and-Drag
 # Synaptics Gestures (317)
 # TapAndDragGesture
 # boolean
-xinput set-prop "$touchpadID" 373 0
+xinput set-prop "$touchpadID" "Synaptics Gestures" 0
 
 # TRACKPOINT SECTION
 # see man libinput(4) for Trackpoint
 
+# Enabled Trackpoint
+xinput set-prop "$touchpadID" "Device Enabled" 1
+
 # Trackpoint middle-button disable scrolling
-xinput set-prop "$trackpointID" 326 0 0 0
+xinput set-prop "$trackpointID" "libinput Scroll Method Enabled" 0 0 1
 
 # Acceleration
 # libinput Accel Speed (336)
 # float, range -1 - 1
-xinput set-prop "$trackpointID" 332 -0.250000
+xinput set-prop "$trackpointID" "libinput Accel Speed" -0.250000
 
 # Acceleration profile
 # libinput Accel Profile Enabled (339)
 # flat, adaptive
-xinput set-prop "$trackpointID" 335 1 0
+xinput set-prop "$trackpointID" "libinput Accel Profile Enabled" 1 0
