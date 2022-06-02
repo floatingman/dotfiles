@@ -53,6 +53,22 @@ fi
 
 export EXCLUDE_STRING=.git,node_modules/*,**/.git/*,.git/*,target/*,.idea/*,.vscode/*,.terraform/*,.gem/*,.cache,**/cache/*,**go/pkg/*
 
+# Notes
+#
+
+# Set the default note directory.
+export NOTEDIR=~/library/notes
+
+# Open spreadsheet notes in visidata
+export NOTEXDGEXT="csv tsv"
+
+#
+# Journal
+#
+
+# Set the default journal directory.
+export JOURNALDIR=~/library/journal
+
 # linux only
 if [[ "$OSTYPE" =~ "linux" ]]; then
   export TERM=screen-256color
