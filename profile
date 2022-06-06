@@ -1,6 +1,3 @@
-
-command -v go >/dev/null 2>&1 && export GOPATH=$HOME/.local/share/go && export PATH=$PATH:$(go env GOPATH)/bin
-
 export TERMINAL=alacritty
 
 #
