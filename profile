@@ -1,3 +1,25 @@
+# set platform name so that we can run scripts based on the OS
+unamestr=$(uname)
+if [[ "$unamestr" == 'Linux' ]]; then
+  platform='linux'
+  if [[ -d "/run/WSL" ]]; then
+    platform_wsl='true'
+  elif grep -q microsoft /proc/version; then
+    platform_wsl='true'
+  else
+    platform_wsl='false'
+  fi
+elif [[ "$unamestr" == 'Darwin' ]]; then
+  # shellcheck disable=SC2034
+  platform='macos'
+  # shellcheck disable=SC2034
+  platform_wsl='false'
+  if [[ `uname -m` == 'arm64' ]]; then
+    platform_apple_silicon='true'
+  fi
+fi
+unset unamestr
+
 export TERMINAL=alacritty
 
 #
@@ -108,15 +130,20 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
 fi
 
 # SSH-AGENT
-# if [[ -e "XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
-#     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-# fi
-
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+if [[ $platform_wsl == "true" ]]; then
+    if [[ -e "XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+    fi
 fi
-export GPG_TTY=$(tty)
-gpg-connect-agent updatestartuptty /bye >/dev/null
+
+# GPG-AGENT
+if [[ $platform_wsl == "false" ]]; then
+    unset SSH_AGENT_PID
+    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    fi
+    export GPG_TTY=$(tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
 
 # vim: ft=sh
