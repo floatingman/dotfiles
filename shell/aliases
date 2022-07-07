@@ -110,7 +110,7 @@ then
         pacdisup='sudo apt-get update && sudo apt-get dist-upgrade' \
         pacpurge='sudo apt-get purge'
   fi
-  alias lf='lfrun'
+  alias lf='lfub'
 fi
 
 if _have yay; then
