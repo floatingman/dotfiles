@@ -38,9 +38,9 @@ if [[ "$unamestr" == 'Linux' ]]; then
     platform_wsl='false'
   fi
 elif [[ "$unamestr" == 'Darwin' ]]; then
-  # shellcheck disable=SC2034
+  #.config/shellcheck disable=SC2034
   platform='macos'
-  # shellcheck disable=SC2034
+  #.config/shellcheck disable=SC2034
   platform_wsl='false'
   if [[ `uname -m` == 'arm64' ]]; then
     platform_apple_silicon='true'
@@ -100,7 +100,7 @@ unset config_files
 bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd to selected directory
 
 # source zsh
-[ -f $HOME/.shell/zshenv ] && source $HOME/.shell/zshenv
+[ -f $HOME/.config/shell/zshenv ] && source $HOME/.config/shell/zshenv
 [ -f $HOME/.profile ] && source $HOME/.profile
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 [ -f $HOME/.fzf/shell/key-bindings.zsh ] && source $HOME/.fzf/shell/key-bindings.zsh
@@ -115,8 +115,6 @@ export _ZO_FZF_OPTS="$_FZF_DEFAULT_OPTS --select-1 --exit-0 --height=25% --rever
 export _ZO_DATA_DIR=$HOME/.zoxide
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
-[ -d $HOME/.shell/forgit ] && source $HOME/.shell/forgit/forgit.plugin.zsh
-[ -d $HOME/.shell/kube-fzf ] && export PATH=$PATH:$HOME/.shell/kube-fzf/
 [ -d $HOME/.local/sdkman/ ] && export SDKMAN_DIR="$HOME/.local/sdkman" && source $HOME/.local/sdkman/bin/sdkman-init.sh
 [ -d $HOME/.config/broot/launcher/bash/br ] && source $HOME/.config/broot/launcher/bash/br
 
@@ -132,47 +130,3 @@ command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
 
 enable-fzf-tab
-
-#########
-# Color #
-#########
-
-BASE16_SHELL="$HOME/library/src/base16-shell"
-BASE16_I3="$HOME/library/src/base16-i3"
-BASE16_XRESOURCES="$HOME/library/src/base16-xresources"
-BASE16_QUTEBROWSER="$HOME/library/src/base16-qutebrowser"
-BASE16_ZATHURA="$HOME/library/src/base16-zathura"
-BASE16_ROFI="$HOME/library/src/base16-rofi.pschyska"
-
-[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-theme() {
-    if [ -z "$1" ]; then
-        theme="gruvbox-dark-medium"
-    elif [[ "$1" == "day" ]]; then
-        theme="gruvbox-light-soft"
-    else
-        theme="$1"
-    fi
-    echo "$theme"
-    # set shell
-    _base16 "$BASE16_SHELL"/scripts/base16-"$theme".sh "$theme"
-    # set i3
-    i3config="$HOME/.config/i3/config"
-    sed -i '1,/## Colors/!d' "$i3config"
-    cat "$BASE16_I3"/colors/base16-"$theme".config >> "$i3config"
-    i3-msg -q reload
-    # set qutebrowser
-    cp "$BASE16_QUTEBROWSER/themes/minimal/base16-$theme.config.py" ~/.config/qutebrowser/theme.config.py
-    # set rofi
-    cp "$BASE16_ROFI/themes/base16-$theme.rasi" "$HOME/.config/rofi/theme.rasi"
-    # set xresources
-    xresources="$HOME/.Xresources"
-    sed -i '1,/! colors/!d' "$xresources"
-    cat "$BASE16_XRESOURCES"/xresources/base16-"$theme".Xresources >> "$xresources"
-    xrdb -load ~/.Xresources
-    # set zathura
-    zathurarc="$HOME/.config/zathura/zathurarc"
-    sed -i '1,/## Colors/!d' "$zathurarc"
-    cat "$BASE16_ZATHURA"/build_schemes/colors/base16-"$theme".config >> "$zathurarc"
-}
