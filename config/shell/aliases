@@ -110,8 +110,13 @@ then
         pacdisup='sudo apt-get update && sudo apt-get dist-upgrade' \
         pacpurge='sudo apt-get purge'
   fi
-  alias lf='lfub'
 fi
+
+alias \
+	lf="lfub" \
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport"
 
 if _have yay; then
     alias yaysua="yay -Sua --noconfirm"              # update only AUR pkgs
