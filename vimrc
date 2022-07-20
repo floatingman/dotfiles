@@ -1,3 +1,29 @@
+
+" Should be first, use vim settings rather than vi settings
+" Enable loading plugins
+set nocompatible
+
+" Disable some Vim's native plugins. Do it before 'filetype plugin' command
+" Do not load matchparens (higlight matching pairs)
+" Do not load matchit (improves % motion to find matching words besides matching parens)
+" Native Vim's "matchparen" is slow and cause lags during scrolling
+" 'andymass/vim-matchup' is used instead
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+
+
+" Turns on:
+" - detection of filetype based on extensions or file content (runtime/filetype.vim, ftdetect/xxx)
+" - once file type is detected, read per-filetype commands from 'ftplugin/<type>.vim'
+" - once file type is detected, read indentation expression from 'indent/<type>.vim'
+" See ":h :filetype-overview" for more info
+filetype plugin indent on
+
+" Plugin: sheerun/vim-polyglot
+" Disable default settings (a.k.a normalize) from 'tpope/vim-sensible'
+" NOTE: this should come before plug#begin section
+let g:polyglot_disabled = ['sensible', 'markdown']
+
 """""""""""
 " Plugins "
 """""""""""
@@ -10,20 +36,20 @@ endif
 
 " Plugins
 call plug#begin('~/.vim/plugged')
-Plug 'jamessan/vim-gnupg'
-Plug 'othree/html5.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'ledger/vim-ledger'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'fnune/base16-vim'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'tpope/vim-surround'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'pbogut/fzf-mru.vim'
+Plug 'vim-scripts/SyntaxAttr.vim'
+Plug 'bronson/vim-trailing-whitespace'
 Plug 'morhetz/gruvbox'
-Plug 'hashivim/vim-terraform'
+Plug 'romainl/vim-qf'
+Plug 'tpope/vim-commentary'
+Plug '907th/vim-auto-save'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tpope/vim-obsession'
+Plug 'farmergreg/vim-lastplace'
+Plug 'andymass/vim-matchup'
+Plug 'tpope/vim-surround'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
 
