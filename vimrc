@@ -24,6 +24,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'morhetz/gruvbox'
 Plug 'hashivim/vim-terraform'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 
