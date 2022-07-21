@@ -1,4 +1,5 @@
-Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
+AddKeysToAgent yes
+
 Host devenv
     Hostname 74.207.233.21
     IdentityFile ~/.ssh/id_ed25519_suse_nopw
