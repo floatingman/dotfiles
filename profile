@@ -129,68 +129,7 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   fi
 fi
 
-### SSH-Agent
-declare -x SSH_ENV="$HOME/.ssh/environment"
-
-# start the ssh-agent
-function start_agent {
-    echo "Initializing new SSH agent..."
-    # spawn ssh-agent
-    ssh-agent | sed 's/^echo/#echo/' > "$SSH_ENV"
-    echo succeeded
-    chmod 600 "$SSH_ENV"
-    . "$SSH_ENV" > /dev/null
-    ssh-add
-}
-
-# test for identities
-function test_identities {
-    # test whether standard identities have been added to the agent already
-    ssh-add -l | grep "The agent has no identities" > /dev/null
-    if [ $? -eq 0 ]; then
-        ssh-add
-        # $SSH_AUTH_SOCK broken so we start a new proper agent
-        if [ $? -eq 2 ];then
-            start_agent
-        fi
-    fi
-}
-
-# check for running ssh-agent with proper $SSH_AGENT_PID
-if [ -n "$SSH_AGENT_PID" ]; then
-    ps -f -u $USERNAME | grep "$SSH_AGENT_PID" | grep ssh-agent > /dev/null
-    if [ $? -eq 0 ]; then
-  test_identities
-    fi
-else
-    if [ -f "$SSH_ENV" ]; then
-    . "$SSH_ENV" > /dev/null
-    fi
-    ps -f -u $USERNAME | grep "$SSH_AGENT_PID" | grep ssh-agent > /dev/null
-    if [ $? -eq 0 ]; then
-        test_identities
-    else
-        start_agent
-    fi
-fi
-
-
-# # SSH-AGENT
-# if [[ $platform_wsl == "true" ]]; then
-#     if [[ -e "XDG_RUNTIME_DIR/ssh-agent.socket" ]]; then
-#         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-#     fi
-# fi
-
-# # GPG-AGENT
-# if [[ $platform_wsl == "false" ]]; then
-#     unset SSH_AGENT_PID
-#     if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-#         export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-#     fi
-#     export GPG_TTY=$(tty)
-#     gpg-connect-agent updatestartuptty /bye >/dev/null
-# fi
+eval $(keychain --eval --quiet --noask --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw F30B951D85DBE1C0)
 
 # This is the list for lf icons:
 export LF_ICONS="di=📁:\

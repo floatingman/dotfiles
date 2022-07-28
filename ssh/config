@@ -1,5 +1,9 @@
 AddKeysToAgent yes
 
+Host windcharger
+    Hostname 192.168.0.7
+    IdentityFile ~/.ssh/id_ed25519_dlp
+
 Host devenv
     Hostname 74.207.233.21
     IdentityFile ~/.ssh/id_ed25519_suse_nopw
