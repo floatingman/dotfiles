@@ -70,6 +70,11 @@ if [[ "$OSTYPE" =~ "darwin" ]]; then
   export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 fi
 
+if [ -d "/opt/homebrew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+
 export EXCLUDE_STRING=.git,node_modules/*,**/.git/*,.git/*,target/*,.idea/*,.vscode/*,.terraform/*,.gem/*,.cache,**/cache/*,**go/pkg/*
 
 # Notes
