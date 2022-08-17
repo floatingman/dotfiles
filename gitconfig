@@ -75,7 +75,7 @@
   # by default, Git runs vimdiff in read only mode. Make it run in read-write mode
     cmd = "vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\""
 [difftool "diffmerge"]
-    cmd = "/usr/local/bin/diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
+    cmd = "diffmerge --nosplash \"$LOCAL\" \"$REMOTE\""
 [difftool "vscode"]
     cmd = "code -n -w -d \"$LOCAL\" \"$REMOTE\""
 [difftool "p4merge"]
@@ -99,7 +99,7 @@
     cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
     trustExitCode = true
 [mergetool "diffmerge"]
-    cmd = "/usr/local/bin/diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\""
+    cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\""
     trustExitCode = true
 [mergetool "vscode"]
     cmd = "code -n --wait \"$MERGED\""
