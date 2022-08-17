@@ -82,13 +82,13 @@ xinput set-prop "$touchpadID" "Synaptics Pressure Motion" 55 160
 # Synaptics Gestures (317)
 # TapAndDragGesture
 # boolean
-xinput set-prop "$touchpadID" "Synaptics Gestures" 0
+xinput set-prop "$touchpadID" "Synaptics Gestures" 1
 
 # TRACKPOINT SECTION
 # see man libinput(4) for Trackpoint
 
 # Enabled Trackpoint
-xinput set-prop "$touchpadID" "Device Enabled" 1
+xinput set-prop "trackpointID" "Device Enabled" 1
 
 # Trackpoint middle-button disable scrolling
 xinput set-prop "$trackpointID" "libinput Scroll Method Enabled" 0 0 1
