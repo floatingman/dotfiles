@@ -10,14 +10,18 @@ if [ -f ~/.fehbg ]; then
 fi
 
 # NetworkManager for managing networks
-nm-applet &
+# nm-applet &
 
 # Blueman for bluetooth
 blueman-applet &
 
 # Launch the screen locker.
- xautolock -time 09 -locker "/usr/local/bin/lock" -detectsleep -secure -corners 0-00 -cornerdelay 3 -cornerredelay 20 &
+ # xautolock -time 09 -locker "/usr/local/bin/lock" -detectsleep -secure -corners 0-00 -cornerdelay 3 -cornerredelay 20 &
 # xautolock -time 10 -locker "if ! pidof physlock > /dev/null; then light -O ; light -S 10 ; physlock; light -I ; fi" -detectsleep -secure &
+xautolock -time 10 -locker blurlock &
+
+# Bitwarden
+bitwarden-desktop &
 
 # Control volume with pasystray.
 pasystray &
@@ -29,7 +33,7 @@ flameshot &
 dunst &
 
 # Hide the cursor when idle
-unclutter &
+# unclutter &
 
 # Bind keys with sxhkd
 sxhkd &
