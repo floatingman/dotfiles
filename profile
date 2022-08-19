@@ -133,7 +133,7 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   fi
 fi
 
-eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw dnewman-suse-nopw F30B951D85DBE1C0)
+eval $(keychain --eval --quiet --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw dnewman-suse-nopw)
 
 # This is the list for lf icons:
 export LF_ICONS="di=📁:\
