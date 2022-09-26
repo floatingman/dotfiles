@@ -18,7 +18,7 @@
 # `----------------------------------------------------------------------------'
 
 # Enable debugging for verbose output
-debug=false
+debug=true
 
 # Working directory for the script
 ytdl_root_dir="${HOME}/Dropbox/backup/ytdlrc"
@@ -110,8 +110,8 @@ rclone_config="${HOME}/.config/rclone/rclone.conf"
 rclone_command="move"
 
 # Where to store downloaded files on the rclone remote
-# rclone_destination="local:/mnt/media/Video/YouTube"
-rclone_destination="backblaze:dnew-youtube"
+rclone_destination="local:/mnt/media/Video/YouTube"
+# rclone_destination="backblaze:dnew-youtube"
 
 # Rclone flags
 #     * Add any additional rclone flags here, e.g.: "--syslog --bwlimit 5M"
@@ -428,7 +428,7 @@ if [ ! -s "$ytdl_snatch_list" ]; then
 fi
 
 say_debug "Checking required commands..."
-required_commands="youtube-dl ffmpeg rclone"
+required_commands="yt-dlp ffmpeg rclone"
 for cmd in $required_commands; do
   if ! command_exists "$cmd"; then
     say_error "Command not found: ${cmd}"
@@ -454,7 +454,7 @@ fi
 
 # Check if rclone remote has any issues
 say_debug "Checking rclone remote for any issues..."
-if ! rclone ls "$rclone_destination" >/dev/null 2>&1; then
+if ! rclone about "$rclone_destination" >/dev/null 2>&1; then
   say_error "Could not read rclone remote '${rclone_destination}'. See the \`rclone_destination\` setting."
   say_error "If the remote looks correct, check for issues by running: \`rclone about ${rclone_destination}\`"
   delete_lock_file
