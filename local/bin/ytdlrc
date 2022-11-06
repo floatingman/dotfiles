@@ -18,7 +18,7 @@
 # `----------------------------------------------------------------------------'
 
 # Enable debugging for verbose output
-debug=true
+debug=false
 
 # Working directory for the script
 ytdl_root_dir="${HOME}/Dropbox/backup/ytdlrc"
@@ -107,7 +107,7 @@ ytdl_lowercase_directories=false
 rclone_config="${HOME}/.config/rclone/rclone.conf"
 
 # Should we `copy` or `move` files?
-rclone_command="move"
+rclone_command="copy"
 
 # Where to store downloaded files on the rclone remote
 rclone_destination="local:/mnt/media/Video/YouTube"
@@ -119,7 +119,7 @@ rclone_destination="local:/mnt/media/Video/YouTube"
 #         * If debug=true, "-vv --stats 1s --progress" is appended to rclone
 #           command
 #         * If debug=false, "-q" is appended to rclone command
-rclone_flags="--transfers 8 --checkers 16"
+rclone_flags="--transfers 8 --checkers 16 --acd-upload-wait-per-gb 5m"
 
 # ---------- You probably don't need to edit anything below this ----------
 

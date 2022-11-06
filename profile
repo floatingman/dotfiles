@@ -135,6 +135,8 @@ fi
 
 eval $(keychain --eval --quiet --noask --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw dnewman-suse-nopw)
 
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 # This is the list for lf icons:
 export LF_ICONS="di=📁:\
 fi=📃:\
