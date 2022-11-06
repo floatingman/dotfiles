@@ -116,7 +116,6 @@ export _ZO_FZF_OPTS="$_FZF_DEFAULT_OPTS --select-1 --exit-0 --height=25% --rever
 export _ZO_DATA_DIR=$HOME/.zoxide
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
-[ -d $HOME/.local/sdkman/ ] && export SDKMAN_DIR="$HOME/.local/sdkman" && source $HOME/.local/sdkman/bin/sdkman-init.sh
 [ -d $HOME/.config/broot/launcher/bash/br ] && source $HOME/.config/broot/launcher/bash/br
 
 
@@ -129,3 +128,5 @@ command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 # load mac things if there
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
