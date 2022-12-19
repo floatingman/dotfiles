@@ -18,6 +18,9 @@ done 2>/dev/null &
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
+# Disable disk warnings for ejecting media
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.DiskArbitration.diskarbitrationd.plist DADisableEjectNotification -bool YES
+
 defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
 
 # Disable the over-the-top focus ring animation
@@ -97,7 +100,7 @@ defaults write com.apple.screensaver askForPasswordDelay -int 5
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
-defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture type -string "jpg"
 
 # Enable subpixel font rendering on non-Apple LCDs
 # Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
@@ -171,8 +174,11 @@ defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
 defaults write com.apple.dock tilesize -int 45
 
+# Add a spacer to the dock
+defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+
 # Change minimize/maximize window effect
-defaults write com.apple.dock mineffect -string "genie"
+defaults write com.apple.dock mineffect -string "scale"
 
 # Minimize windows into their application’s icon
 defaults write com.apple.dock minimize-to-application -bool false
@@ -198,7 +204,9 @@ defaults write com.apple.dock dashboard-in-overlay -bool true
 # Don’t automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 
+# Hide dock instantly
 defaults write com.apple.Dock autohide-delay -float 0
+defaults write com.apple.Dock autohide-time-modifier -int 0
 
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
