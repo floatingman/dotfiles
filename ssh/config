@@ -8,7 +8,7 @@ Host windcharger
     IdentityFile ~/.ssh/id_ed25519_dlp
 
 Host devenv
-    Hostname 74.207.233.21
+    Hostname 170.187.201.180
     IdentityFile ~/.ssh/id_ed25519_suse_nopw
     IdentitiesOnly yes
     User dnewman
