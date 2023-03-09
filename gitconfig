@@ -141,6 +141,9 @@
     fc = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
     # Find commits by commit message
     fm = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+    # list files which have changed since REVIEW_BASE
+    # (REVIEW_BASE defaults to 'master' in my shell)
+    files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
     # Swich to a branch, creating it if necessary
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
     # Color graph log view
@@ -162,6 +165,9 @@
     # View the current working tree status using the short format
     s = status -s
     st = status -sb
+    # Same as above, but with a diff stat instead of just names
+    # (better for interactive use)
+    stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
     unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
     # subtree add
     sba = "!f() { git subtree add --prefix $2 $1 master --squash; }; f"
