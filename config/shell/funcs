@@ -1544,6 +1544,9 @@ dexec() {
   fi
   docker exec -it $1 sh
 }
+
+
+# Extract multiple types of compressed archives
 extract() {
 	local remove_archive
 	local success
@@ -1611,4 +1614,16 @@ extract() {
 		(( $success == 0 )) && (( $remove_archive == 0 )) && rm "$1"
 		shift
 	done
+}
+
+# Kubernetes helpers
+
+# deploys a helm chart a number of times to a cluster pointed to by KUBECONFIG environment setting
+function bulk_create_deployment() {
+  ### $1 - number of deployments
+  ### $2 - namespace to deploy to
+  ### $3 - local chart dir or chart name to deploy
+  for ((i = 0; i < $1; i++)); do
+    helm install -n "${2}" --create-namespace --generate-name "${3}"
+  done
 }
