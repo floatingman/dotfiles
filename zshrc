@@ -128,5 +128,3 @@ command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 # load mac things if there
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
