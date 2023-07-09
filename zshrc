@@ -123,8 +123,18 @@ command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 #    MISC SETTINGS
 # ===================
 
+# Fly.io settings
+export FLYCTL_INSTALL="/home/floatingman/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source "$HOME/.zsh_private"
 
 # load mac things if there
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin
+export PATH=$PATH:/usr/local/go/bin
