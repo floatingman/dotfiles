@@ -14,7 +14,7 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
   platform='macos'
   # shellcheck disable=SC2034
   platform_wsl='false'
-  if [[ `uname -m` == 'arm64' ]]; then
+  if [[ $(uname -m) == 'arm64' ]]; then
     platform_apple_silicon='true'
   fi
 fi
@@ -43,9 +43,9 @@ export LESS='-F -g -i -M -R -w -X -z-4 -#3 -N'
 
 # Find lesspipe
 if command -v lesspipe.sh >/dev/null 2>&1; then
-    lesspipe="lesspipe.sh"
+  lesspipe="lesspipe.sh"
 elif command -v lesspipe >/dev/null 2>&1; then
-    lesspipe="lesspipe"
+  lesspipe="lesspipe"
 fi
 
 # Set the less input preprocessor.
@@ -73,7 +73,6 @@ fi
 if [ -d "/opt/homebrew" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-
 
 export EXCLUDE_STRING=.git,node_modules/*,**/.git/*,.git/*,target/*,.idea/*,.vscode/*,.terraform/*,.gem/*,.cache,**/cache/*,**go/pkg/*
 
@@ -131,6 +130,9 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   else
     export XDG_CONFIG_DIRS="/etc/xdg:$XDG_CONFIG_DIRS"
   fi
+
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  . "$HOME/.cargo/env"
 fi
 
 eval $(keychain --eval --quiet --noask --agents ssh,gpg id_ed25519_dlp id_ed25519_suse id_ed25519_suse_nopw dnewman-suse-nopw)
@@ -219,5 +221,3 @@ ex=🎯:\
 *.java=♨:\
 "
 # vim: ft=sh
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-. "$HOME/.cargo/env"
