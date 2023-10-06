@@ -327,8 +327,8 @@ colors:
 #   - AppKeypad
 #
 key_bindings:
-  - { key: P, mods: Control, action: Paste }
-  - { key: Y, mods: Control, action: Copy }
+  # - { key: P, mods: Control, action: Paste }
+  # - { key: Y, mods: Control, action: Copy }
   - { key: Insert, mods: Shift, action: PasteSelection }
   - { key: Key0, mods: Control, action: ResetFontSize }
   - { key: Plus, mods: Control, action: IncreaseFontSize }
