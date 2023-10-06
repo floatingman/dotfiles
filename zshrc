@@ -162,7 +162,9 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 # Plugin history-search-multi-word loaded with investigating.
-zinit load zdharma-continuum/history-search-multi-word
+zinit light zdharma-continuum/history-search-multi-word
+
+# forgit for easier gitting
 zinit load wfxr/forgit
 
 # Two regular plugins loaded without investigating.
@@ -175,6 +177,20 @@ zinit snippet https://gist.githubusercontent.com/hightemp/5071909/raw/
 # Load Powerlevel10k theme
 zinit ice depth"1" # git clone depth
 zinit light romkatv/powerlevel10k
+
+zi as'null' lucid sbin wait'1' for \
+  Fakerr/git-recall \
+  davidosomething/git-my \
+  iwata/git-now \
+  paulirish/git-open \
+  paulirish/git-recent \
+    atload'export _MENU_THEME=legacy' \
+  arzzen/git-quick-stats \
+    make'install' \
+  tj/git-extras \
+    make'GITURL_NO_CGITURL=1' \
+    sbin'git-url;git-guclone' \
+  zdharma-continuum/git-url
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
