@@ -136,7 +136,7 @@ if [[ -d "/home/linuxbrew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-if [[ -d "$HOME/.cargo" ]]; then
+if [[ -f "$HOME/.cargo/env" ]]; then
   . "$HOME/.cargo/env"
 fi
 
