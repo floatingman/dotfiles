@@ -171,26 +171,9 @@ zinit load wfxr/forgit
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
 
-# Snippet
-zinit snippet https://gist.githubusercontent.com/hightemp/5071909/raw/
-
 # Load Powerlevel10k theme
 zinit ice depth"1" # git clone depth
 zinit light romkatv/powerlevel10k
-
-zi as'null' lucid sbin wait'1' for \
-  Fakerr/git-recall \
-  davidosomething/git-my \
-  iwata/git-now \
-  paulirish/git-open \
-  paulirish/git-recent \
-    atload'export _MENU_THEME=legacy' \
-  arzzen/git-quick-stats \
-    make'install' \
-  tj/git-extras \
-    make'GITURL_NO_CGITURL=1' \
-    sbin'git-url;git-guclone' \
-  zdharma-continuum/git-url
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
