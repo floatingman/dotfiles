@@ -130,8 +130,13 @@ if [[ "$OSTYPE" =~ "linux" ]]; then
   else
     export XDG_CONFIG_DIRS="/etc/xdg:$XDG_CONFIG_DIRS"
   fi
+fi
 
+if [[ -d "/home/linuxbrew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+if [[ -d "$HOME/.cargo" ]]; then
   . "$HOME/.cargo/env"
 fi
 
