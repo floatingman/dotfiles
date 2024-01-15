@@ -161,15 +161,15 @@ set incsearch
 """""""""""
 
 " Auto-fold by indentation.
-"set foldmethod=indent
+set foldmethod=indent
 
 " Limit nested folds.
-"set foldnestmax=10
+set foldnestmax=10
 
 " Unfold folds by default.
-"set nofoldenable
+set nofoldenable
 
-"set foldlevel=2
+set foldlevel=2
 
 
 """""""""""""""""""""
