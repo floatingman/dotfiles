@@ -226,3 +226,5 @@ ex=🎯:\
 *.java=♨:\
 "
 # vim: ft=sh
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+. "$HOME/.cargo/env"
