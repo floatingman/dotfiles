@@ -365,13 +365,12 @@ cheat() {
 ###############
 # Colorscheme #
 ###############
-# Set alacritty terminal colors
-LIGHT_COLOR='solarized_light.yaml'
-DARK_COLOR='solarized_dark.yaml'
+# Set kitty terminal colors
+LIGHT_COLOR='Catppuccin-Latte'
+DARK_COLOR='Catppuccin-Mocha'
 
-alias day="alacritty-colorscheme -V apply $LIGHT_COLOR"
-alias night="alacritty-colorscheme -V apply $DARK_COLOR"
-alias toggle="alacritty-colorscheme -V toggle $LIGHT_COLOR $DARK_COLOR"
+alias day="kitten themes --reload-in=all $LIGHT_COLOR"
+alias night="kitten themes --reload-in=all $DARK_COLOR"
 
 # Interactively enable sdkman to manage java versions
 alias mach_java_mode="export SDKMAN_DIR="$HOME/.sdkman" && [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh""
