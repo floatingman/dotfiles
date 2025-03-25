@@ -1,0 +1,8 @@
+[submodule "config/tmux"]
+	path = config/tmux
+	url = git@github.com:floatingman/.tmux.git
+	branch = master
+[submodule "config/nvim"]
+	path = config/nvim
+	url = git@github.com:floatingman/lazyvim.git
+	branch = main
