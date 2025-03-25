@@ -1,4 +1,7 @@
-# Audio Control
+#########
+# Media #
+#########
+
 # Toggle mute
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -35,42 +38,31 @@ super + slash
 super + m
     play
 
-################
-# Applications #
-################
 
-# Launch terminal
-super + t
-    $TERMINAL
-
+################
+# Applications
+################
 # Launch web browser
 super + w
     firefox -P default-release
 
-# Launch web browser with work profile
-super + shift + w
-    firefox -P Work
-
 # Launch application launcher
+super + {d,p,s}
+    sh $HOME/.config/rofi/bin/{launcher,powermenu,screenshot}
 super + space
-    rofi -show run
+    sh $HOME/.config/rofi/bin/runner
 
-# Launch window switcher
+# Show window switcher
 alt + Tab
-    rofi -show window
+  rofi -show window
 
+# File Explorer 
+super + e
+  thunar
 
-# Launch password manager
-super + p
-    menu=$(echo -e "$HOME/.password-store\n$ALTPASSDIR" | rofi -dmenu); rofi-pass --root "${menu}"
-
-# Bookmark via pinboard
-super + d
-    alacritty --title pinit -e ~/bin/pinit
-
-# Launch rofi surfraw
-super + shift + f
-    surfraw-rofi
+# # Launch rofi surfraw
+# super + shift + f
+#     surfraw-rofi
 
 # Launch rofi surfraw
 super + f
@@ -84,6 +76,7 @@ super + c
 super + z
     rofi-zeal
 
+
 ########
 # Misc #
 ########
@@ -92,21 +85,20 @@ super + z
 super + l
     /usr/local/bin/lock
 
-# Lock the screen
-XF86ScreenSaver
-    /usr/local/bin/lock
-
 # Change screen brightness
-XF86MonBrightness{Up,Down}
-    light -{A,U} 5
+XF86MonBrightnessUp
+    brightnessctl set +5%
+
+XF86MonBrightnessDown
+    brightnessctl set 5%-
 
 # Take a screenshot
-Print
-    flameshot full -p ~/www
-super + s
-    flameshot gui
-super + shift + s
-    teiler
+# Print
+#     flameshot full -p ~/www
+# super + s
+#     flameshot gui
+# super + shift + s
+#     teiler
 
 # OCR a screen selection.
 super + shift + t
@@ -119,22 +111,6 @@ super + q
 # Suspend (F12)
 super + XF86Explorer
     systemctl suspend
-
-# Vim anywhere
-super + v
-    $HOME/library/src/vim-anywhere/bin/run
-
-
-#########
-# Mouse #
-#########
-
-button9
-    xte 'key Page_Up'
-
-button8
-    xte 'key Page_Down'
-
 
 #########
 # Dunst #
@@ -151,3 +127,13 @@ control + shift + space
 # Redisplay last message
 control + grave
     dunstctl history-pop
+
+#############
+# Clipboard #
+#############
+super + shift + c
+  rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# Reload sxhdrc
+super + shift + r
+  pkill -usr1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'

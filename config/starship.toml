@@ -1,0 +1,397 @@
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# format = '''[╭── $os \([$username@$hostname](bold blue)\)-\[$directory\]-($kubernetes)(-$git_branch$git_metrics$git_status)(-$nix_shell)](blue) $cmd_duration
+# [╰─](blue)[$shell](bold blue) '''
+
+# A minimal left prompt
+# format = """$directory$character"""
+# format = """$os $username@$hostname $kubernetes $directory $git_branch $git_status """
+palette = "catppuccin_macchiato"
+# move the rest of the prompt to the right
+right_format = '$status'
+command_timeout = 1000
+
+# [directory]
+# truncation_length = 3
+# truncation_symbol = '…/'
+# truncate_to_repo = true
+# style = 'bold white'
+# format = '[$path]($style)[$read_only]($read_only_style)'
+
+# Shows current directory
+[directory]
+truncation_length = 3
+truncation_symbol = '…/'
+home_symbol = '󰋜 ~'
+read_only_style = '197'
+read_only = '  '
+format = '[$path]($style)[$read_only]($read_only_style)'
+
+[character]
+# success_symbol = '[λ](bold blue)'
+# error_symbol = '[λ](bold red)'
+success_symbol = '[❯](bold blue)'
+error_symbol = '[❯](bold red)'
+# Drop ugly default prompt characters
+# [character]
+# success_symbol = ''
+# error_symbol = ''
+
+[os]
+# format = '[$symbol](bold white) '   
+# format = '\[[$symbol]($style)\]'
+format = '[$symbol]($style) '
+disabled = false
+
+[os.symbols]
+Windows = ' '
+Arch = '󰣇'
+Ubuntu = ''
+Macos = '󰀵'
+
+# Shows the username
+[username]
+# style_user = 'white bold'
+# style_root = 'red bold'
+# format = '[$user]($style) '
+# format = '\[[$user]($style)\]'
+# format = '$user($style)'
+disabled = false
+show_always = true
+
+# Shows the hostname
+[hostname]
+ssh_only = false
+# format = ' on [$hostname](bold yellow) '
+# format = '[$ssh_symbol](bold blue)$hostname'
+disabled = false
+
+# Shows current git branch
+[git_branch]
+# style = 'bold green'
+symbol = ''
+# format = '[$symbol$branch(hello$banch)](bold green)'
+format = '\[[$symbol$branch]($style)\]'
+# symbol = ' '
+# format = 'via [$symbol$branch]($style)'
+# truncation_length = 4
+# truncation_symbol = '…/'
+# style = 'bold green'
+
+# Shows current git status
+# [git_status]
+# modified = '[✘](bold red)'
+# up_to_date = 'up'
+# format = '$up_to_date$modified$up_to_date'
+[git_status]
+# format = '([ \( $all_status$ahead_behind\)]($style) )'
+format = '([\[$all_status$ahead_behind\]]($style))'
+# style = 'bold green'
+conflicted = '[ confliced=${count}](red)'
+up_to_date = '[󰘽 up-to-date](green)'
+untracked = '[󰋗 untracked=${count}](red)'
+ahead = ' ahead=${count}'
+diverged = ' ahead=${ahead_count}  behind=${behind_count}'
+behind = ' behind=${count}'
+stashed = '[ stashed=${count}](green)'
+modified = '[󰛿 modified=${count}](yellow)'
+staged = '[󰐗 staged=${count}](green)'
+renamed = '[󱍸 renamed=${count}](yellow)'
+deleted = '[󰍶 deleted=${count}](red)'
+
+# [aws]
+# format = '[$symbol(profile: "$profile" )(\(region: $region\) )]($style)'
+# disabled = false
+# style = 'bold blue'
+# symbol = "  "
+#
+# [golang]
+# format = '[ ](bold cyan)'
+
+[kubernetes]
+symbol = '☸ '
+disabled = false
+detect_files = ['Dockerfile']
+# format = '[$context(\[$namespace\])]($style) '
+format = '\[[$symbol$context( \($namespace\))]($style)\]'
+
+# [docker_context]
+# disabled = true
+#
+# [helm]
+# disabled = true
+#
+# [python]
+# disabled = false
+
+# [nodejs]
+# disabled = false
+#
+# [ruby]
+# disabled = true
+#
+# [terraform]
+# disabled = true
+
+[cmd_duration]
+min_time = 1_000
+# style = "bold dimmed yellow"
+# format = '◷[$duration]($style) '
+format = '\[[⏱ $duration]($style)\]'
+
+[shell]
+fish_indicator = '󰈺'
+powershell_indicator = '_'
+bash_indicator = '\$'
+zsh_indicator = 'λ'
+unknown_indicator = '?'
+disabled = false
+format = '$indicator '
+
+[status]
+disabled = false
+
+[aws]
+format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+
+[bun]
+format = '\[[$symbol]($style)\]'
+
+[c]
+format = '\[[$symbol($version(-$name))]($style)\]'
+
+[cmake]
+format = '\[[$symbol]($style)\]'
+
+[cobol]
+format = '\[[$symbol]($style)\]'
+
+[conda]
+format = '\[[$symbol$environment]($style)\]'
+
+[crystal]
+format = '\[[$symbol]($style)\]'
+
+[daml]
+format = '\[[$symbol]($style)\]'
+
+[dart]
+format = '\[[$symbol]($style)\]'
+
+[deno]
+format = '\[[$symbol]($style)\]'
+
+[docker_context]
+format = '\[[$symbol$context]($style)\]'
+
+[dotnet]
+format = '\[[$symbol(🎯 $tfm)]($style)\]'
+
+[elixir]
+format = '\[[$symbol($version \(OTP $otp_version\))]($style)\]'
+
+[elm]
+format = '\[[$symbol]($style)\]'
+
+[erlang]
+format = '\[[$symbol]($style)\]'
+
+[fennel]
+format = '\[[$symbol]($style)\]'
+
+[fossil_branch]
+format = '\[[$symbol$branch]($style)\]'
+
+[gcloud]
+disabled = true
+format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+
+# [git_branch]
+# format = '\[[$symbol$branch]($style)\]'
+
+# [git_status]
+# format = '([\[$all_status$ahead_behind\]]($style))'
+
+[golang]
+format = '\[[$symbol]($style)\]'
+
+[gradle]
+format = '\[[$symbol]($style)\]'
+
+[guix_shell]
+format = '\[[$symbol]($style)\]'
+
+[haskell]
+format = '\[[$symbol]($style)\]'
+
+[haxe]
+format = '\[[$symbol]($style)\]'
+
+[helm]
+format = '\[[$symbol]($style)\]'
+
+[hg_branch]
+format = '\[[$symbol$branch]($style)\]'
+
+[java]
+format = '\[[$symbol]($style)\]'
+
+[julia]
+format = '\[[$symbol]($style)\]'
+
+[kotlin]
+format = '\[[$symbol]($style)\]'
+
+# [kubernetes]
+# format = '\[[$symbol$context( \($namespace\))]($style)\]'
+
+[lua]
+format = '\[[$symbol]($style)\]'
+
+[memory_usage]
+format = '\[$symbol[$ram( | $swap)]($style)\]'
+
+[meson]
+format = '\[[$symbol$project]($style)\]'
+
+[nim]
+format = '\[[$symbol]($style)\]'
+
+[nix_shell]
+format = '\[[$symbol$state( \($name\))]($style)\]'
+
+[nodejs]
+disabled = false
+format = '\[[$symbol]($style)\]'
+
+[ocaml]
+format = '\[[$symbol(\($switch_indicator$switch_name\))]($style)\]'
+
+[opa]
+format = '\[[$symbol]($style)\]'
+
+[openstack]
+format = '\[[$symbol$cloud(\($project\))]($style)\]'
+
+# [os]
+# format = '\[[$symbol]($style)\]'
+
+[package]
+format = '\[[$symbol$version]($style)\]'
+
+[perl]
+format = '\[[$symbol]($style)\]'
+
+[php]
+format = '\[[$symbol]($style)\]'
+
+[pijul_channel]
+format = '\[[$symbol$channel]($style)\]'
+
+[pulumi]
+format = '\[[$symbol$stack]($style)\]'
+
+[purescript]
+format = '\[[$symbol]($style)\]'
+
+[python]
+format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
+
+[raku]
+format = '\[[$symbol($version-$vm_version)]($style)\]'
+
+[red]
+format = '\[[$symbol]($style)\]'
+
+[ruby]
+format = '\[[$symbol]($style)\]'
+
+[rust]
+format = '\[[$symbol]($style)\]'
+
+[scala]
+format = '\[[$symbol]($style)\]'
+
+[spack]
+format = '\[[$symbol$environment]($style)\]'
+
+[sudo]
+format = '\[[as $symbol]($style)\]'
+
+[swift]
+format = '\[[$symbol]($style)\]'
+
+[terraform]
+format = '\[[$symbol$workspace]($style)\]'
+
+[time]
+format = '\[[$time]($style)\]'
+
+[vagrant]
+format = '\[[$symbol]($style)\]'
+
+[vlang]
+format = '\[[$symbol]($style)\]'
+
+[zig]
+format = '\[[$symbol]($style)\]'
+
+[solidity]
+format = '\[[$symbol]($style)\]'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
