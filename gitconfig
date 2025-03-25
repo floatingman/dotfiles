@@ -1,10 +1,10 @@
 [user]
   email = dan@danlovesprogramming.com
-  name = Daniel Newman
+  name = floatingman
 [credential]
   username = floatingman
 [core]
-    excludesfile = /home/dnewman/.gitignore_global
+    excludesfile = ~/.gitignore_global
     pager = delta
     autocrlf = input
     editor = vim
@@ -61,7 +61,7 @@
     default = simple
     followTags = true
 [diff]
-    tool = vim
+    tool = nvim
     guitool = diffmerge
     submodule = log
     algorithm = patience
@@ -191,3 +191,7 @@
     today = log --stat --since=\"1 Day Ago\" --graph --pretty=oneline --abbrev-commit --date=relative
 [url "git@github.com:floatingman"]
     insteadOf = https://github.com/floatingman
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true

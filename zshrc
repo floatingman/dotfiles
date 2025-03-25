@@ -1,56 +1,22 @@
-[[ $- == *i* ]] && stty -ixon
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/home/dnewman/.zsh/completions:"* ]]; then export FPATH="/home/dnewman/.zsh/completions:$FPATH"; fi
+# Set the shell to zsh
+# export SHELL=/bin/zsh
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# Something for me to see where aliases get defined
+# Use 256 colors
+# export TERM=xterm-256color
+export LANG=en_US.UTF8
 
-###########
-# plugins #
-###########
+## Import locations
+export ZSH_CUSTOM=~/.config/zsh/custom/
+export ZSH_ENV_HOME=$HOME/
 
-# path to the local dotfiles repository
-if [ -d "$HOME/.dotfiles" ]; then
-  export DOTFILES="$HOME/.dotfiles"
-else
-  echo "could not find ~/.dotfiles directory"
-  return
-fi
+export XDG_CONFIG_HOME=$HOME/.config/
 
-# enable colour support
-export TERM="xterm-256color"
-
-# enable timestamps in history
-export HIST_STAMPS="yyyy-mm-dd"
-
-# set platform name so that we can run scripts based on the OS
-unamestr=$(uname)
-if [[ "$unamestr" == 'Linux' ]]; then
-  platform='linux'
-  if [[ -d "/run/WSL" ]]; then
-    platform_wsl='true'
-  elif grep -q microsoft /proc/version; then
-    platform_wsl='true'
-  else
-    platform_wsl='false'
-  fi
-elif [[ "$unamestr" == 'Darwin' ]]; then
-  #.config/shellcheck disable=SC2034
-  platform='macos'
-  #.config/shellcheck disable=SC2034
-  platform_wsl='false'
-  if [[ `uname -m` == 'arm64' ]]; then
-    platform_apple_silicon='true'
-  fi
-fi
-unset unamestr
-##############
-# Navigation #
-##############
+## ZSH options
+setopt functionargzero
 setopt AUTO_CD              # Go to folder path without using cd.
-
 setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
 setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
@@ -62,11 +28,13 @@ setopt RCEXPANDPARAM        # Array expansion with parameters.
 setopt NUMERICGLOBSORT      # Sort filenames numerically when it makes sense.
 setopt NOBEEP               # Don't beep when an error occurs.
 
+## ZSH environment options
 
 # Load ZSH Options
 # all of our zsh files
 typeset -U config_files
-config_files=($DOTFILES/zsh/*/*.zsh)
+config_files=($XDG_CONFIG_HOME/zsh/*/*.zsh)
+
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}; do
@@ -78,15 +46,11 @@ for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}; do
   source "$file"
 done
 
-autoload -Uz compinit
-typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
-if [ $(date +'%j') != $updated_at ]; then
-  compinit
-else
-  compinit -C
-fi
+## ZSH plugins
+# fpath=($XDG_CONFIG_HOME/zsh/submods/gcloud-zsh-completion/src/ $fpath)
 
 autoload -U +X bashcompinit && bashcompinit
+autoload -U +X compinit && compinit
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}; do
@@ -95,36 +59,34 @@ done
 
 unset config_files
 
+# Setup dotfiles bare repository usuage
+alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+if [[ $(whence -w __git_complete) == 'function' ]]; then
+  __git_complete dotfiles git
+fi
 
-bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd to selected directory
-
-# source zsh
-[ -f $HOME/.config/shell/zshenv ] && source $HOME/.config/shell/zshenv
-[ -f $HOME/.profile ] && source $HOME/.profile
-[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-[ -f $HOME/.fzf/shell/key-bindings.zsh ] && source $HOME/.fzf/shell/key-bindings.zsh
-# [ -f $HOME/.shell/fzf-tab/fzf-tab.plugin.zsh ] && source $HOME/.shell/fzf-tab/fzf-tab.plugin.zsh
-# enable-fzf-tab
-# [ -d $HOME/.shell/fast-syntax-Highlighting ] && source $HOME/.shell/fast-syntax-Highlighting/fast-syntax-highlighting.plugin.zsh
-# [ -f $HOME/.shell/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source  $HOME/.shell/zsh-autosuggestions/zsh-autosuggestions.zsh
-# [ -f $HOME/.shell/zsh-history-substring-search/zsh-history-substring-search.zsh ] && source $HOME/.shell/zsh-history-substring-search/zsh-history-substring-search.zsh
-# [ -d $HOME/.shell/zsh-completions/ ] &&  fpath=($HOME/.shell/zsh-completions/src $fpath)
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_ALT_C_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'tree -C {}'"
 
 # source apps
 export _ZO_FZF_OPTS="$_FZF_DEFAULT_OPTS --select-1 --exit-0 --height=25% --reverse --no-sort --cycle"
 export _ZO_DATA_DIR=$HOME/.zoxide
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+compdef __zoxide_z_complete j
 command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 [ -d $HOME/.config/broot/launcher/bash/br ] && source $HOME/.config/broot/launcher/bash/br
-
-
-# ===================
-#    MISC SETTINGS
-# ===================
-
-# Fly.io settings
-export FLYCTL_INSTALL="/home/floatingman/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # load private things if there
 [ -f "$HOME/.zsh_private" ] && source "$HOME/.zsh_private"
@@ -132,13 +94,24 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 # load mac things if there
 [ -f "$HOME/.zsh_mac" ] && source "$HOME/.zsh_mac"
 
+
+# Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
+# bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'                # find file and cd to selected directory
 
-# add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
-export PATH=$PATH:/usr/local/go/bin
+# Enable Ctrl-xe to edit command line
+autoload -U edit-command-line
+# Emacs style
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+# Vi style:
+# zle -N edit-command-line
+# bindkey -M vicmd v edit-command-line
 
-### Added by Zinit's installer
+
+# ZSH Plugins
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -167,13 +140,32 @@ zinit light zdharma-continuum/history-search-multi-word
 # forgit for easier gitting
 zinit load wfxr/forgit
 
-# Two regular plugins loaded without investigating.
 zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-completions
 zinit light zdharma-continuum/fast-syntax-highlighting
 
-# Load Powerlevel10k theme
-zinit ice depth"1" # git clone depth
-zinit light romkatv/powerlevel10k
+zinit light agkozak/zsh-z
+zinit light Aloxaf/fzf-tab
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Load starship theme
+# line 1: `starship` binary as command, from github release
+# line 2: starship setup at clone(create init.zsh, completion)
+# line 3: pull behavior same as clone, source init.zsh
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# . "$HOME/.atuin/bin/env"
+
+# eval "$(atuin init zsh)"
+[[ -d "$HOME/.cargo" ]] && source "$HOME/.cargo/env"
+[[ -d "$HOME/.deno" ]] && source "/home/dnewman/.deno/env"
+
+
+# Added by LM Studio CLI (lms)
+[[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"

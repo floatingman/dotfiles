@@ -1,77 +1,43 @@
 ! font settings
-Xft.dpi:        96
-Xft.antialias:  true
-Xft.hinting:    true
-Xft.rgba:       rgb
-Xft.hintstyle:  hintslight
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.hintstyle: hintslight
 
-! reclaim ctrl+shift
-URxvt.iso14755: false
+! Catpuccin Mocha colors
 
-! disable the scrollbar
-URxvt.scrollBar: none
+*background: #1E1E2E
+*foreground: #CDD6F4
 
-! font
-URxvt.font: xft:Inconsolata:size=14
+! black
+*color0: #45475A
+*color8: #585B70
 
-! enabled clipboard and selectable URLs
-URxvt.perl-ext-common:  default,clipboard,url-select
+! red
+*color1: #F38BA8
+*color9: #F38BA8
 
-! set copy/paste shortcuts
-URxvt.keysym.Control-Shift-C: perl:clipboard:copy
-URxvt.keysym.Control-Shift-V: perl:clipboard:paste
+! green
+*color2: #A6E3A1
+*color10: #A6E3A1
 
-! set a taskbar icon
-URxvt.iconFile:         /usr/share/icons/oxygen/16x16/apps/utilities-terminal.png
+! yellow
+*color3: #F9E2AF
+*color11: #F9E2AF
 
-! configure selectable URLs
-URxvt.keysym.M-u:           perl:url-select:select_next
-URxvt.url-select.launcher:  xdg-open
-URxvt.url-select.underline: true
+! blue
+*color4: #89B4FA
+*color12: #89B4FA
 
-! colors
-! Base16 Gruvbox dark, medium
-! Scheme: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+! magenta
+*color5: #F5C2E7
+*color13: #F5C2E7
 
-#define base00 #282828
-#define base01 #3c3836
-#define base02 #504945
-#define base03 #665c54
-#define base04 #bdae93
-#define base05 #d5c4a1
-#define base06 #ebdbb2
-#define base07 #fbf1c7
-#define base08 #fb4934
-#define base09 #fe8019
-#define base0A #fabd2f
-#define base0B #b8bb26
-#define base0C #8ec07c
-#define base0D #83a598
-#define base0E #d3869b
-#define base0F #d65d0e
+! cyan
+*color6: #94E2D5
+*color14: #94E2D5
 
-*foreground:   base05
-#ifdef background_opacity
-*background:   [background_opacity]base00
-#else
-*background:   base00
-#endif
-*cursorColor:  base05
-
-*color0:       base00
-*color1:       base08
-*color2:       base0B
-*color3:       base0A
-*color4:       base0D
-*color5:       base0E
-*color6:       base0C
-*color7:       base05
-
-*color8:       base03
-*color9:       base09
-*color10:      base01
-*color11:      base02
-*color12:      base04
-*color13:      base06
-*color14:      base0F
-*color15:      base07
+! white
+*color7: #BAC2DE
+*color15: #A6ADC8

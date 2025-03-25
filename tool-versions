@@ -1,0 +1,14 @@
+nodejs 23.5.0
+terraform 1.10.5
+ruby 3.4.2
+kubectl 1.29.3
+helm 3.14.0
+concourse 7.11.2
+packer 1.10.2
+minikube 1.32.0
+aws-vault experimental
+golang 1.23.6
+awscli 2.24.12
+chezmoi 2.60.0
+dotnet-core 9.0.200
+go system

@@ -35,8 +35,8 @@ Desktop.ini
 
 # Editors #
 ###########
-# .idea/*
-# .idea
+.idea/*
+.idea
 
 # autoenv and pyenv scripts #
 #############################
@@ -55,3 +55,10 @@ Desktop.ini
 # Local .env file #
 ###################
 .env
+
+# Test results #
+################
+results.xml
+
+# Ignore Aider
+.aider*
