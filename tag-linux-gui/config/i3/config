@@ -183,8 +183,8 @@ bindsym $mod+r mode "resize"
 # exec_always --no-startup-id ff-theme-util
 # exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id sxhkd
-exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --timer 360 "betterlockscreen -l dim" "" 
-exec_always --no-startup-id mpd 
+exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --timer 360 "betterlockscreen -l dim" ""
+exec_always --no-startup-id mpd
 exec_always --no-startup-id unclutter
 exec_always --no-startup-id udiskie
 exec_always --no-startup-id synology-drive
@@ -195,7 +195,7 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id pasystray
 exec_always --no-startup-id nm-applet
 exec_always --no-startup-id redswitch -g
-exec_always --no-startup-id blueman-applet 
+exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id com.symless.synergy
 exec_always --no-startup-id syncthingtray
 
@@ -251,8 +251,8 @@ for_window [title="^edit_text$"] floating enable
 hide_edge_borders both
 
 # Assign MPV to workspace 4 and focus
-# assign [class="mpv"] 3
-# for_window [class="mpv"] focus
+assign [class="mpv"] 3
+for_window [class="mpv"] focus
 
 # include $HOME/.config/i3/themes/catpuccin-frappe
 # include $HOME/.config/i3/themes/catpuccin-latte
