@@ -196,7 +196,7 @@ exec_always --no-startup-id pasystray
 exec_always --no-startup-id nm-applet
 exec_always --no-startup-id redswitch -g
 exec_always --no-startup-id blueman-applet
-exec_always --no-startup-id com.symless.synergy
+exec_always --no-startup-id synergy
 exec_always --no-startup-id syncthingtray
 
 
