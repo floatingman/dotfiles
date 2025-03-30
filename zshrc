@@ -163,9 +163,6 @@ zinit light starship/starship
 # . "$HOME/.atuin/bin/env"
 
 # eval "$(atuin init zsh)"
-[[ -d "$HOME/.cargo" ]] && source "$HOME/.cargo/env"
-[[ -d "$HOME/.deno" ]] && source "/home/dnewman/.deno/env"
-
 
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"

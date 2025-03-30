@@ -5,31 +5,31 @@
 
 # Load blesh
 if $_isarch; then
-	[[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
+  [[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
 else
-	[[ -d $HOME/.local/share/blesh ]] && source "$HOME/.local/share/blesh/ble.sh"
+  [[ -d $HOME/.local/share/blesh ]] && source "$HOME/.local/share/blesh/ble.sh"
 fi
 
 # User specific aliases, environment, and functions
 homebrew="$(command -v {/opt/homebrew,/usr/local}/bin/brew 2>/dev/null)"
 if [[ -n $homebrew ]]; then
-	if [[ -z ${HOMEBREW_REPOSITORY+x} ]]; then
-		# shellcheck disable=SC2046
-		eval $(env -i HOME="$HOME" "$homebrew" shellenv)
-	else
-		# shellcheck disable=SC2046
-		eval $(env -i HOME="$HOME" "$homebrew" shellenv | grep -w PATH=)
-	fi
+  if [[ -z ${HOMEBREW_REPOSITORY+x} ]]; then
+    # shellcheck disable=SC2046
+    eval $(env -i HOME="$HOME" "$homebrew" shellenv)
+  else
+    # shellcheck disable=SC2046
+    eval $(env -i HOME="$HOME" "$homebrew" shellenv | grep -w PATH=)
+  fi
 fi
 unset homebrew
 
 # enable bash completion in interactive shells
 if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-		. /etc/bash_completion
-	fi
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
 
 # if [[ $OSTYPE = darwin* ]] && [[ $TERM = tmux-256color ]]; then
@@ -82,7 +82,7 @@ eval "$(zoxide init bash)"
 # fi
 
 if [[ -d "$HOME/.fzf/bin/" ]]; then
-	eval "$(fzf --bash)"
+  eval "$(fzf --bash)"
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -98,14 +98,12 @@ eval "$(starship init bash)"
 # modify the title bar, too
 # PS1="\[\e]0;\u@\h: \w\a\]$PS1"
 
-[[ -d "$HOME/.cargo/" ]] && . "$HOME/.cargo/env"
-[[ -d "$HOME/.deno/" ]] && . "$HOME/.deno/env"
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 
 if [ -e "/usr/bin/asdf" ]; then
-	export ASDF_DATA_DIR="${HOME}/.asdf"
-	export PATH="$ASDF_DATA_DIR/shims:$PATH"
+  export ASDF_DATA_DIR="${HOME}/.asdf"
+  export PATH="$ASDF_DATA_DIR/shims:$PATH"
 fi
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
