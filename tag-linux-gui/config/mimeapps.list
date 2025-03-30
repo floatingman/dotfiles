@@ -19,3 +19,6 @@ text/x-csrc=geany.desktop;
 
 [Default Applications]
 image/png=viewnior.desktop
+application/x-synology-drive-doc=synology-drive-open-file.desktop
+application/x-synology-drive-sheet=synology-drive-open-file.desktop
+application/x-synology-drive-slides=synology-drive-open-file.desktop
