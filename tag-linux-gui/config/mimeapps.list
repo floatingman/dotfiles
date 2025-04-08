@@ -1,5 +1,5 @@
 [Added Associations]
-text/plain=geany.desktop;
+text/plain=code.desktop;geany.desktop;
 application/x-shellscript=geany.desktop;
 application/x-genesis-rom=geany.desktop;
 application/xml=geany.desktop;
