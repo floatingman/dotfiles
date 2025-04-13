@@ -2,7 +2,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-include $HOME/.config/i3/themes/catpuccin-mocha
+include $HOME/.config/i3/themes/catpuccin-macchiato
 
 # Set the mod key
 #
@@ -10,7 +10,8 @@ set $mod Mod4
 
 # Font for win the dow titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
-font pango:JetBrainsMono Nerd Font Regular 12
+font pango:JetBrainsMono Nerd Font Regular 15
+# font pango:monospace 15px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -176,10 +177,8 @@ bindsym $mod+r mode "resize"
 # Autostart applications
 # exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # exec --no-startup-id nitrogen --restore; sleep 1; picom -b
-# exec --no-startup-id nm-applet
 # exec --no-startup-id xfce4-power-manager
 # exec --no-startup-id pamac-tray
-# exec --no-startup-id xautolock -time 10 -locker blurlock
 # exec_always --no-startup-id ff-theme-util
 # exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id sxhkd
