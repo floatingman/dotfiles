@@ -108,4 +108,4 @@ fi
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 bleopt highlight_syntax=true
-eval "$(atuin init bash)"
+# eval "$(atuin init bash)"
