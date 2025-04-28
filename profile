@@ -70,6 +70,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 [ -d "$HOME/.local/opt/go" ] && export PATH=$PATH:"$HOME/.local/opt/go/bin"
 [ -d "$HOME/go/bin" ] && export PATH=$PATH:"$HOME/go/bin"
+[ -d "$HOME/.dotnet/tools" ] && export PATH=$PATH:"$HOME/.dotnot/tools"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

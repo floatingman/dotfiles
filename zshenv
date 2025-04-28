@@ -8,7 +8,6 @@ export XDG_CONFIG_HOME=$HOME/.config/
 
 export fpath=(~/.config/zsh/completions/ $fpath)
 
-[ -d $HOME/.local/bin ] && export PATH=$PATH:$HOME/.local/bin
 [ -d $HOME/.luarocks/bin ] && export PATH=$PATH:$HOME/.luarocks/bin
 [ -f $HOME/.config/shell/aliases ] && source $HOME/.config/shell/aliases
 [ -f $HOME/.shell/kubectl_aliases ] && source $HOME/.shell/kubectl_aliases
