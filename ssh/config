@@ -1,6 +1,6 @@
 Host 45.33.107.248
   User jumpuser
-  IdentityFile /Users/maxross/Documents/tools/ssh-keys/jenkins-elliptic-validation.pem
+  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
 
 Host ec2-*
   ProxyJump 45.33.107.248
