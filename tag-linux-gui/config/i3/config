@@ -10,7 +10,7 @@ set $mod Mod4
 
 # Font for win the dow titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
-font pango:JetBrainsMono Nerd Font Regular 15
+font pango:JetBrainsMono Nerd Font Regular 12
 # font pango:monospace 15px
 
 # Use Mouse+$mod to drag floating windows to their wanted position

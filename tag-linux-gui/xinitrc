@@ -2,4 +2,4 @@
 
 [ -f ~/.xprofile ] && source ~/.xprofile
 
-exec awesome
+# exec awesome
