@@ -100,6 +100,7 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # move current workspace to different output
+# bindsym $mod+x move workspace to output left
 bindsym $mod+x move workspace to output up
 
 # mark windows

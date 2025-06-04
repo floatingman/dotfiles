@@ -56,7 +56,7 @@ super + space
 alt + Tab
   rofi -show window
 
-# File Explorer 
+# File Explorer
 super + e
   thunar
 
@@ -82,7 +82,7 @@ super + z
 ########
 
 # Lock the screen
-super + l
+alt + shift + l
     /usr/local/bin/lock
 
 # Change screen brightness
