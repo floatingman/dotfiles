@@ -44,7 +44,7 @@ super + m
 ################
 # Launch web browser
 super + w
-    firefox -P default-release
+    firefox -P default
 
 # Launch application launcher
 super + {d,p,s}
