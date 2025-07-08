@@ -1561,7 +1561,7 @@ get_aws() {
     esac
 }
 
-drop_aws() { 
+drop_aws() {
 	aws ec2 terminate-instances \
 	--instance-ids "$1" "$2" "$3" "$4" "$5"
 }
@@ -1577,7 +1577,7 @@ drop_AAWS() {
 		echo "$_ARRAY"
     	for id in "${_ARRAY[@]}"
 			do
-				drop_aws "$id" 
+				drop_aws "$id"
 			done
 	fi
 }
@@ -1596,7 +1596,7 @@ get_lbname(){
 }
 
 drop_awslb(){
-	aws elbv2 delete-load-balancer --load-balancer-arn "$1" # aws cli doesn't seem to support multiple arns? 
+	aws elbv2 delete-load-balancer --load-balancer-arn "$1" # aws cli doesn't seem to support multiple arns?
 }
 
 # Delete a given line number in the known_hosts file.
@@ -1632,7 +1632,7 @@ klctx() {
     # shellcheck disable=SC1083
     local SEARCH="${1:-$HOME/Downloads}"
     [[ "$1" == "-" ]] && SEARCH="$HOME/.kube"
-    local KUBE=$(ls "$SEARCH" -p -t | grep -v / | fzf)
+    local KUBE=$(ls "$SEARCH" -t modified | grep -v / | fzf)
     if [[ -n "$KUBE" ]]; then
       export KUBECONFIG="${SEARCH%/}/$KUBE"
     fi
