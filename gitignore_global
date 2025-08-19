@@ -62,3 +62,9 @@ results.xml
 
 # Ignore Aider
 .aider*
+
+# Ignore folders containing "roo" in the name
+*roo*/
+
+# Ignore copilot
+copilot-instructions.md
