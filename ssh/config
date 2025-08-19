@@ -4,11 +4,11 @@ Host 45.33.107.248
 
 Host ec2-*
   ProxyJump 45.33.107.248
-  IdentityFile ~/.ssh/id_ed25519_suse_nopw
+  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
 
 Host "52.*", "18.*", "13.*", "3.*"
   ProxyJump 45.33.107.248
-  IdentityFile ~/.ssh/id_ed25519_suse_nopw
+  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
 
 Host *
   AddKeysToAgent yes
