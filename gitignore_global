@@ -66,5 +66,7 @@ results.xml
 # Ignore folders containing "roo" in the name
 *roo*/
 
+*kilocode*/
+
 # Ignore copilot
 copilot-instructions.md
