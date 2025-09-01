@@ -167,3 +167,6 @@ zinit light starship/starship
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 [[ -d "$HOME/.arkade/" ]] && export PATH=$PATH:$HOME/.arkade/bin
+
+# SSH keychain setup - cache SSH key passphrases
+eval $(keychain --eval --agents ssh id_ed25519_dlp id_ed25519_suse)
