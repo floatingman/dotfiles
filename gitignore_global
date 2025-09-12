@@ -74,6 +74,7 @@ results.xml
 # Ignore copilot
 copilot-instructions.md
 
+# Ignore byterover
 .clinerules/byterover-rules.md
 .kilocode/rules/byterover-rules.md
 .roo/rules/byterover-rules.md
