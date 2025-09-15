@@ -51,6 +51,7 @@ Variants {
         property int wallpaperHeight: modelData.height // Some reasonable init value, to be updated
         property real movableXSpace: ((wallpaperWidth / wallpaperToScreenRatio * effectiveWallpaperScale) - screen.width) / 2
         property real movableYSpace: ((wallpaperHeight / wallpaperToScreenRatio * effectiveWallpaperScale) - screen.height) / 2
+        readonly property bool verticalParallax: (Config.options.background.parallax.autoVertical && wallpaperHeight > wallpaperWidth) || Config.options.background.parallax.vertical
         // Position
         property real clockX: (modelData.width / 2) + ((Math.random() < 0.5 ? -1 : 1) * modelData.width)
         property real clockY: (modelData.height / 2) + ((Math.random() < 0.5 ? -1 : 1) * modelData.height)
@@ -166,6 +167,7 @@ Variants {
             cache: false
             asynchronous: true
             retainWhileLoading: true
+            smooth: false
             // Range = groups that workspaces span on
             property int chunkSize: Config?.options.bar.workspaces.shown ?? 10;
             property int lower: Math.floor(bgRoot.firstWorkspaceId / chunkSize) * chunkSize;
@@ -173,7 +175,7 @@ Variants {
             property int range: upper - lower;
             property real valueX: {
                 let result = 0.5;
-                if (Config.options.background.parallax.enableWorkspace && !Config.options.background.parallax.vertical) {
+                if (Config.options.background.parallax.enableWorkspace && !bgRoot.verticalParallax) {
                     result = ((bgRoot.monitor.activeWorkspace?.id - lower) / range);
                 }
                 if (Config.options.background.parallax.enableSidebar) {
@@ -183,7 +185,7 @@ Variants {
             }
             property real valueY: {
                 let result = 0.5;
-                if (Config.options.background.parallax.enableWorkspace && Config.options.background.parallax.vertical) {
+                if (Config.options.background.parallax.enableWorkspace && bgRoot.verticalParallax) {
                     result = ((bgRoot.monitor.activeWorkspace?.id - lower) / range);
                 }
                 return result;
@@ -212,6 +214,14 @@ Variants {
             }
             width: bgRoot.wallpaperWidth / bgRoot.wallpaperToScreenRatio * bgRoot.effectiveWallpaperScale
             height: bgRoot.wallpaperHeight / bgRoot.wallpaperToScreenRatio * bgRoot.effectiveWallpaperScale
+            // scale: GlobalStates.screenLocked ? 1.04 : 1
+            // Behavior on scale {
+            //     NumberAnimation {
+            //         duration: 400
+            //         easing.type: Easing.BezierSpline
+            //         easing.bezierCurve: Appearance.animationCurves.expressiveDefaultSpatial
+            //     }
+            // }
         }
 
         // The clock
