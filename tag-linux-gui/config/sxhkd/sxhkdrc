@@ -44,7 +44,7 @@ super + m
 ################
 # Launch web browser
 super + w
-    firefox -P default
+    google-chrome-stable
 
 # Launch application launcher
 super + {d,p,s}

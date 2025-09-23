@@ -170,3 +170,6 @@ zinit light starship/starship
 
 # SSH keychain setup - cache SSH key passphrases
 eval $(keychain --eval --agents ssh id_ed25519_dlp id_ed25519_suse)
+
+# opencode
+[[ -d "$HOME/.opencode/" ]] && export PATH=/home/dnewman/.opencode/bin:$PATH
