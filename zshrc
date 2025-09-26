@@ -173,3 +173,6 @@ eval $(keychain --eval --agents ssh id_ed25519_dlp id_ed25519_suse)
 
 # opencode
 [[ -d "$HOME/.opencode/" ]] && export PATH=/home/dnewman/.opencode/bin:$PATH
+
+# linuxbrew
+[[ -d "$HOME/.linuxbrew/" ]] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) && complete -o nospace -C /home/linuxbrew/.linuxbrew/Cellar/opentofu/1.10.6/bin/tofu tofu

@@ -109,3 +109,5 @@ fi
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 bleopt highlight_syntax=true
 # eval "$(atuin init bash)"
+
+[[ -d ~/.linuxbrew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && complete -C /home/linuxbrew/.linuxbrew/Cellar/opentofu/1.10.6/bin/tofu tofu
