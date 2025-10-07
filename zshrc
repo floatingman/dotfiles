@@ -5,7 +5,7 @@ if [[ ":$FPATH:" != *":/home/dnewman/.zsh/completions:"* ]]; then export FPATH="
 
 # Something for me to see where aliases get defined
 # Use 256 colors
-# export TERM=xterm-256color
+export TERM=xterm-256color
 export LANG=en_US.UTF8
 
 ## Import locations
