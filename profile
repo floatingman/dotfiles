@@ -20,7 +20,7 @@ _isroot=false
 # Terminal
 #
 
-export TERMINAL='kitty'
+export TERMINAL='wezterm'
 
 #
 # Editors
