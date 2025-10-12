@@ -16,6 +16,10 @@ text/plain=code-3.desktop;code-2.desktop;code.desktop;geany.desktop;
 text/x-csrc=geany.desktop;
 text/x-matlab=geany.desktop;
 video/mp4=mpv.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-6GNAE3.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-6GNAE3.desktop;
+x-scheme-handler/webcal=userapp-Thunderbird-T1P9D3.desktop;
+x-scheme-handler/webcals=userapp-Thunderbird-T1P9D3.desktop;
 
 [Default Applications]
 application/x-synology-drive-doc=synology-drive-open-file.desktop
@@ -28,3 +32,10 @@ x-scheme-handler/about=google-chrome.desktop
 x-scheme-handler/http=google-chrome.desktop
 x-scheme-handler/https=google-chrome.desktop
 x-scheme-handler/unknown=google-chrome.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-6GNAE3.desktop
+message/rfc822=userapp-Thunderbird-6GNAE3.desktop
+x-scheme-handler/mid=userapp-Thunderbird-6GNAE3.desktop
+x-scheme-handler/webcal=userapp-Thunderbird-T1P9D3.desktop
+text/calendar=userapp-Thunderbird-T1P9D3.desktop
+application/x-extension-ics=userapp-Thunderbird-T1P9D3.desktop
+x-scheme-handler/webcals=userapp-Thunderbird-T1P9D3.desktop
