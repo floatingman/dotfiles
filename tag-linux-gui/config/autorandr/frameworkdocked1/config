@@ -20,8 +20,6 @@ output DisplayPort-9
 off
 output DisplayPort-10
 off
-output DisplayPort-11
-off
 output DisplayPort-12
 off
 output eDP-1-0
@@ -41,7 +39,7 @@ x-prop-tearfree auto
 x-prop-underscan off
 x-prop-underscan_hborder 0
 x-prop-underscan_vborder 0
-output DisplayPort-14
+output DisplayPort-11
 crtc 0
 mode 2560x1440
 pos 0x1440
