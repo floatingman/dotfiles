@@ -4,3 +4,4 @@
 
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/bin" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
+. "$HOME/.cargo/env"

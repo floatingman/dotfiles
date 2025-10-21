@@ -71,3 +71,4 @@ else
         sshd|*/sshd) IS_SSH=true
     esac
 fi
+. "$HOME/.cargo/env"

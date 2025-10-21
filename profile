@@ -80,8 +80,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-[[ -d "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-[[ -d "$HOME/.deno" ]] && source "$HOME/.deno/env"
+[[ -d "$HOME/.cargo/env" ]] && [[ -d "$HOME/.deno" ]] && source "$HOME/.deno/env"
 
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/bin" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
+. "$HOME/.cargo/env"
