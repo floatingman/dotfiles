@@ -183,7 +183,7 @@ bindsym $mod+r mode "resize"
 # exec_always --no-startup-id ff-theme-util
 # exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id sxhkd
-exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --timer 360 "betterlockscreen -l dim" ""
+exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --timer 360 "betterlockscreen -l dim" "--socket /tmp/xidlehook.sock"
 exec_always --no-startup-id mpd
 exec_always --no-startup-id unclutter
 exec_always --no-startup-id udiskie

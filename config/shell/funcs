@@ -1637,3 +1637,13 @@ klctx() {
       export KUBECONFIG="${SEARCH%/}/$KUBE"
     fi
 }
+
+# Delete all empty subdirectories in a directory
+rmempty() {
+  local target="${1:-.}"
+  if [[ ! -d "$target" ]]; then
+    echo "Error: $target is not a directory" >&2
+    return 1
+  fi
+  find "$target" -type d -empty -delete
+}
