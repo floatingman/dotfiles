@@ -1647,3 +1647,7 @@ rmempty() {
   fi
   find "$target" -type d -empty -delete
 }
+
+play_videos_newest() {
+    find . -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" -o -iname "*.mov" -o -iname "*.wmv" -o -iname "*.flv" -o -iname "*.webm" -o -iname "*.m4v" \) -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2- | xargs -d '\n' mpv
+}
