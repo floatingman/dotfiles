@@ -1,14 +1,13 @@
 nodejs 24.9.0
-terraform 1.14.5
 ruby 4.0.1
 kubectl 1.35.1
+terraform 1.14.5
 helm 4.1.1
 concourse 8.0.1
 packer 1.15.0
 minikube 1.38.0
 aws-vault 7.2.0
 golang 1.25.7
-chezmoi 2.69.4
 dotnet-core 10.0.3
 opentofu 1.11.4
 awscli 2.33.25
