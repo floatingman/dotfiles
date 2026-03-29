@@ -85,3 +85,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/bin" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 . "$HOME/.cargo/env"
+
+# ByteRover CLI
+export PATH="$HOME/.brv-cli/bin:$PATH"

@@ -39,3 +39,4 @@ x-scheme-handler/webcal=userapp-Thunderbird-T1P9D3.desktop
 text/calendar=userapp-Thunderbird-T1P9D3.desktop
 application/x-extension-ics=userapp-Thunderbird-T1P9D3.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-T1P9D3.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop

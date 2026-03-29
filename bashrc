@@ -113,3 +113,6 @@ bleopt highlight_syntax=true
 [[ -d ~/.linuxbrew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && complete -C /home/linuxbrew/.linuxbrew/Cellar/opentofu/1.10.6/bin/tofu tofu
 . "$HOME/.cargo/env"
 source "$HOME/.cargo/env"
+
+# ByteRover CLI
+export PATH="$HOME/.brv-cli/bin:$PATH"
