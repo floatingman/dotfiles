@@ -71,9 +71,6 @@ results.xml
 *claude*/
 *CLAUDE.md*
 
-# Ignore copilot
-copilot-instructions.md
-
 # Ignore byterover
 .clinerules/byterover-rules.md
 .kilocode/rules/byterover-rules.md

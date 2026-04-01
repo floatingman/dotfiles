@@ -332,3 +332,7 @@ ccc() {
 
 # ByteRover CLI
 export PATH="$HOME/.brv-cli/bin:$PATH"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/dnewman/.sdkman"
+[[ -s "/home/dnewman/.sdkman/bin/sdkman-init.sh" ]] && source "/home/dnewman/.sdkman/bin/sdkman-init.sh"
