@@ -38,6 +38,6 @@ map ctrl+kp_0 change_font_size all 0
 allow_remote_control yes
 
 # BEGIN_KITTY_THEME
-# Doom One Light
+# Catppuccin-Mocha
 include current-theme.conf
 # END_KITTY_THEME
