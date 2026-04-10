@@ -25,8 +25,8 @@ wezterm.on("gui-startup", function()
 end)
 
 return {
-  color_scheme = "Night Owl (Gogh)",
-  -- color_scheme = scheme_for_appearance(get_appearance()),
+  -- color_scheme = "Night Owl (Gogh)",
+  color_scheme = scheme_for_appearance(get_appearance()),
   enable_tab_bar = false,
   font = wezterm.font("JetBrainsMono Nerd Font"),
   font_size = 14,
