@@ -7,6 +7,7 @@ if [[ ":$FPATH:" != *":/home/dnewman/.zsh/completions:"* ]]; then export FPATH="
 # Use 256 colors
 export TERM=xterm-256color
 export LANG=en_US.UTF8
+export LC_ALL=en_US.UTF-8
 
 ## Import locations
 export ZSH_CUSTOM=~/.config/zsh/custom/
@@ -254,7 +255,7 @@ ccc() {
     model="$1"
     shift || true
   fi
-  
+
   # Helper: known model keyword
   _is_known_model() {
     case "$1" in
@@ -330,11 +331,11 @@ ccc() {
 }
 # <<< ccm function end <<<
 
-# ByteRover CLI
-export PATH="$HOME/.brv-cli/bin:$PATH"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/dnewman/.sdkman"
-[[ -s "/home/dnewman/.sdkman/bin/sdkman-init.sh" ]] && source "/home/dnewman/.sdkman/bin/sdkman-init.sh"
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOEM/.sdkman/bin/sdkman-init.sh"
+
+
+# Load theme environment
+[ -f "$HOME/.config/zsh/env.zsh" ] && source "$HOME/.config/zsh/env.zsh"

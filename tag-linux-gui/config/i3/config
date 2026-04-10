@@ -2,7 +2,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-include $HOME/.config/i3/themes/catpuccin-macchiato
+include /home/dnewman/.dotfiles/tag-linux-gui/config/i3/themes/catpuccin-macchiato
 
 # Set the mod key
 #
@@ -141,6 +141,12 @@ mode "focused" {
 
 # reload the configuration file
 bindsym Mod1+Shift+c reload
+
+# Theme switching
+# bindsym $mod+Shift+t exec ~/.config/i3/scripts/toggle-theme.sh
+bindsym $mod+Shift+bracketleft exec ~/.config/i3/scripts/toggle-theme.sh dark
+bindsym $mod+Shift+bracketright exec ~/.config/i3/scripts/toggle-theme.sh light
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
