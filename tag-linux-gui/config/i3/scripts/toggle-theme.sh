@@ -14,7 +14,6 @@ I3_CONFIG="$HOME/.config/i3/config"
 KITTY_THEME_DIR="$HOME/.config/kitty/themes"
 KITTY_CURRENT="$HOME/.config/kitty/current-theme.conf"
 GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
-WEZTERM_ENV="$HOME/.config/zsh/env.zsh"
 NVIM_THEME_CONFIG="$HOME/.config/nvim/lua/config/theme.lua"
 
 # Ensure cache directory exists
@@ -200,11 +199,14 @@ EOF
     log_info "Updated: $KITTY_CURRENT"
 
     # Signal running kitty instances to reload
-    # Note: kitty @ requires TTY access and won't work from i3 keybindings
-    # Theme changes apply to new kitty windows automatically
     if command -v kitty &> /dev/null; then
+        # Method 1: Try kitty @ remote control (may not work from i3 keybindings)
         if kitty @ set-colors --all --configured "$KITTY_CURRENT" 2>/dev/null; then
             log_info "kitty reloaded (live)"
+        # Method 2: Send SIGUSR1 to all kitty instances to trigger reload
+        elif killall -USR1 kitty 2>/dev/null; then
+            log_info "kitty signaled to reload"
+            log_info "Theme change may take a moment to apply"
         else
             log_warning "kitty theme changed for new windows only"
             log_info "Open a new kitty window or restart kitty to see the change"
@@ -241,13 +243,11 @@ update_ghostty_theme() {
 update_wezterm_theme() {
     local theme="$1"
 
-    # Add to shell profile for persistence
-    mkdir -p "$(dirname "$WEZTERM_ENV")"
-    echo "export WEZTERM_THEME=\"$theme\"" > "$WEZTERM_ENV"
+    # Wezterm reads theme from ~/.cache/i3/current-theme (already updated by set_theme)
+    # No additional config files needed - wezterm.lua reads the theme state directly
 
     log_success "wezterm theme updated: $theme"
-    log_info "Updated: $WEZTERM_ENV"
-    log_info "Restart wezterm or press Ctrl+Shift+R to see changes"
+    log_info "Press Ctrl+Shift+R in wezterm to reload"
 }
 
 # Update neovim theme (for active instances)
