@@ -3,50 +3,41 @@
 bar {
     status_command  py3status
     position        top
-colors {
-    background         $base
-    statusline         $text
-    focused_statusline $text
-    active_workspace   $base $text $blue
-    focused_separator  $base
-    focused_workspace  $base $base $green
-    inactive_workspace $base $base $surface1
-    urgent_workspace   $base $base $surface1
-    binding_mode       $base $base $surface1
-  }
+    colors {
+        background         $bg0
+        statusline         $fg
+        focused_statusline $fg
+        active_workspace   $bg0 $fg $blue
+        focused_separator  $bg0
+        focused_workspace  $bg0_hard $fg $green
+        inactive_workspace $bg0 $bg0 $bg3
+        urgent_workspace   $bg0 $bg0 $red
+        binding_mode       $bg0 $bg0 $bg3
+    }
 }
 
 # Window colors         Border  BG      Text    Indicator Child Border
-client.focused           $lavender $base $text  $rosewater $lavender
-client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
-client.unfocused         $overlay0 $base $text  $rosewater $overlay0
-client.urgent            $peach    $base $peach $overlay0  $peach
-client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
-client.background        $base
+client.focused           $aqua $bg0 $fg  $green $aqua
+client.focused_inactive  $bg3 $bg0 $fg  $green $bg3
+client.unfocused         $bg3 $bg0 $fg  $green $bg3
+client.urgent            $red $bg0 $red $bg3  $red
+client.placeholder       $bg3 $bg0 $fg  $bg3  $bg3
+client.background        $bg0
 
-set $rosewater #f4dbd6
-set $flamingo  #f0c6c6
-set $pink      #f5bde6
-set $mauve     #c6a0f6
-set $red       #ed8796
-set $maroon    #ee99a0
-set $peach     #f5a97f
-set $yellow    #eed49f
-set $green     #a6da95
-set $teal      #8bd5ca
-set $sky       #91d7e3
-set $sapphire  #7dc4e4
-set $blue      #8aadf4
-set $lavender  #b7bdf8
-set $text      #cad3f5
-set $subtext1  #b8c0e0
-set $subtext0  #a5adcb
-set $overlay2  #939ab7
-set $overlay1  #8087a2
-set $overlay0  #6e738d
-set $surface2  #5b6078
-set $surface1  #494d64
-set $surface0  #363a4f
-set $base      #24273a
-set $mantle    #1e2030
-set $crust     #181926
+# Gruvbox Dark colors
+set $bg0_hard #1d2021
+set $bg0      #282828
+set $bg1      #3c3836
+set $bg2      #504945
+set $bg3      #665c54
+set $bg4      #7c6f64
+set $fg0      #fbf1c7
+set $fg       #ebdbb2
+set $red      #cc241d
+set $green    #98971a
+set $yellow   #d79921
+set $blue     #458588
+set $purple   #b16286
+set $aqua     #689d6a
+set $gray     #a89984
+set $orange   #d65d0e

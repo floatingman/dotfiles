@@ -27,36 +27,36 @@ end
 
 function scheme_for_appearance(appearance)
   if appearance:find("Dark") or appearance == "Dark" then
-    -- Catppuccin Mocha colors
+    -- Gruvbox Dark colors
     return {
-      foreground = "#CAD3F5",
-      background = "#24273A",
-      cursor_bg = "#F4DBD6",
-      cursor_fg = "#24273A",
-      cursor_border = "#F4DBD6",
-      selection_fg = "#24273A",
-      selection_bg = "#F4DBD6",
-      scrollbar_thumb = "#181926",
-      split = "#181926",
+      foreground = "#ebdbb2",
+      background = "#282828",
+      cursor_bg = "#ebdbb2",
+      cursor_fg = "#282828",
+      cursor_border = "#ebdbb2",
+      selection_fg = "#ebdbb2",
+      selection_bg = "#45403d",
+      scrollbar_thumb = "#504945",
+      split = "#3c3836",
 
-      ansi = { "#494D64", "#ED8796", "#A6DA95", "#EED49F", "#8AADF4", "#F5BDE6", "#8BD5CA", "#B8C0E0" },
-      brights = { "#5B6078", "#ED8796", "#A6DA95", "#EED49F", "#8AADF4", "#F5BDE6", "#8BD5CA", "#A5ADCB" },
+      ansi = { "#282828", "#cc241d", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#a89984" },
+      brights = { "#928374", "#fb4934", "#b8bb26", "#fabd2f", "#83a598", "#d3869b", "#8ec07c", "#7c6f64" },
     }
   else
-    -- Catppuccin Latte colors
+    -- Gruvbox Light colors
     return {
-      foreground = "#4C4F69",
-      background = "#EFF1F5",
-      cursor_bg = "#DC8A78",
-      cursor_fg = "#EFF1F5",
-      cursor_border = "#DC8A78",
-      selection_fg = "#EFF1F5",
-      selection_bg = "#DC8A78",
-      scrollbar_thumb = "#DCE0E8",
-      split = "#DCE0E8",
+      foreground = "#504945",
+      background = "#fbf1c7",
+      cursor_bg = "#504945",
+      cursor_fg = "#fbf1c7",
+      cursor_border = "#504945",
+      selection_fg = "#fbf1c7",
+      selection_bg = "#423b34",
+      scrollbar_thumb = "#d5c4a1",
+      split = "#ebdbb2",
 
-      ansi = { "#5C5F77", "#D20F39", "#40A02B", "#DF8E1D", "#1E66F5", "#EA76CB", "#179299", "#ACB0BE" },
-      brights = { "#6C6F85", "#D20F39", "#40A02B", "#DF8E1D", "#1E66F5", "#EA76CB", "#179299", "#BCC0CC" },
+      ansi = { "#fbf1c7", "#cc241d", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#7c6f64" },
+      brights = { "#d5c4a1", "#9d0006", "#79740e", "#b57614", "#076678", "#8f3f71", "#427b58", "#3c3836" },
     }
   end
 end
