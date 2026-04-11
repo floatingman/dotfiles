@@ -8,11 +8,14 @@
 
 set -euo pipefail
 
-# Paths
+# Paths - all point to ~/.config where apps read their configs
 THEME_STATE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/i3/current-theme"
-THEME_SCRIPT_DIR="$(dirname "$0")"
-DOTFILES_DIR="$(git -C "$THEME_SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$HOME/.dotfiles")"
-I3_CONFIG_SOURCE="$DOTFILES_DIR/tag-linux-gui/config/i3/config"
+I3_CONFIG="$HOME/.config/i3/config"
+KITTY_THEME_DIR="$HOME/.config/kitty/themes"
+KITTY_CURRENT="$HOME/.config/kitty/current-theme.conf"
+GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
+WEZTERM_ENV="$HOME/.config/zsh/env.zsh"
+NVIM_THEME_CONFIG="$HOME/.config/nvim/lua/config/theme.lua"
 
 # Ensure cache directory exists
 mkdir -p "$(dirname "$THEME_STATE_FILE")"
@@ -59,24 +62,32 @@ set_theme() {
 # Update i3 theme
 update_i3_theme() {
     local theme="$1"
-    local theme_file
+    local theme_name
 
     if [[ "$theme" == "light" ]]; then
-        theme_file="$DOTFILES_DIR/tag-linux-gui/config/i3/themes/catpuccin-latte"
+        theme_name="catpuccin-latte"
     else
-        theme_file="$DOTFILES_DIR/tag-linux-gui/config/i3/themes/catpuccin-macchiato"
+        theme_name="catpuccin-macchiato"
     fi
 
-    if [[ -f "$theme_file" ]]; then
-        # Update i3 config in dotfiles source (for rcup compatibility)
-        if [[ -f "$I3_CONFIG_SOURCE" ]]; then
-            # Escape slashes for sed
-            local escaped_theme_file="${theme_file//\//\\/}"
-            sed -i "s|^include .*themes/catpuccin-.*|include $theme_file|" "$I3_CONFIG_SOURCE"
-            log_success "i3 theme updated (source): $theme"
-            log_info "Updated: $I3_CONFIG_SOURCE"
-        else
-            log_warning "i3 config source not found: $I3_CONFIG_SOURCE"
+    # Update i3 config to use ~/.config path
+    if [[ -f "$I3_CONFIG" ]]; then
+        # Replace any include statement with the new one
+        sed -i "s|^include .*themes/catpuccin-.*|include ~/.config/i3/themes/$theme_name|" "$I3_CONFIG"
+        log_success "i3 theme updated: $theme"
+        log_info "Updated: $I3_CONFIG"
+        log_info "Include path: ~/.config/i3/themes/$theme_name"
+
+        # Ensure the theme directory exists in ~/.config
+        mkdir -p "$(dirname "$I3_CONFIG")/themes"
+
+        # Copy theme from dotfiles to ~/.config if it doesn't exist there
+        local theme_source="$HOME/.dotfiles/tag-linux-gui/config/i3/themes/$theme_name"
+        local theme_target="$(dirname "$I3_CONFIG")/themes/$theme_name"
+
+        if [[ -f "$theme_source" && ! -f "$theme_target" ]]; then
+            cp "$theme_source" "$theme_target"
+            log_info "Created theme file: $theme_target"
         fi
 
         # Reload i3 (non-invasive)
@@ -85,23 +96,20 @@ update_i3_theme() {
             log_info "i3 reloaded"
         fi
     else
-        log_warning "i3 theme file not found: $theme_file"
+        log_warning "i3 config not found: $I3_CONFIG"
     fi
 }
 
 # Update kitty theme
 update_kitty_theme() {
     local theme="$1"
-    local kitty_theme_dir="$DOTFILES_DIR/config/kitty/themes"
-    local kitty_current_source="$DOTFILES_DIR/config/kitty/current-theme.conf"
-    local kitty_current_target="$HOME/.config/kitty/current-theme.conf"
 
     # Create themes directory if it doesn't exist
-    mkdir -p "$kitty_theme_dir"
+    mkdir -p "$KITTY_THEME_DIR"
 
     # Define theme files
-    local light_theme="$kitty_theme_dir/catppuccin-latte.conf"
-    local dark_theme="$kitty_theme_dir/catppuccin-macchiato.conf"
+    local light_theme="$KITTY_THEME_DIR/catppuccin-latte.conf"
+    local dark_theme="$KITTY_THEME_DIR/catppuccin-macchiato.conf"
 
     # Create light theme if it doesn't exist
     if [[ ! -f "$light_theme" ]]; then
@@ -179,7 +187,7 @@ color15 #A5ADCB
 EOF
     fi
 
-    # Copy the appropriate theme to the dotfiles source (for rcup)
+    # Copy the appropriate theme
     local target_theme
     if [[ "$theme" == "light" ]]; then
         target_theme="$light_theme"
@@ -187,29 +195,28 @@ EOF
         target_theme="$dark_theme"
     fi
 
-    cp "$target_theme" "$kitty_current_source"
-    log_success "kitty theme updated (source): $theme"
-
-    # If the target is managed by rcup (symlink), it should already be synced
-    # If not, copy to target as well for immediate effect
-    if [[ ! -L "$kitty_current_target" && -d "$(dirname "$kitty_current_target")" ]]; then
-        cp "$target_theme" "$kitty_current_target"
-        log_info "Also updated: $kitty_current_target"
-    fi
+    cp "$target_theme" "$KITTY_CURRENT"
+    log_success "kitty theme updated: $theme"
+    log_info "Updated: $KITTY_CURRENT"
 
     # Signal running kitty instances to reload
+    # Note: kitty @ requires TTY access and won't work from i3 keybindings
+    # Theme changes apply to new kitty windows automatically
     if command -v kitty &> /dev/null; then
-        kitty @ set-colors --all --configured "$kitty_current_target" 2>/dev/null || true
-        log_info "kitty reloaded"
+        if kitty @ set-colors --all --configured "$KITTY_CURRENT" 2>/dev/null; then
+            log_info "kitty reloaded (live)"
+        else
+            log_warning "kitty theme changed for new windows only"
+            log_info "Open a new kitty window or restart kitty to see the change"
+        fi
     fi
 }
 
 # Update ghostty theme
 update_ghostty_theme() {
     local theme="$1"
-    local ghostty_config="$HOME/.config/ghostty/config"
 
-    if [[ -f "$ghostty_config" ]]; then
+    if [[ -f "$GHOSTTY_CONFIG" ]]; then
         local ghostty_theme
         if [[ "$theme" == "light" ]]; then
             ghostty_theme="Spring"
@@ -218,36 +225,29 @@ update_ghostty_theme() {
         fi
 
         if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s/^theme = .*/theme = \"$ghostty_theme\"/" "$ghostty_config"
+            sed -i '' "s/^theme = .*/theme = \"$ghostty_theme\"/" "$GHOSTTY_CONFIG"
         else
-            sed -i "s/^theme = .*/theme = \"$ghostty_theme\"/" "$ghostty_config"
+            sed -i "s/^theme = .*/theme = \"$ghostty_theme\"/" "$GHOSTTY_CONFIG"
         fi
         log_success "ghostty theme updated: $theme"
+        log_info "Updated: $GHOSTTY_CONFIG"
 
         # Ghostty requires manual reload or restart
         log_warning "ghostty requires manual reload (Ctrl+Shift+,)"
     fi
 }
 
-# Update wezterm theme (wezterm auto-detects, but we can override)
+# Update wezterm theme
 update_wezterm_theme() {
     local theme="$1"
-    local wezterm_config="$HOME/.wezterm.lua"
-
-    # Wezterm can auto-detect, but we can set environment variable for manual override
-    if [[ "$theme" == "light" ]]; then
-        export WEZTERM_THEME="light"
-    else
-        export WEZTERM_THEME="dark"
-    fi
 
     # Add to shell profile for persistence
-    local env_file="$HOME/.config/zsh/env.zsh"
-    mkdir -p "$(dirname "$env_file")"
-    echo "export WEZTERM_THEME=\"$theme\"" > "$env_file"
+    mkdir -p "$(dirname "$WEZTERM_ENV")"
+    echo "export WEZTERM_THEME=\"$theme\"" > "$WEZTERM_ENV"
 
-    log_success "wezterm theme preference set: $theme"
-    log_info "wezterm may require reload (Ctrl+Shift+R)"
+    log_success "wezterm theme updated: $theme"
+    log_info "Updated: $WEZTERM_ENV"
+    log_info "Restart wezterm or press Ctrl+Shift+R to see changes"
 }
 
 # Update neovim theme (for active instances)
@@ -256,12 +256,9 @@ update_nvim_theme() {
 
     if command -v nvim &> /dev/null; then
         # Set background option for new instances
-        local nvim_config_dir="$HOME/.config/nvim"
-        local env_file="$nvim_config_dir/lua/config/theme.lua"
+        mkdir -p "$(dirname "$NVIM_THEME_CONFIG")"
 
-        mkdir -p "$(dirname "$env_file")"
-
-        cat > "$env_file" << EOF
+        cat > "$NVIM_THEME_CONFIG" << EOF
 -- Auto-generated by toggle-theme.sh
 local M = {
     theme = "$theme",
@@ -279,6 +276,7 @@ return M
 EOF
 
         log_success "neovim theme config updated: $theme"
+        log_info "Updated: $NVIM_THEME_CONFIG"
 
         # Try to signal running nvim instances with named pipes
         local nvim_server="/tmp/nvimsocket"
@@ -432,10 +430,10 @@ Arguments:
 
 Applications configured:
   - i3 window manager
-  - kitty terminal
-  - ghostty terminal
-  - wezterm terminal
-  - neovim editor
+  - kitty terminal (new windows only)
+  - ghostty terminal (requires restart)
+  - wezterm terminal (requires restart or Ctrl+Shift+R)
+  - neovim editor (if running with named pipe)
   - VS Code editor
   - GTK applications (Thunar, etc.)
 

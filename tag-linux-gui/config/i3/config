@@ -2,7 +2,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-include /home/dnewman/.dotfiles/tag-linux-gui/config/i3/themes/catpuccin-macchiato
+include ~/.config/i3/themes/catpuccin-macchiato
 
 # Set the mod key
 #

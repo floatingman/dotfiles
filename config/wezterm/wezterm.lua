@@ -2,20 +2,62 @@ local wezterm = require("wezterm")
 local mux = wezterm.mux
 local act = wezterm.action
 
--- wezterm.gui is not available to the mux server, so take care to
--- do something reasonable when this config is evaluated by the mux
-function get_appearance()
+-- Get theme from theme state file
+function get_theme()
+  -- Try to read from i3 theme state file
+  local theme_file = wezterm.home_dir .. "/.cache/i3/current-theme"
+  local file = io.open(theme_file, "r")
+  if file then
+    local theme = file:read("*line"):lower()
+    file:close()
+    if theme == "light" then
+      return "Light"
+    else
+      return "Dark"
+    end
+  end
+
+  -- Fall back to system appearance detection
   if wezterm.gui then
-    return wezterm.gui.get_appearance()
+    local appearance = wezterm.gui.get_appearance()
+    return appearance
   end
   return "Dark"
 end
 
 function scheme_for_appearance(appearance)
-  if appearance:find("Dark") then
-    return "Catppuccin Macchiato"
+  if appearance:find("Dark") or appearance == "Dark" then
+    -- Catppuccin Mocha colors
+    return {
+      foreground = "#CAD3F5",
+      background = "#24273A",
+      cursor_bg = "#F4DBD6",
+      cursor_fg = "#24273A",
+      cursor_border = "#F4DBD6",
+      selection_fg = "#24273A",
+      selection_bg = "#F4DBD6",
+      scrollbar_thumb = "#181926",
+      split = "#181926",
+
+      ansi = { "#494D64", "#ED8796", "#A6DA95", "#EED49F", "#8AADF4", "#F5BDE6", "#8BD5CA", "#B8C0E0" },
+      brights = { "#5B6078", "#ED8796", "#A6DA95", "#EED49F", "#8AADF4", "#F5BDE6", "#8BD5CA", "#A5ADCB" },
+    }
   else
-    return "Catppuccin Latte"
+    -- Catppuccin Latte colors
+    return {
+      foreground = "#4C4F69",
+      background = "#EFF1F5",
+      cursor_bg = "#DC8A78",
+      cursor_fg = "#EFF1F5",
+      cursor_border = "#DC8A78",
+      selection_fg = "#EFF1F5",
+      selection_bg = "#DC8A78",
+      scrollbar_thumb = "#DCE0E8",
+      split = "#DCE0E8",
+
+      ansi = { "#5C5F77", "#D20F39", "#40A02B", "#DF8E1D", "#1E66F5", "#EA76CB", "#179299", "#ACB0BE" },
+      brights = { "#6C6F85", "#D20F39", "#40A02B", "#DF8E1D", "#1E66F5", "#EA76CB", "#179299", "#BCC0CC" },
+    }
   end
 end
 
@@ -24,9 +66,10 @@ wezterm.on("gui-startup", function()
   window:gui_window():maximize()
 end)
 
+local colors = scheme_for_appearance(get_theme())
+
 return {
-  -- color_scheme = "Night Owl (Gogh)",
-  color_scheme = scheme_for_appearance(get_appearance()),
+  colors = colors,
   enable_tab_bar = false,
   font = wezterm.font("JetBrainsMono Nerd Font"),
   font_size = 14,
