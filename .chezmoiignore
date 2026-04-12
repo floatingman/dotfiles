@@ -2,12 +2,6 @@
 README.md
 .gitignore
 .pre-commit-config.yaml
-# Security-sensitive directories (private keys)
-gnupg/
-ssh/
-# Old RCM tag directories (contents migrated, can be deleted)
-tag-linux-gui/
-tag-mac/
 # Ignore broken symlinks and problematic configs
 autorandr/
 # Ignore RCM-specific files
