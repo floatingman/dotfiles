@@ -5,8 +5,9 @@ README.md
 # Security-sensitive directories (private keys)
 gnupg/
 ssh/
-# Tag directories from RCM (not managed by chezmoi)
-tag-*/
+# Old RCM tag directories (contents migrated, can be deleted)
+tag-linux-gui/
+tag-mac/
 # Ignore broken symlinks and problematic configs
 autorandr/
 # Ignore RCM-specific files
