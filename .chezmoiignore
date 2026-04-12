@@ -1,5 +1,37 @@
-# Ignore Linux desktop configs on non-Linux systems
+# Ignore Linux desktop configs on non-Linux systems (macOS, Windows)
 {{- if ne .chezmoi.os "linux" }}
+.config/i3
+.config/i3blocks
+.config/i3status
+.config/rofi
+.config/polybar
+.config/dunst
+.config/picom
+.config/bspwm
+.config/sxhkd
+.config/swaylock
+.config/fuzzel
+.config/wofi
+.config/waybar
+.config/wlogout
+.config/awesome
+.config/hypr
+.config/mpv
+.config/cmus
+.config/gammastep
+.config/matugen
+.config/viewnior
+.config/zathura
+.config/qutebrowser
+.config/teiler
+.config/youtube-dl
+.config/yt-dlp
+.config/autorandr
+.Xresources.d
+{{- end }}
+
+# Ignore Linux desktop configs on headless Linux servers
+{{- if and (eq .chezmoi.os "linux") (not (or (stat "/usr/bin/i3") (stat "/usr/bin/gnome-shell") (stat "/usr/bin/plasma-shell") (stat "/usr/bin/Hyprland"))) }}
 .config/i3
 .config/i3blocks
 .config/i3status
