@@ -2,10 +2,10 @@
 README.md
 .gitignore
 .pre-commit-config.yaml
-bash/
+# Security-sensitive directories (private keys)
 gnupg/
 ssh/
-local/
+# Tag directories from RCM (not managed by chezmoi)
 tag-*/
 # Ignore broken symlinks and problematic configs
 autorandr/
