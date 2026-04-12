@@ -65,12 +65,13 @@ chezmoi init --apply
    ```bash
    chezmoi init --apply
    ```
-4. **Install git submodules:**
-   ```bash
-   cd ~/.dotfiles  # or your chezmoi source directory
-   git submodule update --init --recursive
-   ```
-5. **Reload shell:** `source ~/.zshrc`
+   This automatically:
+   - Installs all configs
+   - Clones git submodules (LazyVim, tmux)
+   - Sets up symlinks
+4. **Reload shell:** `source ~/.zshrc`
+
+**That's it!** Everything is configured automatically.
 
 ## Machine-Specific Configurations
 
@@ -112,14 +113,16 @@ Updates all supported apps:
 
 ## Git Submodules
 
-Used for large third-party configurations:
+Chezmoi automatically manages git submodules:
 
 - **Neovim:** [LazyVim](https://github.com/floatingman/LazyVim)
 - **Tmux:** [gpakosz/tmux.plugin](https://github.com/gpakosz/tmux-plugin-manager)
 
-Update submodules:
+Submodules are auto-initialized during `chezmoi init`. No manual git commands needed.
+
+**To update submodules** (optional, when you want latest upstream):
 ```bash
-cd ~/.dotfiles
+cd ~/.local/share/chezmoi  # chezmoi source directory
 git submodule update --remote --recursive
 ```
 
@@ -190,7 +193,8 @@ Previously managed with [RCM](https://thoughtbot.github.io/rcm). Migrated to Che
 - Check state file: `cat ~/.cache/i3/current-theme`
 
 **Submodules not loading?**
-- Run `git submodule update --init --recursive`
+- Should be automatic - re-run `chezmoi init --apply`
+- Verify in chezmoi source: `cd ~/.local/share/chezmoi && git submodule status`
 - Check external markers: `ls dot_config/nvim.external dot_config/tmux.external`
 
 ## License
