@@ -1,8 +1,35 @@
-# Ignore files that shouldn't be managed by chezmoi
-README.md
-.gitignore
-.pre-commit-config.yaml
-# Ignore broken symlinks and problematic configs
-autorandr/
-# Ignore RCM-specific files
-rcrc
+# Ignore Linux desktop configs on non-Linux systems
+{{- if ne .chezmoi.os "linux" }}
+.config/i3
+.config/i3blocks
+.config/i3status
+.config/rofi
+.config/polybar
+.config/dunst
+.config/picom
+.config/bspwm
+.config/sxhkd
+.config/swaylock
+.config/fuzzel
+.config/wofi
+.config/waybar
+.config/wlogout
+.config/awesome
+.config/hypr
+.config/mpv
+.config/cmus
+.config/gammastep
+.config/matugen
+.config/viewnior
+.config/zathura
+.config/qutebrowser
+.config/teiler
+.config/youtube-dl
+.config/yt-dlp
+.Xresources.d
+{{- end }}
+
+# Ignore macOS configs on non-macOS systems
+{{- if ne .chezmoi.os "darwin" }}
+.config/karabiner
+{{- end }}
