@@ -9,3 +9,5 @@ local/
 tag-*/
 # Ignore broken symlinks and problematic configs
 autorandr/
+# Ignore RCM-specific files
+rcrc
