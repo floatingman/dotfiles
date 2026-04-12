@@ -26,6 +26,7 @@
 .config/teiler
 .config/youtube-dl
 .config/yt-dlp
+.config/autorandr
 .Xresources.d
 {{- end }}
 
