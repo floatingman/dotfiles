@@ -1,0 +1,11 @@
+# Ignore files that shouldn't be managed by chezmoi
+README.md
+.gitignore
+.pre-commit-config.yaml
+bash/
+gnupg/
+ssh/
+local/
+tag-*/
+# Ignore broken symlinks and problematic configs
+autorandr/

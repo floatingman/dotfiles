@@ -1,0 +1,139 @@
+#########
+# Media #
+#########
+
+# Toggle mute
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Toggle mic mute
+XF86AudioMicMute
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# Change volume
+XF86Audio{Raise,Lower}Volume
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}2%
+
+# Change volume
+super + {k,j}
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}2%
+
+# Change volume, chunky
+super + shift + {k,j}
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}10%
+
+# Toggle mpd
+super + 0
+    mpc -q toggle
+
+# Navigate mpd playlist
+super + {comma, period}
+    mpc -q {prev, next}
+
+# Display current mpd track
+super + slash
+    notify-send -u low "$(mpc -f "%title%" current)" "by $(mpc -f "%artist%" current)\non $(mpc -f "%album%" current) (#$(mpc -f "%track%" current))\n$(mpc -f "%originaldate%" current)"
+
+# Play the video URL in the clipboard
+super + m
+    play
+
+
+################
+# Applications
+################
+# Launch web browser
+super + w
+    google-chrome-stable
+
+# Launch application launcher
+super + {d,p,s}
+    sh $HOME/.config/rofi/bin/{launcher,powermenu,screenshot}
+super + space
+    sh $HOME/.config/rofi/bin/runner
+
+# Show window switcher
+alt + Tab
+  rofi -show window
+
+# File Explorer
+super + e
+  thunar
+
+# # Launch rofi surfraw
+# super + shift + f
+#     surfraw-rofi
+
+# Launch rofi surfraw
+super + f
+    surfraw duckduckgo -j $(xclip -o -selection clipboard)
+
+# Launch qalculator
+super + c
+    qalculate-gtk
+
+# Launch rofi zeal
+super + z
+    rofi-zeal
+
+
+########
+# Misc #
+########
+
+# Lock the screen
+alt + shift + l
+    /usr/local/bin/lock
+
+# Change screen brightness
+XF86MonBrightnessUp
+    brightnessctl set +5%
+
+XF86MonBrightnessDown
+    brightnessctl set 5%-
+
+# Take a screenshot
+# Print
+#     flameshot full -p ~/www
+# super + s
+#     flameshot gui
+# super + shift + s
+#     teiler
+
+# OCR a screen selection.
+super + shift + t
+    convert x: -modulate 100,0 -resize 400% -set density 300 png:- | tesseract stdin stdout | xclip -selection clipboard
+
+# Generate a QR code from the clipboard
+super + q
+    qcode
+
+# Suspend (F12)
+super + XF86Explorer
+    systemctl suspend
+
+#########
+# Dunst #
+#########
+
+# Close last message
+control + space
+    dunstctl close
+
+# Close all messages
+control + shift + space
+    dunstctl close-all
+
+# Redisplay last message
+control + grave
+    dunstctl history-pop
+
+#############
+# Clipboard #
+#############
+super + shift + c
+  rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# Reload sxhdrc
+super + shift + r
+  pkill -usr1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
