@@ -1,6 +1,9 @@
 # Claude Code Configuration
 # These variables are used by dot_claude/settings.json.tmpl
 
+[add]
+  templateSymlinks = true
+
 [data]
   [data.anthropic]
     # Set your Anthropic API token
