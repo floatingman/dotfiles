@@ -48,21 +48,23 @@ cargo install chezmoi
 git clone https://github.com/floatingman/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 
-# Initialize chezmoi
-chezmoi init --apply
+# Option 1: Use Makefile (recommended)
+make install
 
-# Or use encrypted dotfiles (optional)
-# chezmoi init
-# chezmoi generate
-# chezmoi apply
+# Option 2: Direct chezmoi
+chezmoi init --apply
 ```
 
 ### First-time Setup
 
 1. **Install chezmoi** (see Prerequisites above)
 2. **Clone repository** to `~/.dotfiles` or any location
-3. **Initialize chezmoi:**
+3. **Initialize:**
    ```bash
+   # Recommended: Use Makefile
+   make install
+
+   # Or direct chezmoi
    chezmoi init --apply
    ```
    This automatically:
@@ -140,12 +142,17 @@ Chezmoi automatically manages git submodules:
 
 - **Neovim:** [LazyVim](https://github.com/floatingman/LazyVim)
 - **Tmux:** [gpakosz/tmux.plugin](https://github.com/gpakosz/tmux-plugin-manager)
+- **Claude Config:** [Private settings](https://github.com/floatingman/claude-config) (optional)
 
-Submodules are auto-initialized during `chezmoi init`. No manual git commands needed.
+Submodules are auto-initialized during `make install`. No manual git commands needed.
 
-**To update submodules** (optional, when you want latest upstream):
+**To update submodules:**
 ```bash
-cd ~/.local/share/chezmoi  # chezmoi source directory
+# Recommended (via Makefile)
+make update
+
+# Or manually
+cd ~/.local/share/chezmoi
 git submodule update --remote --recursive
 ```
 
@@ -166,29 +173,81 @@ git submodule update --remote --recursive
 
 ## Chezmoi Management
 
-**Apply all configs:**
+All chezmoi operations are available via `make` for convenience:
+
+### Daily Operations
+
 ```bash
+make update      # Pull latest + apply (recommended workflow)
+make apply       # Apply templates without pulling
+make status       # See what's managed
+make diff        # Preview changes before applying
+```
+
+### File Management
+
+```bash
+make add FILE=~/.zshrc              # Track new file
+make edit FILE=~/.config/nvim/init.lua  # Edit in chezmoi source
+```
+
+### Maintenance
+
+```bash
+make doctor      # Check chezmoi health
+make verify      # Check for uncommitted changes
+make clean       # Remove all managed files (with confirmation)
+```
+
+### Full Makefile Reference
+
+```bash
+# Core operations
+make install    # Initial setup on new machine
+make update     # Update submodules and apply changes
+make apply      # Apply chezmoi templates
+
+# File management
+make add FILE=~/.path/to/file   # Add file to chezmoi
+make edit FILE=~/.path/to/file  # Edit file in source
+make diff                          # Preview changes
+make status                        # Check status
+
+# Maintenance
+make doctor                        # Run diagnostics
+make verify                        # Verify uncommitted changes
+make clean                         # Remove managed files
+
+# Claude Code (optional)
+make claude                        # Auto-detect and setup
+make claude-force                  # Force setup
+
+# Help
+make help                          # Show all targets
+```
+
+### Direct Chezmoi Commands (Advanced)
+
+If you prefer direct chezmoi commands (not required with Makefile):
+
+```bash
+# Apply all configs
 chezmoi apply
-```
 
-**Apply specific config:**
-```bash
+# Apply specific config
 chezmoi apply ~/.config/nvim
-```
 
-**Check what would change:**
-```bash
-chezmoi apply --dry-run
-```
+# Check what would change
+chezmoi diff
 
-**Edit a file:**
-```bash
+# Edit a file
 chezmoi edit ~/.config/nvim/init.lua
-```
 
-**See all managed files:**
-```bash
+# See all managed files
 chezmoi managed
+
+# Check source path for a file
+chezmoi source-path ~/.zshrc
 ```
 
 ## Migration from RCM
