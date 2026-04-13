@@ -73,6 +73,27 @@ chezmoi init --apply
 
 **That's it!** Everything is configured automatically.
 
+### Claude Code Configuration (Optional)
+
+If you use Claude Code with custom hooks and settings:
+
+```bash
+# One-time setup (automates symlink creation and config)
+make claude
+
+# Or run the script directly
+./scripts/setup-claude-template.sh
+
+# Set your API credentials
+export ANTHROPIC_AUTH_TOKEN='your-token'
+export ANTHROPIC_BASE_URL='https://api.z.ai/api/anthropic'
+
+# Apply the template
+chezmoi apply
+```
+
+See [CLAUDE_SETUP.md](CLAUDE_SETUP.md) for details.
+
 ## Machine-Specific Configurations
 
 Configs are automatically filtered based on:
