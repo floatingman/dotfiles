@@ -1,16 +1,48 @@
 #!/usr/bin/env bash
 # One-time setup script for Claude Code settings template
 # Run this after cloning dotfiles on a new machine
+#
+# Usage:
+#   ./scripts/setup-claude-template.sh          # Auto-detect Claude
+#   ./scripts/setup-claude-template.sh --force  # Force setup
+#   FORCE=1 ./scripts/setup-claude-template.sh  # Force setup
 
 set -euo pipefail
-
-echo "🔧 Setting up Claude Code configuration template..."
 
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Parse arguments
+FORCE="${FORCE:-0}"
+for arg in "$@"; do
+    case $arg in
+        --force)
+            FORCE=1
+            shift
+            ;;
+        *)
+            ;;
+    esac
+done
+
+# Function to check if Claude Code is installed
+check_claude_installed() {
+    # Check for ~/.claude directory
+    if [[ -d "$HOME/.claude" ]]; then
+        return 0
+    fi
+
+    # Check for claude command in PATH
+    if command -v claude &> /dev/null; then
+        return 0
+    fi
+
+    return 1
+}
 
 # Check if we're in the dotfiles directory
 if [[ ! -f ".chezmoi.toml" ]] || [[ ! -d ".git" ]]; then
@@ -19,9 +51,37 @@ if [[ ! -f ".chezmoi.toml" ]] || [[ ! -d ".git" ]]; then
     exit 1
 fi
 
-# 1. Update submodules
+# Auto-detect Claude Code unless forced
+if [[ "$FORCE" -ne 1 ]]; then
+    echo "🔍 Checking for Claude Code installation..."
+
+    if ! check_claude_installed; then
+        echo -e "${YELLOW}⚠️  Claude Code not detected${NC}"
+        echo "   Skipping Claude Code template setup."
+        echo ""
+        echo "To force setup anyway, run:"
+        echo "   ./scripts/setup-claude-template.sh --force"
+        echo "   or: FORCE=1 ./scripts/setup-claude-template.sh"
+        exit 0
+    fi
+
+    echo -e "${GREEN}✓ Claude Code detected${NC}"
+else
+    echo -e "${BLUE}🔧 Force mode: setting up Claude Code templates regardless${NC}"
+fi
+
+echo ""
+echo "Setting up Claude Code configuration template..."
+
+# 1. Update submodules (from dotfiles root)
 echo "📦 Updating submodules..."
-git submodule update --init --recursive --remote
+cd "$(git rev-parse --show-toplevel)" || exit 1
+if git submodule update --init --remote --depth 1 2>/dev/null; then
+    echo -e "${GREEN}✓ Submodules updated${NC}"
+else
+    echo -e "${YELLOW}⚠️  Submodule update had issues (may be non-critical)${NC}"
+fi
+cd - > /dev/null || exit 1
 
 # 2. Create chezmoi config directory
 echo "📁 Creating chezmoi config directory..."

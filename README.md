@@ -78,19 +78,21 @@ chezmoi init --apply
 If you use Claude Code with custom hooks and settings:
 
 ```bash
-# One-time setup (automates symlink creation and config)
+# Auto-detects Claude and sets up if found (skips if not detected)
 make claude
 
-# Or run the script directly
-./scripts/setup-claude-template.sh
+# Force setup even if Claude not detected
+make claude-force
 
-# Set your API credentials
+# Set your API credentials (add to ~/.zshrc)
 export ANTHROPIC_AUTH_TOKEN='your-token'
 export ANTHROPIC_BASE_URL='https://api.z.ai/api/anthropic'
 
 # Apply the template
 chezmoi apply
 ```
+
+The setup script automatically detects if Claude Code is installed and skips setup if not found.
 
 See [CLAUDE_SETUP.md](CLAUDE_SETUP.md) for details.
 

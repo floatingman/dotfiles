@@ -7,8 +7,9 @@ help: ## Show this help message
 	@echo "  make apply      - Apply chezmoi templates"
 	@echo "  make clean      - Clean generated files"
 	@echo ""
-	@echo "Claude Code setup:"
-	@echo "  make claude     - One-time Claude Code template setup"
+	@echo "Claude Code setup (optional):"
+	@echo "  make claude       - Auto-detects Claude, sets up if found"
+	@echo "  make claude-force - Force Claude setup (skip detection)"
 
 install: ## Initial installation
 	@echo "📦 Installing dotfiles..."
@@ -31,6 +32,8 @@ clean: ## Clean generated files
 	@rm -rf $(chezmoi managed --include=files | xargs)
 	@echo "✅ Clean complete"
 
-claude: ## One-time Claude Code template setup
-	@echo "🔧 Setting up Claude Code configuration template..."
+claude: ## One-time Claude Code template setup (auto-detects Claude)
 	@./scripts/setup-claude-template.sh
+
+claude-force: ## Force Claude Code template setup (even if Claude not detected)
+	@./scripts/setup-claude-template.sh --force
