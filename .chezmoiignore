@@ -66,3 +66,6 @@
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
 {{- end }}
+
+# Claude Code plugins - managed by Ansible
+claude-config/dot_claude/plugins/
