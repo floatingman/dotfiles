@@ -1,0 +1,21 @@
+# Claude Code Configuration
+# These variables are used by dot_claude/settings.json.tmpl
+
+[data]
+  [data.anthropic]
+    # Set your Anthropic API token
+    # Option 1: Set directly here (NOT RECOMMENDED for public repos)
+    # token = "sk-ant-..."
+
+    # Option 2: Use environment variable (RECOMMENDED)
+    # Set ANTHROPIC_AUTH_TOKEN in your environment before running chezmoi
+
+    # Option 3: Leave empty to use token from environment at runtime
+    token = ""
+
+    # Custom Anthropic API base URL (optional, for proxies)
+    # base_url = "https://api.anthropic.com"
+
+  [data.claude]
+    # API timeout in milliseconds
+    api_timeout_ms = "3000000"
