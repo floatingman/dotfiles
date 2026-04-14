@@ -128,7 +128,7 @@ fi
 # 6. Apply chezmoi templates
 echo ""
 echo "🚀 Applying chezmoi templates..."
-if chezmoi apply; then
+if chezmoi apply --force; then
     echo -e "${GREEN}✓ Templates applied successfully${NC}"
 else
     echo -e "${RED}✗ Failed to apply templates${NC}"
