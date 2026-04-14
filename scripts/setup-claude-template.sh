@@ -100,13 +100,8 @@ fi
 echo "🔗 Creating template symlink..."
 mkdir -p ~/.local/share/chezmoi/dot_claude
 
-# Remove existing symlink/file if present
-if [[ -e ~/.local/share/chezmoi/dot_claude/settings.json.tmpl ]]; then
-    rm -f ~/.local/share/chezmoi/dot_claude/settings.json.tmpl
-fi
-
-# Create symlink
-ln -s ../claude-config/dot_claude/settings.json.tmpl \
+# Create symlink (force overwrite if exists)
+ln -sf ../claude-config/dot_claude/settings.json.tmpl \
    ~/.local/share/chezmoi/dot_claude/settings.json.tmpl
 
 if [[ -L ~/.local/share/chezmoi/dot_claude/settings.json.tmpl ]]; then
