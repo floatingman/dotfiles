@@ -1651,3 +1651,35 @@ rmempty() {
 play_videos_newest() {
     find . -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" -o -iname "*.mov" -o -iname "*.wmv" -o -iname "*.flv" -o -iname "*.webm" -o -iname "*.m4v" \) -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2- | xargs -d '\n' mpv
 }
+
+############################## Claude Code Provider Switcher ##############################
+
+# Switch to Anthropic Pro Plan (native Claude models)
+use-anthropic() {
+  unset ANTHROPIC_DEFAULT_HAIKU_MODEL
+  unset ANTHROPIC_DEFAULT_SONNET_MODEL
+  unset ANTHROPIC_DEFAULT_OPUS_MODEL
+  export CLAUDE_PROVIDER="anthropic"
+  echo "✓ Switched to Anthropic Pro Plan"
+}
+
+# Switch to z.ai Coding Plan (GLM models)
+use-zai() {
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
+  export CLAUDE_PROVIDER="zai"
+  echo "✓ Switched to z.ai Coding Plan"
+}
+
+# Show current Claude Code provider
+claude-provider() {
+  if [[ "$CLAUDE_PROVIDER" == "zai" ]]; then
+    echo "Current: z.ai (GLM models)"
+    echo "  Haiku: $ANTHROPIC_DEFAULT_HAIKU_MODEL"
+    echo "  Sonnet: $ANTHROPIC_DEFAULT_SONNET_MODEL"
+    echo "  Opus: $ANTHROPIC_DEFAULT_OPUS_MODEL"
+  else
+    echo "Current: Anthropic (native models)"
+  fi
+}

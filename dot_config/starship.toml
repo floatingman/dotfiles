@@ -9,7 +9,7 @@ add_newline = true
 # format = """$os $username@$hostname $kubernetes $directory $git_branch $git_status """
 palette = "gruvbox_dark"
 # move the rest of the prompt to the right
-right_format = '$status'
+right_format = '$status$claude'
 command_timeout = 1000
 
 # [directory]
@@ -339,6 +339,15 @@ format = '\[[$symbol]($style)\]'
 
 [solidity]
 format = '\[[$symbol]($style)\]'
+
+# Custom Claude Code provider module
+[custom.claude]
+description = "Show current Claude Code provider"
+symbol = "🤖 "
+style = "bold purple"
+format = " [$symbol$output]($style)"
+shell = ["sh", "-c"]
+command = "if [ \"$CLAUDE_PROVIDER\" = \"zai\" ]; then echo \"z.ai\"; elif [ \"$CLAUDE_PROVIDER\" = \"anthropic\" ]; then echo \"Anthropic\"; fi"
 
 [palettes.gruvbox_dark]
 bg_hard = "#1d2021"
