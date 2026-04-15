@@ -74,10 +74,12 @@ else
     echo -e "${GREEN}✓ API credentials found${NC}"
 fi
 
-# Refresh external (clone/update claude-config)
+# Update git submodule (claude-config)
 echo ""
-echo "📦 Updating Claude Code configuration from external repo..."
-chezmoi apply --refresh-externals --force
+echo "📦 Updating Claude Code configuration submodule..."
+cd "$(chezmoi source-path)"
+git submodule update --init --remote dot_claude
+cd - > /dev/null
 
 # Apply chezmoi templates
 echo ""
