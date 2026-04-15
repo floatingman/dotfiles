@@ -8,24 +8,30 @@ The Claude Code settings are managed via a Chezmoi template that generates `~/.c
 
 ```
 ~/.local/share/chezmoi/
-├── claude-config/                    # Git submodule (private repo)
-│   └── dot_claude/
-│       └── settings.json.tmpl       # Template file (version controlled)
-└── dot_claude/
-    └── settings.json.tmpl -> ../claude-config/dot_claude/settings.json.tmpl  # Symlink
+└── dot_claude/                    # Git submodule (private repo: floatingman/claude-config)
+    ├── .agents/
+    ├── agents/
+    ├── commands/
+    ├── ecc/
+    ├── hooks/
+    ├── rules/
+    ├── scripts/
+    ├── skills/
+    └── settings.json.tmpl         # Template file (chezmoi processes this)
 ```
+
+The **entire** `dot_claude/` directory is a git submodule containing your Claude Code configuration. Chezmoi uses `settings.json.tmpl` to generate `~/.claude/settings.json`.
 
 ## How It Works
 
-1. **Template Location**: The actual template file lives in the `claude-config` git submodule at `claude-config/dot_claude/settings.json.tmpl`
+1. **Submodule**: The `dot_claude/` directory is a git submodule pointing to `git@github.com:floatingman/claude-config.git`
 
-2. **Symlink**: A symlink in the root chezmoi source directory (`dot_claude/settings.json.tmpl`) points to the template in the submodule
+2. **Template**: `settings.json.tmpl` contains chezmoi template variables
 
 3. **Generation**: When you run `chezmoi apply`, it:
-   - Follows the symlink (enabled by `templateSymlinks = true`)
-   - Reads the template from the submodule
+   - Reads `dot_claude/settings.json.tmpl`
    - Substitutes variables from environment and config
-   - Generates `~/.claude/settings.json` at the correct location
+   - Generates `~/.claude/settings.json`
 
 ## Configuration
 
@@ -43,9 +49,6 @@ export ANTHROPIC_BASE_URL="https://api.anthropic.com"  # Optional: custom base U
 The `~/.config/chezmoi/chezmoi.toml` file defines default values:
 
 ```toml
-[add]
-  templateSymlinks = true  # Required for symlink to work
-
 [data.anthropic]
   token = ""  # Falls back to ANTHROPIC_AUTH_TOKEN env var
 
@@ -61,21 +64,24 @@ The `~/.config/chezmoi/chezmoi.toml` file defines default values:
 # 1. Clone/update dotfiles
 cd ~/.dotfiles
 git pull
-git submodule update --remote
 
-# 2. Set your API token
+# 2. Update submodules (includes dot_claude)
+git submodule update --init --remote
+
+# 3. Set your API token
 export ANTHROPIC_AUTH_TOKEN="sk-ant-..."
 
-# 3. Apply the template
-chezmoi apply
+# 4. Apply the template
+make claude
+# or: ./scripts/setup-claude-template.sh
 ```
 
 ### Updating Settings
 
 ```bash
 # Option 1: Edit the template (for hook changes)
-cd ~/.local/share/chezmoi/claude-config
-nvim dot_claude/settings.json.tmpl
+cd ~/.local/share/chezmoi/dot_claude
+nvim settings.json.tmpl
 git add . && git commit -m "feat: update hooks" && git push
 
 # Option 2: Update environment variables
@@ -89,17 +95,12 @@ chezmoi apply
 # 1. Clone dotfiles
 git clone git@github.com:floatingman/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
+
+# 2. Update submodules
 git submodule update --init --recursive
 
-# 2. Copy chezmoi config
-mkdir -p ~/.config/chezmoi
-cp .chezmoi.toml ~/.config/chezmoi/chezmoi.toml
-
-# 3. Set API token
-export ANTHROPIC_AUTH_TOKEN="sk-ant-..."
-
-# 4. Apply
-chezmoi apply
+# 3. Run setup script
+make claude
 ```
 
 ## Template Variables
@@ -119,20 +120,22 @@ The template supports the following variables:
 - The template file contains no secrets
 - Generated `settings.json` is ignored by git (in `.chezmoiignore`)
 - Only the template (without secrets) is version controlled
+- Private submodule keeps your hooks/agents/skills private
 
 ## Troubleshooting
 
 ### File not generating
 
 ```bash
-# Check if symlink exists
+# Check if template exists
 ls -la ~/.local/share/chezmoi/dot_claude/settings.json.tmpl
 
-# Should show: lrwxrwxrwx ... dot_claude/settings.json.tmpl -> ../claude-config/dot_claude/settings.json.tmpl
+# Check submodule status
+cd ~/.dotfiles
+git submodule status
 
-# If missing, recreate it:
-mkdir -p ~/.local/share/chezmoi/dot_claude
-ln -s ../claude-config/dot_claude/settings.json.tmpl ~/.local/share/chezmoi/dot_claude/settings.json.tmpl
+# Re-initialize if needed
+git submodule update --init --remote --depth 1
 ```
 
 ### Template variables not working
@@ -148,9 +151,11 @@ echo $ANTHROPIC_AUTH_TOKEN
 chezmoi execute-template < ~/.local/share/chezmoi/dot_claude/settings.json.tmpl | head -20
 ```
 
-### Wrong file location
+### Submodule issues
 
-If you see files generated at `~/claude-config/.claude/settings.json`, ensure:
-1. The symlink exists at `~/.local/share/chezmoi/dot_claude/settings.json.tmpl`
-2. `templateSymlinks = true` is set in `~/.config/chezmoi/chezmoi.toml`
-3. Run `chezmoi apply --force` to regenerate
+```bash
+# Remove and re-initialize submodule
+git submodule deinit -f dot_claude
+rm -rf .git/modules/dot_claude
+git submodule update --init --remote
+```

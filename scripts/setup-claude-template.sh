@@ -96,18 +96,13 @@ else
     echo "ℹ️  ~/.config/chezmoi/chezmoi.toml already exists, skipping..."
 fi
 
-# 4. Create symlink for template
-echo "🔗 Creating template symlink..."
-mkdir -p ~/.local/share/chezmoi/dot_claude
-
-# Create symlink (force overwrite if exists)
-ln -sf ../claude-config/dot_claude/settings.json.tmpl \
-   ~/.local/share/chezmoi/dot_claude/settings.json.tmpl
-
-if [[ -L ~/.local/share/chezmoi/dot_claude/settings.json.tmpl ]]; then
-    echo -e "${GREEN}✓ Created symlink for settings.json template${NC}"
+# 4. Verify template exists in submodule
+echo "🔍 Verifying template..."
+if [[ -f dot_claude/settings.json.tmpl ]]; then
+    echo -e "${GREEN}✓ Template found at dot_claude/settings.json.tmpl${NC}"
 else
-    echo -e "${RED}✗ Failed to create symlink${NC}"
+    echo -e "${RED}✗ Template not found - submodule may not have initialized correctly${NC}"
+    echo "   Try: git submodule update --init --remote --depth 1"
     exit 1
 fi
 
