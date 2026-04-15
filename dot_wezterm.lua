@@ -142,6 +142,48 @@ return {
     },
     { key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
   },
+  mouse_bindings = {
+    {
+      event = { Up = { streak = 1, button = "Left" } },
+      mods = "NONE",
+      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+    },
+    {
+      event = { Up = { streak = 2, button = "Left" } },
+      mods = "NONE",
+      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+    },
+    {
+      event = { Up = { streak = 3, button = "Left" } },
+      mods = "NONE",
+      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+    },
+    {
+      event = { Down = { streak = 1, button = "Middle" } },
+      mods = "NONE",
+      action = act.PasteFrom("PrimarySelection"),
+    },
+    {
+      event = { Up = { streak = 1, button = "Right" } },
+      mods = "NONE",
+      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+    },
+    {
+      event = { Down = { streak = 1, button = "Left" } },
+      mods = "SHIFT",
+      action = act.ExtendSelectionToMouseCursor("Cell"),
+    },
+    {
+      event = { Up = { streak = 1, button = "Left" } },
+      mods = "CTRL",
+      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+    },
+    {
+      event = { Down = { streak = 1, button = "Left" } },
+      mods = "SHIFT|CTRL",
+      action = act.ExtendSelectionToMouseCursor("Cell"),
+    },
+  },
   use_dead_keys = false,
   scrollback_lines = 10000,
   adjust_window_size_when_changing_font_size = false,
