@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 # One-time setup script for Claude Code settings template
 # Run this after cloning dotfiles on a new machine
-#
-# Usage:
-#   ./scripts/setup-claude-template.sh          # Auto-detect Claude
-#   ./scripts/setup-claude-template.sh --force  # Force setup
-#   FORCE=1 ./scripts/setup-claude-template.sh  # Force setup
 
 set -euo pipefail
 
@@ -44,13 +39,6 @@ check_claude_installed() {
     return 1
 }
 
-# Check if we're in the dotfiles directory
-if [[ ! -f ".chezmoi.toml" ]] || [[ ! -d ".git" ]]; then
-    echo -e "${RED}Error: Must run this script from the dotfiles root directory${NC}"
-    echo "Usage: cd ~/.dotfiles && ./scripts/setup-claude-template.sh"
-    exit 1
-fi
-
 # Auto-detect Claude Code unless forced
 if [[ "$FORCE" -ne 1 ]]; then
     echo "🔍 Checking for Claude Code installation..."
@@ -60,8 +48,7 @@ if [[ "$FORCE" -ne 1 ]]; then
         echo "   Skipping Claude Code template setup."
         echo ""
         echo "To force setup anyway, run:"
-        echo "   ./scripts/setup-claude-template.sh --force"
-        echo "   or: FORCE=1 ./scripts/setup-claude-template.sh"
+        echo "   make claude-force"
         exit 0
     fi
 
@@ -71,52 +58,9 @@ else
 fi
 
 echo ""
-echo "Setting up Claude Code configuration template..."
+echo "Setting up Claude Code configuration..."
 
-# 1. Clean up old claude-config submodule if present
-echo "🧹 Cleaning up old submodule (if present)..."
-cd "$(git rev-parse --show-toplevel)" || exit 1
-if [[ -d "claude-config" ]]; then
-    git submodule deinit -f claude-config 2>/dev/null || true
-    git rm -f claude-config 2>/dev/null || true
-    rm -rf .git/modules/claude-config 2>/dev/null || true
-    rm -rf claude-config 2>/dev/null || true
-    echo -e "${GREEN}✓ Old submodule removed${NC}"
-fi
-
-# 2. Update submodules
-echo "📦 Updating submodules..."
-if git submodule update --init --remote --depth 1 2>/dev/null; then
-    echo -e "${GREEN}✓ Submodules updated${NC}"
-else
-    echo -e "${YELLOW}⚠️  Submodule update had issues (may be non-critical)${NC}"
-fi
-cd - > /dev/null || exit 1
-
-# 3. Create chezmoi config directory
-echo "📁 Creating chezmoi config directory..."
-mkdir -p ~/.config/chezmoi
-
-# 4. Copy chezmoi config if it doesn't exist
-if [[ ! -f ~/.config/chezmoi/chezmoi.toml ]]; then
-    echo "📝 Copying chezmoi config..."
-    cp .chezmoi.toml ~/.config/chezmoi/chezmoi.toml
-    echo -e "${GREEN}✓ Created ~/.config/chezmoi/chezmoi.toml${NC}"
-else
-    echo "ℹ️  ~/.config/chezmoi/chezmoi.toml already exists, skipping..."
-fi
-
-# 5. Verify template exists in submodule
-echo "🔍 Verifying template..."
-if [[ -f dot_claude/settings.json.tmpl ]]; then
-    echo -e "${GREEN}✓ Template found at dot_claude/settings.json.tmpl${NC}"
-else
-    echo -e "${RED}✗ Template not found - submodule may not have initialized correctly${NC}"
-    echo "   Try: git submodule update --init --remote --depth 1"
-    exit 1
-fi
-
-# 6. Check for environment variables
+# Check for environment variables
 echo ""
 echo "🔑 Checking for API configuration..."
 
@@ -130,17 +74,22 @@ else
     echo -e "${GREEN}✓ API credentials found${NC}"
 fi
 
-# 7. Apply chezmoi templates
+# Refresh external (clone/update claude-config)
+echo ""
+echo "📦 Updating Claude Code configuration from external repo..."
+chezmoi apply --refresh-externals
+
+# Apply chezmoi templates
 echo ""
 echo "🚀 Applying chezmoi templates..."
-if chezmoi apply --force; then
+if chezmoi apply; then
     echo -e "${GREEN}✓ Templates applied successfully${NC}"
 else
     echo -e "${RED}✗ Failed to apply templates${NC}"
     exit 1
 fi
 
-# 8. Verify the generated file
+# Verify the generated file
 if [[ -f ~/.claude/settings.json ]]; then
     echo ""
     echo -e "${GREEN}✅ Setup complete!${NC}"
@@ -158,5 +107,3 @@ echo "      export ANTHROPIC_AUTH_TOKEN='your-token'"
 echo "      export ANTHROPIC_BASE_URL='https://api.z.ai/api/anthropic'"
 echo "   2. Source your shell config: source ~/.zshrc"
 echo "   3. Run: chezmoi apply"
-echo ""
-echo "See ~/.dotfiles/CLAUDE_SETUP.md for full documentation."

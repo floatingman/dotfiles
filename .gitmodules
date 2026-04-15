@@ -6,6 +6,3 @@
 	path = dot_config/nvim
 	url = git@github.com:floatingman/lazyvim.git
 	branch = main
-[submodule "dot_claude"]
-	path = dot_claude
-	url = git@github.com:floatingman/claude-config.git

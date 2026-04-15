@@ -39,10 +39,8 @@ install: ## Initial installation on a new machine
 	@echo "  2. Optional: make claude (for Claude Code setup)"
 
 update: ## Update submodules and apply changes
-	@echo "📦 Updating submodules..."
-	@git submodule update --init --recursive --remote
-	@echo "🚀 Applying changes..."
-	@chezmoi apply
+	@echo "📦 Updating..."
+	@chezmoi update
 	@echo "✅ Update complete"
 
 apply: ## Apply chezmoi templates
@@ -50,21 +48,29 @@ apply: ## Apply chezmoi templates
 
 add: ## Add file to chezmoi (e.g., make add FILE=~/.zshrc)
 	@if [ -z "$(FILE)" ]; then \
-		echo "Error: Usage: make add FILE=~/.zshrc"; \
-		exit 1; \
-	fi
+			echo "Error: Usage: make add FILE=~/.zshrc"; \
+			exit 1; \
+		fi
 	@echo "📝 Adding $(FILE) to chezmoi..."
 	@chezmoi add $(FILE)
 	@echo "✓ Added $(FILE)"
-	@echo "  Don't forget to commit the changes"
+	@echo "  Don't forget to commit the changes: make commit"
 
 edit: ## Edit file in chezmoi source (e.g., make edit FILE=~/.zshrc)
 	@if [ -z "$(FILE)" ]; then \
-		echo "Error: Usage: make edit FILE=~/.zshrc"; \
-		exit 1; \
-	fi
+			echo "Error: Usage: make edit FILE=~/.zshrc"; \
+			exit 1; \
+		fi
 	@echo "📝 Editing $(FILE)..."
 	@chezmoi edit $(FILE)
+
+commit: ## Commit changes to dotfiles repo
+	@echo "📝 Committing changes..."
+	@chezmoi cd && git commit -m "Update dotfiles"
+
+push: ## Push changes to remote
+	@echo "📤 Pushing changes..."
+	@chezmoi cd && git push
 
 diff: ## Show what would change without applying
 	@chezmoi diff
@@ -82,23 +88,22 @@ doctor: ## Run chezmoi diagnostics
 
 verify: ## Verify no uncommitted changes in source
 	@echo "🔍 Verifying chezmoi source..."
-	@cd ~/.local/share/chezmoi && git status --short
+	@chezmoi cd && git status --short
 	@echo ""
 	@echo "To commit changes:"
-	@echo "  cd ~/.local/share/chezmoi"
-	@echo "  git add . && git commit"
+	@echo "  make commit"
 
 clean: ## Remove all managed files (DANGEROUS!)
 	@echo "⚠️  This will remove all managed files from your home directory!"
 	@read -p "Continue? [y/N] " -n 1 -r; \
-	echo ""; \
-	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-		chezmoi forget --exact $$(chezmoi managed --include=files | xargs); \
-		rm -rf $$(chezmoi managed --include=files | xargs); \
-		echo "✅ Clean complete"; \
-	else \
-		echo "Cancelled"; \
-	fi
+		echo ""; \
+		if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+			chezmoi forget --exact $$(chezmoi managed --include=files | xargs); \
+			rm -rf $$(chezmoi managed --include=files | xargs); \
+			echo "✅ Clean complete"; \
+		else \
+			echo "Cancelled"; \
+		fi
 
 claude: ## One-time Claude Code template setup (auto-detects Claude)
 	@./scripts/setup-claude-template.sh

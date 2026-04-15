@@ -1,0 +1,7 @@
+# Claude Code configuration
+# Managed as external git-repo to avoid chezmoi interpreting non-chezmoi filenames
+
+["dot_claude"]
+    type = "git-repo"
+    url = "git@github.com:floatingman/claude-config.git"
+    refreshPeriod = "168h"

@@ -44,36 +44,24 @@ cargo install chezmoi
 ### Quick Start
 
 ```bash
-# Clone repository (replace with your fork)
-git clone https://github.com/floatingman/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-
-# Option 1: Use Makefile (recommended)
-make install
-
-# Option 2: Direct chezmoi
-chezmoi init --apply
+# Clone and install in one command
+chezmoi init --apply git@github.com:floatingman/dotfiles.git
 ```
 
-### First-time Setup
+That's it! Everything is configured automatically.
 
-1. **Install chezmoi** (see Prerequisites above)
-2. **Clone repository** to `~/.dotfiles` or any location
-3. **Initialize:**
-   ```bash
-   # Recommended: Use Makefile
-   make install
+### First-time Setup Details
 
-   # Or direct chezmoi
-   chezmoi init --apply
-   ```
-   This automatically:
-   - Installs all configs
-   - Clones git submodules (LazyVim, tmux)
-   - Sets up symlinks
-4. **Reload shell:** `source ~/.zshrc`
+The `chezmoi init --apply` command:
+1. Clones this repository to `~/.local/share/chezmoi` (chezmoi's source directory)
+2. Downloads external dependencies (submodules)
+3. Generates all config files in your home directory
 
-**That's it!** Everything is configured automatically.
+After installation:
+```bash
+# Reload shell
+source ~/.zshrc
+```
 
 ### Claude Code Configuration (Optional)
 
@@ -94,9 +82,7 @@ export ANTHROPIC_BASE_URL='https://api.z.ai/api/anthropic'
 chezmoi apply
 ```
 
-The setup script automatically detects if Claude Code is installed and skips setup if not found.
-
-See [CLAUDE_SETUP.md](CLAUDE_SETUP.md) for details.
+The Claude Code configuration is managed as an [external](https://www.chezmoi.io/user-guide/include-files-from-elsewhere/) git repository, automatically cloned to `dot_claude/` in chezmoi's source directory.
 
 ## Machine-Specific Configurations
 
@@ -136,46 +122,44 @@ Updates all supported apps:
 - Shell prompt (Starship)
 - File manager (Yazi)
 
-## Git Submodules
+## External Dependencies
 
-Chezmoi automatically manages git submodules:
+Configurations are managed from external repositories using chezmoi's [external](https://www.chezmoi.io/user-guide/include-files-from-elsewhere/) functionality:
 
-- **Neovim:** [LazyVim](https://github.com/floatingman/LazyVim)
-- **Tmux:** [gpakosz/tmux.plugin](https://github.com/gpakosz/tmux-plugin-manager)
-- **Claude Config:** [Private settings](https://github.com/floatingman/claude-config) (optional)
+- **Neovim:** [LazyVim](https://github.com/floatingman/lazyvim) - Updated weekly
+- **Tmux:** [tmux-plugin-manager](https://github.com/gpakosz/tmux-plugin-manager) - Updated weekly
+- **Claude Config:** [Private settings](https://github.com/floatingman/claude-config) - Updated weekly
 
-Submodules are auto-initialized during `make install`. No manual git commands needed.
+Externals are automatically cloned to `~/.local/share/chezmoi/` and refreshed weekly (or manually with `chezmoi apply -R`).
 
-**To update submodules:**
+**To update externals:**
 ```bash
-# Recommended (via Makefile)
+# Via Makefile
 make update
 
-# Or manually
-cd ~/.local/share/chezmoi
-git submodule update --remote --recursive
+# Or manually (with force refresh)
+chezmoi apply --refresh-externals
 ```
 
 ## Structure
 
 ```
-~/.local/share/chezmoi/
-├── dot_config/          # Application configs
-│   ├── nvim/            # Cross-platform
-│   ├── tmux/            # Cross-platform
-│   ├── i3/              # Linux desktop only
-│   ├── karabiner/       # macOS only
+~/.local/share/chezmoi/          # Source directory (your dotfiles repo)
+├── dot_config/                    # Application configs
+│   ├── nvim/                      # Neovim (external: lazyvim)
+│   ├── tmux/                      # Tmux (external: tpm)
+│   ├── i3/                        # Linux desktop only
+│   ├── karabiner/                 # macOS only
 │   └── ...
-├── dot_zshrc             # Zsh configuration
-├── dot_zsh/              # Zsh framework
-└── .chezmoiignore       # Platform filtering rules
+├── dot_zshrc                       # Zsh configuration
+├── dot_zsh/                        # Zsh framework
+├── dot_claude/                     # Claude Code (external: claude-config)
+└── .chezmoiexternal.toml          # External repo definitions
 ```
 
-## Chezmoi Management
+## Daily Operations
 
 All chezmoi operations are available via `make` for convenience:
-
-### Daily Operations
 
 ```bash
 make update      # Pull latest + apply (recommended workflow)
@@ -199,33 +183,6 @@ make verify      # Check for uncommitted changes
 make clean       # Remove all managed files (with confirmation)
 ```
 
-### Full Makefile Reference
-
-```bash
-# Core operations
-make install    # Initial setup on new machine
-make update     # Update submodules and apply changes
-make apply      # Apply chezmoi templates
-
-# File management
-make add FILE=~/.path/to/file   # Add file to chezmoi
-make edit FILE=~/.path/to/file  # Edit file in source
-make diff                          # Preview changes
-make status                        # Check status
-
-# Maintenance
-make doctor                        # Run diagnostics
-make verify                        # Verify uncommitted changes
-make clean                         # Remove managed files
-
-# Claude Code (optional)
-make claude                        # Auto-detect and setup
-make claude-force                  # Force setup
-
-# Help
-make help                          # Show all targets
-```
-
 ### Direct Chezmoi Commands (Advanced)
 
 If you prefer direct chezmoi commands (not required with Makefile):
@@ -246,19 +203,38 @@ chezmoi edit ~/.config/nvim/init.lua
 # See all managed files
 chezmoi managed
 
-# Check source path for a file
-chezmoi source-path ~/.zshrc
+# Enter source directory (for git operations)
+chezmoi cd
+git pull
+git status
 ```
 
-## Migration from RCM
+## Chezmoi Workflow
 
-Previously managed with [RCM](https://thoughtbot.github.io/rcm). Migrated to Chezmoi for:
-- Better platform-specific filtering
-- Template support
-- Built-in encryption
-- Active development
+The proper chezmoi workflow for development:
 
-**RCM tag structure removed** - replaced with `.chezmoiignore` template-based filtering.
+1. **Edit source files:**
+   ```bash
+   chezmoi edit ~/.zshrc    # Opens file in source directory
+   # Make your changes, save and exit
+   ```
+
+2. **Apply changes:**
+   ```bash
+   chezmoi apply ~/.zshrc   # Apply single file
+   chezmoi apply             # Apply all changes
+   ```
+
+3. **Commit and push:**
+   ```bash
+   make commit              # Or: chezmoi cd && git commit
+   make push                # Or: chezmoi cd && git push
+   ```
+
+4. **Pull on other machines:**
+   ```bash
+   chezmoi update            # Pull + apply in one command
+   ```
 
 ## Troubleshooting
 
@@ -274,10 +250,13 @@ Previously managed with [RCM](https://thoughtbot.github.io/rcm). Migrated to Che
 - Ensure scripts have execute permissions
 - Check state file: `cat ~/.cache/i3/current-theme`
 
-**Submodules not loading?**
-- Should be automatic - re-run `chezmoi init --apply`
-- Verify in chezmoi source: `cd ~/.local/share/chezmoi && git submodule status`
-- Check external markers: `ls dot_config/nvim.external dot_config/tmux.external`
+**External repos not updating?**
+- Check external definitions: `cat ~/.local/share/chezmoi/.chezmoiexternal.toml`
+- Force refresh: `chezmoi apply -R`
+
+**Claude Code config not found?**
+- Check external was cloned: `ls ~/.local/share/chezmoi/dot_claude/settings.json.tmpl`
+- Force refresh: `chezmoi apply -R`
 
 ## License
 
