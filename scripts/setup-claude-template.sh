@@ -77,12 +77,12 @@ fi
 # Refresh external (clone/update claude-config)
 echo ""
 echo "📦 Updating Claude Code configuration from external repo..."
-chezmoi apply --refresh-externals
+chezmoi apply --refresh-externals --force
 
 # Apply chezmoi templates
 echo ""
 echo "🚀 Applying chezmoi templates..."
-if chezmoi apply; then
+if chezmoi apply --force; then
     echo -e "${GREEN}✓ Templates applied successfully${NC}"
 else
     echo -e "${RED}✗ Failed to apply templates${NC}"
