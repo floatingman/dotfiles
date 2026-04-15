@@ -73,9 +73,19 @@ fi
 echo ""
 echo "Setting up Claude Code configuration template..."
 
-# 1. Update submodules (from dotfiles root)
-echo "📦 Updating submodules..."
+# 1. Clean up old claude-config submodule if present
+echo "🧹 Cleaning up old submodule (if present)..."
 cd "$(git rev-parse --show-toplevel)" || exit 1
+if [[ -d "claude-config" ]]; then
+    git submodule deinit -f claude-config 2>/dev/null || true
+    git rm -f claude-config 2>/dev/null || true
+    rm -rf .git/modules/claude-config 2>/dev/null || true
+    rm -rf claude-config 2>/dev/null || true
+    echo -e "${GREEN}✓ Old submodule removed${NC}"
+fi
+
+# 2. Update submodules
+echo "📦 Updating submodules..."
 if git submodule update --init --remote --depth 1 2>/dev/null; then
     echo -e "${GREEN}✓ Submodules updated${NC}"
 else
