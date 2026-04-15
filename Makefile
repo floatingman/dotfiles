@@ -5,6 +5,7 @@ help: ## Show this help message
 	@echo ""
 	@echo "Core operations:"
 	@echo "  make install    - Initial installation on a new machine"
+	@echo "  make bootstrap  - Create chezmoi config (fixes template errors)"
 	@echo "  make update     - Update submodules and apply changes"
 	@echo "  make apply      - Apply chezmoi templates"
 	@echo ""
@@ -37,6 +38,24 @@ install: ## Initial installation on a new machine
 	@echo "Next steps:"
 	@echo "  1. Reload shell: source ~/.zshrc"
 	@echo "  2. Optional: make claude (for Claude Code setup)"
+
+bootstrap: ## Set up chezmoi config on a new machine (fixes template errors)
+	@mkdir -p ~/.config/chezmoi
+	@if [ ! -f ~/.config/chezmoi/chezmoi.toml ]; then \
+		echo "Creating ~/.config/chezmoi/chezmoi.toml with defaults..."; \
+		cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'; \
+[data.anthropic]\
+\
+  token = ""\
+\
+[data.claude]\
+\
+  api_timeout_ms = "3000000"\
+EOF\
+		echo "✅ Config created. Run 'make apply' to apply templates."; \
+	else \
+		echo "✅ ~/.config/chezmoi/chezmoi.toml already exists."; \
+	fi
 
 update: ## Update submodules and apply changes
 	@echo "📦 Updating..."

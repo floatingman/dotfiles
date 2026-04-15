@@ -54,14 +54,38 @@ That's it! Everything is configured automatically.
 
 The `chezmoi init --apply` command:
 1. Clones this repository to `~/.local/share/chezmoi` (chezmoi's source directory)
-2. Downloads external dependencies (submodules)
-3. Generates all config files in your home directory
+2. Reads `.chezmoi.toml` from the source directory for template data
+3. Downloads external dependencies (submodules)
+4. Generates all config files in your home directory
 
 After installation:
 ```bash
 # Reload shell
 source ~/.zshrc
 ```
+
+### New Machine Bootstrap
+
+If `chezmoi apply` fails with template errors (e.g., `map has no entry for key "claude"`), the config data isn't being loaded. Fix:
+
+```bash
+# Option 1: Re-init (recommended)
+chezmoi init --apply git@github.com:floatingman/dotfiles.git
+
+# Option 2: Manually create config with data section
+mkdir -p ~/.config/chezmoi
+cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
+[data]
+  [data.anthropic]
+    token = ""
+
+  [data.claude]
+    api_timeout_ms = "3000000"
+EOF
+chezmoi apply
+```
+
+The templates are defensive — they work with empty data and fall back to environment variables. But you need *some* config file for chezmoi to process templates correctly.
 
 ### Claude Code Configuration (Optional)
 
@@ -253,6 +277,11 @@ The proper chezmoi workflow for development:
 **External repos not updating?**
 - Check external definitions: `cat ~/.local/share/chezmoi/.chezmoiexternal.toml`
 - Force refresh: `chezmoi apply -R`
+
+**Template errors on new machine (`map has no entry for key`)?**
+- Chezmoi needs config data before processing templates
+- Re-run: `chezmoi init --apply git@github.com:floatingman/dotfiles.git`
+- Or create `~/.config/chezmoi/chezmoi.toml` with `[data]` section (see New Machine Bootstrap above)
 
 **Claude Code config not found?**
 - Check external was cloned: `ls ~/.local/share/chezmoi/dot_claude/settings.json.tmpl`
