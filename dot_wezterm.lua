@@ -96,6 +96,7 @@ return {
     font = wezterm.font({ family = "Noto Sans", weight = "Regular" }),
   },
   disable_default_key_bindings = true,
+  enable_kitty_graphics = false,
   leader = { key = "b", mods = "ALT", timeout_milliseconds = 2000 },
 
   keys = {
