@@ -93,11 +93,11 @@ else
 fi
 cd - > /dev/null || exit 1
 
-# 2. Create chezmoi config directory
+# 3. Create chezmoi config directory
 echo "📁 Creating chezmoi config directory..."
 mkdir -p ~/.config/chezmoi
 
-# 3. Copy chezmoi config if it doesn't exist
+# 4. Copy chezmoi config if it doesn't exist
 if [[ ! -f ~/.config/chezmoi/chezmoi.toml ]]; then
     echo "📝 Copying chezmoi config..."
     cp .chezmoi.toml ~/.config/chezmoi/chezmoi.toml
@@ -106,7 +106,7 @@ else
     echo "ℹ️  ~/.config/chezmoi/chezmoi.toml already exists, skipping..."
 fi
 
-# 4. Verify template exists in submodule
+# 5. Verify template exists in submodule
 echo "🔍 Verifying template..."
 if [[ -f dot_claude/settings.json.tmpl ]]; then
     echo -e "${GREEN}✓ Template found at dot_claude/settings.json.tmpl${NC}"
@@ -116,7 +116,7 @@ else
     exit 1
 fi
 
-# 5. Check for environment variables
+# 6. Check for environment variables
 echo ""
 echo "🔑 Checking for API configuration..."
 
@@ -130,7 +130,7 @@ else
     echo -e "${GREEN}✓ API credentials found${NC}"
 fi
 
-# 6. Apply chezmoi templates
+# 7. Apply chezmoi templates
 echo ""
 echo "🚀 Applying chezmoi templates..."
 if chezmoi apply --force; then
@@ -140,7 +140,7 @@ else
     exit 1
 fi
 
-# 7. Verify the generated file
+# 8. Verify the generated file
 if [[ -f ~/.claude/settings.json ]]; then
     echo ""
     echo -e "${GREEN}✅ Setup complete!${NC}"
