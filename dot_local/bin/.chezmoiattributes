@@ -1,2 +1,2 @@
 # Make all scripts in this directory executable
-* executable
+* executable=true
