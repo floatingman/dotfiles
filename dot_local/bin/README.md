@@ -4,10 +4,6 @@ I put them in a directory in my path for easy access.
 
 ## Permissions
 
-Scripts are made executable via a `run_once_` chezmoi script. When adding new scripts,
-reset it so it runs again:
-
-```
-chezmoi forget ~/.local/bin/run_once_fix-executable-permissions
-chezmoi apply
-```
+Scripts are made executable via a `run_` chezmoi script that runs on every `chezmoi apply`.
+This causes chezmoi to detect permission changes and prompt to overwrite. Use `chezmoi apply --force`
+or accept the prompt to proceed.
