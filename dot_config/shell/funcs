@@ -1655,7 +1655,6 @@ play_videos_newest() {
 ############################## Claude Code Provider Switcher ##############################
 
 _CLAUDE_PROVIDER_FILE="$HOME/.config/shell/claude-provider"
-_ZAI_BASE_URL="https://api.z.ai/api/anthropic"
 
 # Restore saved provider on shell init
 _claude_provider_restore() {
@@ -1664,7 +1663,7 @@ _claude_provider_restore() {
   provider=$(cat "$_CLAUDE_PROVIDER_FILE" 2>/dev/null)
   case "$provider" in
     zai)
-      export ANTHROPIC_BASE_URL="$_ZAI_BASE_URL"
+      [[ -f "$HOME/.zsh_private" ]] && source "$HOME/.zsh_private"
       export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
       export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
       export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
@@ -1696,7 +1695,7 @@ use-anthropic() {
 
 # Switch to z.ai Coding Plan (GLM models)
 use-zai() {
-  export ANTHROPIC_BASE_URL="$_ZAI_BASE_URL"
+  [[ -f "$HOME/.zsh_private" ]] && source "$HOME/.zsh_private"
   export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
   export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
   export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
