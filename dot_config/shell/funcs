@@ -1655,6 +1655,7 @@ play_videos_newest() {
 ############################## Claude Code Provider Switcher ##############################
 
 _CLAUDE_PROVIDER_FILE="$HOME/.config/shell/claude-provider"
+_ZAI_BASE_URL="https://api.z.ai/api/anthropic"
 
 # Restore saved provider on shell init
 _claude_provider_restore() {
@@ -1663,12 +1664,15 @@ _claude_provider_restore() {
   provider=$(cat "$_CLAUDE_PROVIDER_FILE" 2>/dev/null)
   case "$provider" in
     zai)
+      export ANTHROPIC_BASE_URL="$_ZAI_BASE_URL"
       export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
       export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
       export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
       export CLAUDE_PROVIDER="zai"
       ;;
     anthropic)
+      unset ANTHROPIC_AUTH_TOKEN
+      unset ANTHROPIC_BASE_URL
       unset ANTHROPIC_DEFAULT_HAIKU_MODEL
       unset ANTHROPIC_DEFAULT_SONNET_MODEL
       unset ANTHROPIC_DEFAULT_OPUS_MODEL
@@ -1678,35 +1682,40 @@ _claude_provider_restore() {
 }
 _claude_provider_restore
 
-# Switch to Anthropic Pro Plan (native Claude models)
+# Switch to Anthropic Pro Plan (native Claude models via OAuth)
 use-anthropic() {
+  unset ANTHROPIC_AUTH_TOKEN
+  unset ANTHROPIC_BASE_URL
   unset ANTHROPIC_DEFAULT_HAIKU_MODEL
   unset ANTHROPIC_DEFAULT_SONNET_MODEL
   unset ANTHROPIC_DEFAULT_OPUS_MODEL
   export CLAUDE_PROVIDER="anthropic"
   echo "anthropic" > "$_CLAUDE_PROVIDER_FILE"
-  echo "✓ Switched to Anthropic Pro Plan (persisted)"
+  echo "Switched to Anthropic Pro Plan (persisted). Restart Claude Code to take effect."
 }
 
 # Switch to z.ai Coding Plan (GLM models)
 use-zai() {
+  export ANTHROPIC_BASE_URL="$_ZAI_BASE_URL"
   export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
   export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
   export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
   export CLAUDE_PROVIDER="zai"
   echo "zai" > "$_CLAUDE_PROVIDER_FILE"
-  echo "✓ Switched to z.ai Coding Plan (persisted)"
+  echo "Switched to z.ai Coding Plan (persisted). Restart Claude Code to take effect."
 }
 
 # Show current Claude Code provider
 claude-provider() {
   if [[ "$CLAUDE_PROVIDER" == "zai" ]]; then
     echo "Current: z.ai (GLM models)"
+    echo "  Base URL: $ANTHROPIC_BASE_URL"
     echo "  Haiku: $ANTHROPIC_DEFAULT_HAIKU_MODEL"
     echo "  Sonnet: $ANTHROPIC_DEFAULT_SONNET_MODEL"
     echo "  Opus: $ANTHROPIC_DEFAULT_OPUS_MODEL"
   else
-    echo "Current: Anthropic (native models)"
+    echo "Current: Anthropic (native models via OAuth)"
+    echo "  Base URL: ${ANTHROPIC_BASE_URL:-<default>}"
   fi
   [[ -f "$_CLAUDE_PROVIDER_FILE" ]] && echo "  Persisted: $(cat "$_CLAUDE_PROVIDER_FILE")"
 }
