@@ -13,3 +13,4 @@
 [submodule "dot_local/bin"]
 	path = dot_local/bin
 	url = https://github.com/floatingman/bin.git
+	branch = main
