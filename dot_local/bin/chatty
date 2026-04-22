@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-
-java -jar ${HOME}/SynologyDrive/Applications/chatty/Chatty.jar $1 $2 $3

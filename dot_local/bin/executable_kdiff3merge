@@ -1,8 +1,0 @@
-#!/bin/sh
-local="$1"
-chezmoi="$2"
-base="$3"
-
-kdiff3 -m "$base" "$chezmoi" "$local" -o "$chezmoi"
-
-test -f "$chezmoi.orig" && rm -f "$chezmoi.orig"

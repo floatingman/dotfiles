@@ -10,3 +10,6 @@
 	path = dot_claude
 	url = git@github.com:floatingman/claude-config.git
 	branch = main
+[submodule "dot_local/bin"]
+	path = dot_local/bin
+	url = https://github.com/floatingman/bin.git
