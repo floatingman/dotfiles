@@ -1,0 +1,43 @@
+# Nord Dark theme for i3
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused           #5e81ac #2e3440 #eceff4 #a3be8c #5e81ac
+client.focused_inactive  #4c566a #2e3440 #eceff4 #a3be8c #4c566a
+client.unfocused         #4c566a #2e3440 #eceff4 #a3be8c #4c566a
+client.urgent            #bf616a #2e3440 #bf616a #a3be8c #bf616a
+client.placeholder       #4c566a #2e3440 #eceff4 #a3be8c #4c566a
+client.background        #2e3440
+
+# Nord Dark colors
+set $nord0  #2e3440
+set $nord1  #3b4252
+set $nord2  #434c5e
+set $nord3  #4c566a
+set $nord4  #d8dee9
+set $nord5  #e5e9f0
+set $nord6  #eceff4
+set $nord7  #f9fafb
+set $nord8  #bf616a
+set $nord9  #d08770
+set $nord10 #ebcb8b
+set $nord11 #a3be8c
+set $nord12 #b48ead
+set $nord13 #88c0d0
+set $nord14 #8fbcbb
+set $nord15 #5e81ac
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #2e3440
+        statusline         #eceff4
+        focused_statusline #eceff4
+        active_workspace   #2e3440 #eceff4 #ebcb8b
+        focused_separator  #2e3440
+        focused_workspace  #2e3440 #eceff4 #5e81ac
+        inactive_workspace #2e3440 #2e3440 #4c566a
+        urgent_workspace   #2e3440 #2e3440 #bf616a
+        binding_mode       #2e3440 #2e3440 #4c566a
+    }
+}

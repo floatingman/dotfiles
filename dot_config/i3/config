@@ -2,7 +2,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-include ~/.config/i3/themes/catpuccin-macchiato
+include /home/dnewman/.config/i3/dark-themes/github-dark
 
 # Set the mod key
 #

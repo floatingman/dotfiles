@@ -1,0 +1,37 @@
+# GitHub Dark theme for i3
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused           #58a6ff #0d1117 #c9d1d9 #3fb950 #58a6ff
+client.focused_inactive  #30363d #0d1117 #c9d1d9 #3fb950 #30363d
+client.unfocused         #30363d #0d1117 #c9d1d9 #3fb950 #30363d
+client.urgent            #f85149 #0d1117 #f85149 #3fb950 #f85149
+client.placeholder       #30363d #0d1117 #c9d1d9 #3fb950 #30363d
+client.background        #0d1117
+
+# GitHub Dark colors
+set $bg       #0d1117
+set $fg       #c9d1d9
+set $red      #ff7b72
+set $green    #3fb950
+set $yellow   #d29922
+set $blue     #58a6ff
+set $purple   #bc8cff
+set $aqua     #39c5cf
+set $gray     #8b949e
+set $border   #30363d
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #0d1117
+        statusline         #c9d1d9
+        focused_statusline #c9d1d9
+        active_workspace   #0d1117 #c9d1d9 #d29922
+        focused_separator  #0d1117
+        focused_workspace  #0d1117 #c9d1d9 #58a6ff
+        inactive_workspace #0d1117 #0d1117 #6e7681
+        urgent_workspace   #0d1117 #0d1117 #f85149
+        binding_mode       #0d1117 #0d1117 #6e7681
+    }
+}

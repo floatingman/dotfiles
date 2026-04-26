@@ -1,0 +1,37 @@
+# GitHub Light Dim theme for i3
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused           #58a6ff #f2f2f2 #333333 #d29922 #58a6ff
+client.focused_inactive  #d0d7de #f2f2f2 #333333 #d29922 #d0d7de
+client.unfocused         #d0d7de #f2f2f2 #333333 #d29922 #d0d7de
+client.urgent            #da3b47 #f2f2f2 #da3b47 #d29922 #da3b47
+client.placeholder       #d0d7de #f2f2f2 #333333 #d29922 #d0d7de
+client.background        #f2f2f2
+
+# GitHub Light Dim colors
+set $bg       #f2f2f2
+set $fg       #333333
+set $red      #da3b47
+set $green    #3fb950
+set $yellow   #d29922
+set $blue     #58a6ff
+set $purple   #bc8cff
+set $aqua     #39c5cf
+set $gray     #6e7781
+set $border   #d0d7de
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #f2f2f2
+        statusline         #333333
+        focused_statusline #333333
+        active_workspace   #f2f2f2 #333333 #d29922
+        focused_separator  #f2f2f2
+        focused_workspace  #f2f2f2 #333333 #58a6ff
+        inactive_workspace #f2f2f2 #f2f2f2 #d0d7de
+        urgent_workspace   #f2f2f2 #f2f2f2 #da3b47
+        binding_mode       #f2f2f2 #f2f2f2 #d0d7de
+    }
+}

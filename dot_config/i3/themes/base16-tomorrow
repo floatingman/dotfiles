@@ -1,0 +1,43 @@
+# Base16 Tomorrow theme for i3
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused           #4271ae #ffffffd9 #4d4d4c #eab700 #4271ae
+client.focused_inactive  #969896 #ffffffd9 #4d4d4c #eab700 #969896
+client.unfocused         #969896 #ffffffd9 #4d4d4c #eab700 #969896
+client.urgent            #c82829 #ffffffd9 #c82829 #eab700 #c82829
+client.placeholder       #969896 #ffffffd9 #4d4d4c #eab700 #969896
+client.background        #ffffffd9
+
+# Base16 Tomorrow colors
+set $base00   #4d4d4c
+set $base01   #969896
+set $base02   #b4b7b4
+set $base03   #c5c8c6
+set $base04   #e0e0e0
+set $base05   #ffffffd9
+set $base06   #ffffff
+set $base07   #ffffff
+set $red      #c82829
+set $green    #718c00
+set $yellow   #eab700
+set $blue     #4271ae
+set $purple   #8959a8
+set $aqua     #3e999f
+set $gray     #969896
+set $orange   #f5871f
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #ffffffd9
+        statusline         #4d4d4c
+        focused_statusline #4d4d4c
+        active_workspace   #ffffffd9 #4d4d4c #eab700
+        focused_separator  #ffffffd9
+        focused_workspace  #ffffffd9 #4d4d4c #4271ae
+        inactive_workspace #ffffffd9 #ffffffd9 #969896
+        urgent_workspace   #ffffffd9 #ffffffd9 #c82829
+        binding_mode       #ffffffd9 #ffffffd9 #969896
+    }
+}

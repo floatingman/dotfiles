@@ -1,0 +1,43 @@
+# Gruvbox Light theme for i3
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused           #458588 #fbf1c7 #504945 #d79921 #458588
+client.focused_inactive  #d5c4a1 #fbf1c7 #504945 #d79921 #d5c4a1
+client.unfocused         #d5c4a1 #fbf1c7 #504945 #d79921 #d5c4a1
+client.urgent            #cc241d #fbf1c7 #cc241d #d79921 #cc241d
+client.placeholder       #d5c4a1 #fbf1c7 #504945 #d79921 #d5c4a1
+client.background        #fbf1c7
+
+# Gruvbox Light colors
+set $bg0_hard #f9f5d7
+set $bg0      #fbf1c7
+set $bg1      #f2e5bc
+set $bg2      #ebdbb2
+set $bg3      #d5c4a1
+set $bg4      #bdae93
+set $fg0      #fbf1c7
+set $fg       #ebdbb2
+set $red      #cc241d
+set $green    #98971a
+set $yellow   #d79921
+set $blue     #458588
+set $purple   #b16286
+set $aqua     #689d6a
+set $gray     #a89984
+set $orange   #d65d0e
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #fbf1c7
+        statusline         #504945
+        focused_statusline #504945
+        active_workspace   #fbf1c7 #504945 #d79921
+        focused_separator  #fbf1c7
+        focused_workspace  #fbf1c7 #504945 #98971a
+        inactive_workspace #fbf1c7 #fbf1c7 #d5c4a1
+        urgent_workspace   #fbf1c7 #fbf1c7 #cc241d
+        binding_mode       #fbf1c7 #fbf1c7 #d5c4a1
+    }
+}
