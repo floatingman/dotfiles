@@ -256,10 +256,11 @@ for_window [title="^edit_text$"] floating enable
 # Hide borders adjacent to screen edges
 hide_edge_borders both
 
-# Assign MPV to workspace 4 and focus
+# Assign MPV to workspace 3 and focus
 assign [class="mpv"] 3
 for_window [class="mpv"] focus
-
+assign [class="chatty-Chatty"] 5
+#
 # include $HOME/.config/i3/themes/catpuccin-frappe
 # include $HOME/.config/i3/themes/catpuccin-latte
 # include $HOME/.config/i3/themes/catpuccin-macchiato
