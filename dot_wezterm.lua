@@ -177,7 +177,7 @@ return {
     {
       event = { Up = { streak = 1, button = "Left" } },
       mods = "CTRL",
-      action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+      action = act.OpenLinkAtMouseCursor,
     },
     {
       event = { Down = { streak = 1, button = "Left" } },
