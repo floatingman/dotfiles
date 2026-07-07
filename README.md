@@ -54,7 +54,7 @@ That's it! Everything is configured automatically.
 
 The `chezmoi init --apply` command:
 1. Clones this repository to `~/.local/share/chezmoi` (chezmoi's source directory)
-2. Reads `.chezmoi.toml` from the source directory for template data
+2. Executes `.chezmoi.toml.tmpl` to generate `~/.config/chezmoi/chezmoi.toml` (see [Chezmoi Configuration](#chezmoi-configuration) below)
 3. Downloads external dependencies (submodules)
 4. Generates all config files in your home directory
 
@@ -64,9 +64,59 @@ After installation:
 source ~/.zshrc
 ```
 
+### Chezmoi Configuration
+
+Chezmoi's own config lives at `~/.config/chezmoi/chezmoi.toml`. It is **not** a
+managed dotfile — chezmoi reads it on startup, so it can't be managed like the
+rest. Instead it is generated from a template committed to this repo:
+
+> **`.chezmoi.toml.tmpl`** (in the source root)
+
+When you run `chezmoi init`, chezmoi executes this template and writes the
+result to `~/.config/chezmoi/chezmoi.toml`. The template sets:
+
+- `[merge]`, `[diff]`, `[add]` — tool preferences (nvim for merges, the `delta`
+  pager, follow symlinks when adding)
+- `[data]` — variables consumed by other templates (e.g.
+  `dot_claude/settings.json.tmpl` reads `.anthropic.token` and
+  `.claude.api_timeout_ms`)
+
+#### Secrets handling
+
+The Anthropic token is **never committed**. The template resolves
+`data.anthropic.token` at `chezmoi init` time, in this order:
+
+1. `ANTHROPIC_AUTH_TOKEN` environment variable (preferred), then
+2. an interactive prompt, cached in chezmoi's local state
+   (`~/.config/chezmoi/chezmoistate.boltdb` — local only, never in the repo)
+
+Leaving it blank defers to `ANTHROPIC_AUTH_TOKEN` at `chezmoi apply` time, which
+the downstream templates handle gracefully.
+
+#### Regenerating / rotating the config
+
+`promptStringOnce` only runs during `chezmoi init`, so the generated config only
+updates when you re-init:
+
+```bash
+# Write the regenerated config to ~/.config/chezmoi/chezmoi.toml
+chezmoi init
+
+# Re-prompt for a cached value (e.g. to rotate the token), then regenerate
+chezmoi state delete --bucket=configState --key=anthropic.token
+chezmoi init
+```
+
+> Only files named `.chezmoi.<format>.tmpl` (e.g. `.chezmoi.toml.tmpl`) are read
+> by `chezmoi init`. A plain `.chezmoi.toml` in the source root is ignored.
+
 ### New Machine Bootstrap
 
-If `chezmoi apply` fails with template errors (e.g., `map has no entry for key "claude"`), the config data isn't being loaded. Fix:
+`chezmoi init --apply` generates `~/.config/chezmoi/chezmoi.toml` from
+`.chezmoi.toml.tmpl` automatically (see [Chezmoi Configuration](#chezmoi-configuration)).
+You should only need the manual fallback below if `chezmoi apply` fails with
+template errors (e.g., `map has no entry for key "claude"`), meaning the config
+data isn't being loaded:
 
 ```bash
 # Option 1: Re-init (recommended)
@@ -178,7 +228,9 @@ chezmoi apply --refresh-externals
 ├── dot_zshrc                       # Zsh configuration
 ├── dot_zsh/                        # Zsh framework
 ├── dot_claude/                     # Claude Code (external: claude-config)
-└── .chezmoiexternal.toml          # External repo definitions
+├── .chezmoi.toml.tmpl             # Template → ~/.config/chezmoi/chezmoi.toml (see Chezmoi Configuration)
+├── .chezmoiexternal.toml          # External repo definitions
+└── .chezmoiignore                 # Per-target ignore rules
 ```
 
 ## Daily Operations

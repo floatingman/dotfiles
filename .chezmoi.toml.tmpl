@@ -1,0 +1,35 @@
+{{- /* Generates ~/.config/chezmoi/chezmoi.toml on `chezmoi init`.
+      The merge placeholders below are escaped so they appear literally
+      in the output (they are evaluated by chezmoi at merge time, not here).
+      Only files named .chezmoi.<format>.tmpl are read by `chezmoi init`;
+      a plain .chezmoi.toml in the source root is ignored. */ -}}
+
+[merge]
+  command = "nvim"
+  args = [
+    "-d",
+    {{ "{{ .Destination }}" }},
+    {{ "{{ .Source }}" }},
+    {{ "{{ .Target }}" }}
+  ]
+
+[diff]
+  exclude = ["scripts"]
+  pager = "delta"
+
+[add]
+  templateSymlinks = true
+
+[data]
+  [data.anthropic]
+    {{- /* Resolve the token at init time, in priority order:
+          1. ANTHROPIC_AUTH_TOKEN env var (preferred, never committed)
+          2. interactive prompt, cached in chezmoi's local state
+             (~/.config/chezmoi/chezmoistate.boltdb, not in the repo)
+          Leaving it blank defers to ANTHROPIC_AUTH_TOKEN at apply time,
+          which the downstream templates (dot_claude/settings.json.tmpl)
+          handle gracefully. */ -}}
+    {{- $token := env "ANTHROPIC_AUTH_TOKEN" | default (promptStringOnce . "anthropic.token" "Anthropic API token (leave blank to use ANTHROPIC_AUTH_TOKEN at runtime)" "") }}
+    token = {{ $token | quote }}
+  [data.claude]
+    api_timeout_ms = "3000000"
