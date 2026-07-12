@@ -9,36 +9,6 @@ rev = "598cdb6"
 hash = "c887903a63a2ff520081b6d90a4b3392"
 
 [[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "3001521"
-hash = "8eabb4e88096f10905a6df62cfaadbf4"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-latte"
-rev = "3001521"
-hash = "c6b710b2aa0fb9c6c7f1ec4db6146104"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-macchiato"
-rev = "3001521"
-hash = "2f60298d6c26b6d388c8091a9389fa8f"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-frappe"
-rev = "4770a34"
-hash = "1844f850b0c5d1af511c84399c95e3d7"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:dracula"
-rev = "4770a34"
-hash = "20624fcdfcf7e4e912de05e348065e5e"
-
-[[flavor.deps]]
-use = "kmlupreti/ayu-dark"
-rev = "00804da"
-hash = "d2ce8358c59ea6e8552091075b3a191c"
-
-[[flavor.deps]]
 use = "bennyyip/gruvbox-dark"
 rev = "619fdc5"
 hash = "d4c7003ec6dc4efd5d3a050d5c2f2575"
