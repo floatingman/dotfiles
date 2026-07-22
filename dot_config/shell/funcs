@@ -1142,3 +1142,15 @@ claude-provider() {
   fi
   [[ -f "$_CLAUDE_PROVIDER_FILE" ]] && echo "  Persisted: $(cat "$_CLAUDE_PROVIDER_FILE")"
 }
+
+# Build AUR packages with system tools instead of asdf shims.
+# asdf shims sit ahead of /usr/bin on PATH and resolve tools (e.g. go) from the
+# nearest .tool-versions in the source tree, which can pin versions you don't
+# have installed (e.g. the asdf-vm upgrade failing on `go`). This drops the asdf
+# shims from PATH for the invocation so makepkg uses the pacman-declared
+# make-dependencies (makedepends) directly.
+yay-sys() {
+  _have yay || return 1
+  local asdf_shims="${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
+  PATH="${PATH//$asdf_shims:/}" command yay "$@"
+}
