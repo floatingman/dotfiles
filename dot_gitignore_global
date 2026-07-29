@@ -82,3 +82,6 @@ results.xml
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
 .brv/
+
+# Pi agent
+/.pi-subagents/
