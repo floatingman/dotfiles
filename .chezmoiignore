@@ -67,9 +67,6 @@
 .config/karabiner
 {{- end }}
 
-# Claude Code plugins - managed by Ansible
-claude-config/dot_claude/plugins/
-
 # Development tools (not user dotfiles)
 Makefile
 scripts/
