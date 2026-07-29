@@ -26,9 +26,8 @@
           1. ANTHROPIC_AUTH_TOKEN env var (preferred, never committed)
           2. interactive prompt, cached in chezmoi's local state
              (~/.config/chezmoi/chezmoistate.boltdb, not in the repo)
-          Leaving it blank defers to ANTHROPIC_AUTH_TOKEN at apply time,
-          which the downstream templates (dot_claude/settings.json.tmpl)
-          handle gracefully. */ -}}
+          Defined here for reuse by any template needing an Anthropic token;
+          no managed template currently consumes it. */ -}}
     {{- $token := env "ANTHROPIC_AUTH_TOKEN" | default (promptStringOnce . "anthropic.token" "Anthropic API token (leave blank to use ANTHROPIC_AUTH_TOKEN at runtime)" "") }}
     token = {{ $token | quote }}
   [data.claude]

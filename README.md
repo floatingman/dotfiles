@@ -9,6 +9,7 @@ Machine-specific dotfiles managed with [Chezmoi](https://www.chezmoi.io).
 - Editors: Neovim (LazyVim), Vim
 - Terminal: Tmux, Yazi file manager
 - CLI tools: Atuin shell history, Git configs
+- AI coding: [pi-agent](https://github.com/earendil-works/pi-coding-agent) config + skills (conditional — see [pi-agent Configuration](#pi-agent-configuration-optional))
 
 **Linux desktop** (GUI apps only):
 - Window managers: i3, bspwm, Awesome
@@ -55,7 +56,7 @@ That's it! Everything is configured automatically.
 The `chezmoi init --apply` command:
 1. Clones this repository to `~/.local/share/chezmoi` (chezmoi's source directory)
 2. Executes `.chezmoi.toml.tmpl` to generate `~/.config/chezmoi/chezmoi.toml` (see [Chezmoi Configuration](#chezmoi-configuration) below)
-3. Downloads external dependencies (submodules)
+3. Checks out git submodules (Neovim, Tmux, bin)
 4. Generates all config files in your home directory
 
 After installation:
@@ -77,9 +78,12 @@ result to `~/.config/chezmoi/chezmoi.toml`. The template sets:
 
 - `[merge]`, `[diff]`, `[add]` — tool preferences (nvim for merges, the `delta`
   pager, follow symlinks when adding)
-- `[data]` — variables consumed by other templates (e.g.
-  `dot_claude/settings.json.tmpl` reads `.anthropic.token` and
-  `.claude.api_timeout_ms`)
+- `[data]` — per-machine variables consumed by templates and conditional rules:
+  - `anthropic.token` / `claude.api_timeout_ms` — API credentials/timeouts
+    (defined for reuse; no managed template currently consumes them)
+  - `pi.enabled` — gates the [pi-agent config](#pi-agent-configuration-optional)
+    (prompted once per machine; when `false`, the pi symlinks and clone script
+    are skipped via `.chezmoiignore`)
 
 #### Secrets handling
 
@@ -90,13 +94,14 @@ The Anthropic token is **never committed**. The template resolves
 2. an interactive prompt, cached in chezmoi's local state
    (`~/.config/chezmoi/chezmoistate.boltdb` — local only, never in the repo)
 
-Leaving it blank defers to `ANTHROPIC_AUTH_TOKEN` at `chezmoi apply` time, which
-the downstream templates handle gracefully.
+Leaving it blank is harmless — no managed template currently consumes
+`data.anthropic.token` (it's retained for reuse by any future template needing
+an Anthropic API key).
 
 #### Regenerating / rotating the config
 
-`promptStringOnce` only runs during `chezmoi init`, so the generated config only
-updates when you re-init:
+`promptStringOnce` / `promptBoolOnce` only run during `chezmoi init`, so the
+generated config only updates when you re-init:
 
 ```bash
 # Write the regenerated config to ~/.config/chezmoi/chezmoi.toml
@@ -104,6 +109,10 @@ chezmoi init
 
 # Re-prompt for a cached value (e.g. to rotate the token), then regenerate
 chezmoi state delete --bucket=configState --key=anthropic.token
+chezmoi init
+
+# Re-prompt for pi.enabled, then regenerate
+chezmoi state delete --bucket=configState --key=pi.enabled
 chezmoi init
 ```
 
@@ -115,7 +124,7 @@ chezmoi init
 `chezmoi init --apply` generates `~/.config/chezmoi/chezmoi.toml` from
 `.chezmoi.toml.tmpl` automatically (see [Chezmoi Configuration](#chezmoi-configuration)).
 You should only need the manual fallback below if `chezmoi apply` fails with
-template errors (e.g., `map has no entry for key "claude"`), meaning the config
+template errors (e.g., `map has no entry for key "pi"`), meaning the config
 data isn't being loaded:
 
 ```bash
@@ -131,32 +140,44 @@ cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
 
   [data.claude]
     api_timeout_ms = "3000000"
+
+  [data.pi]
+    enabled = true        # set false on machines that don't use pi-agent
 EOF
 chezmoi apply
 ```
 
 The templates are defensive — they work with empty data and fall back to environment variables. But you need *some* config file for chezmoi to process templates correctly.
 
-### Claude Code Configuration (Optional)
+### pi-agent Configuration (Optional)
 
-If you use Claude Code with custom hooks and settings:
+[pi](https://github.com/earendil-works/pi-coding-agent) reads skills and config from
+`~/.agents/skills` and `~/.pi/agent/`. This repo wires those locations to a separate
+private working repo at `~/dotfiles` (remote: `pi-dotfiles`) — but **only on machines
+where you opt in**.
 
-```bash
-# Auto-detects Claude and sets up if found (skips if not detected)
-make claude
+`chezmoi init` prompts once:
 
-# Force setup even if Claude not detected
-make claude-force
-
-# Set your API credentials (add to ~/.zshrc)
-export ANTHROPIC_AUTH_TOKEN='your-token'
-export ANTHROPIC_BASE_URL='https://api.z.ai/api/anthropic'
-
-# Apply the template
-chezmoi apply
+```
+Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?
 ```
 
-The Claude Code configuration is managed as an [external](https://www.chezmoi.io/user-guide/include-files-from-elsewhere/) git repository, automatically cloned to `dot_claude/` in chezmoi's source directory.
+- **Yes** → `chezmoi apply` clones `pi-dotfiles` into `~/dotfiles` (if missing) and
+  creates three symlinks:
+  - `~/.agents/skills` → `~/dotfiles/agents/skills`
+  - `~/.pi/agent/settings.json` → `~/dotfiles/pi/settings.json`
+  - `~/.pi/agent/mcp.json` → `~/dotfiles/pi/mcp.json`
+- **No** → chezmoi leaves pi untouched on that machine (the entries are ignored via
+  `.chezmoiignore`).
+
+`~/dotfiles` stays a normal git repo you edit and push independently; chezmoi only
+ensures the clone exists and the symlinks point at it. To change your answer later,
+set `pi.enabled` in `~/.config/chezmoi/chezmoi.toml` (or re-run `chezmoi init`) and
+`chezmoi apply`.
+
+> The Claude Code bundle (`dot_claude` submodule + `make claude`) was removed when
+> moving off Claude Code. The pi-agent skills were migrated from `~/.claude/skills`
+> into the `pi-dotfiles` repo.
 
 ## Machine-Specific Configurations
 
@@ -196,41 +217,46 @@ Updates all supported apps:
 - Shell prompt (Starship)
 - File manager (Yazi)
 
-## External Dependencies
+## Bundled Submodules
 
-Configurations are managed from external repositories using chezmoi's [external](https://www.chezmoi.io/user-guide/include-files-from-elsewhere/) functionality:
+A few configs are pulled in as git submodules (see `.gitmodules`), pinned to the
+commits recorded in this repo (so they advance only when this repo bumps the
+pointer — there are no chezmoi `external_` entries):
 
-- **Neovim:** [LazyVim](https://github.com/floatingman/lazyvim) - Updated weekly
-- **Tmux:** [tmux-plugin-manager](https://github.com/gpakosz/tmux-plugin-manager) - Updated weekly
-- **Claude Config:** [Private settings](https://github.com/floatingman/claude-config) - Updated weekly
+- **Neovim:** [LazyVim](https://github.com/floatingman/lazyvim) → `dot_config/nvim`
+- **Tmux:** [.tmux config](https://github.com/floatingman/.tmux) → `dot_config/tmux`
+- **Personal scripts:** [bin](https://github.com/floatingman/bin) → `dot_local/bin`
 
-Externals are automatically cloned to `~/.local/share/chezmoi/` and refreshed weekly (or manually with `chezmoi apply -R`).
+`chezmoi init` / `chezmoi update` (a.k.a. `make update`) checks each submodule out
+at its recorded commit. To advance a submodule to its latest upstream and record it:
 
-**To update externals:**
 ```bash
-# Via Makefile
-make update
-
-# Or manually (with force refresh)
-chezmoi apply --refresh-externals
+chezmoi cd
+git submodule update --remote --merge
+git add .gitmodules dot_config/nvim dot_config/tmux dot_local/bin
+git commit -m "Bump submodules"
 ```
 
 ## Structure
 
 ```
-~/.local/share/chezmoi/          # Source directory (your dotfiles repo)
-├── dot_config/                    # Application configs
-│   ├── nvim/                      # Neovim (external: lazyvim)
-│   ├── tmux/                      # Tmux (external: tpm)
-│   ├── i3/                        # Linux desktop only
-│   ├── karabiner/                 # macOS only
+~/.local/share/chezmoi/            # Source directory (your dotfiles repo)
+├── dot_config/                      # Application configs
+│   ├── nvim/                        # Neovim (submodule: lazyvim)
+│   ├── tmux/                        # Tmux (submodule: .tmux)
+│   ├── i3/                          # Linux desktop only
+│   ├── karabiner/                   # macOS only
 │   └── ...
-├── dot_zshrc                       # Zsh configuration
-├── dot_zsh/                        # Zsh framework
-├── dot_claude/                     # Claude Code (external: claude-config)
-├── .chezmoi.toml.tmpl             # Template → ~/.config/chezmoi/chezmoi.toml (see Chezmoi Configuration)
-├── .chezmoiexternal.toml          # External repo definitions
-└── .chezmoiignore                 # Per-target ignore rules
+├── dot_local/bin/                   # Personal scripts (submodule: bin)
+├── dot_zshrc                        # Zsh configuration
+├── dot_zsh/                         # Zsh framework
+├── dot_agents/symlink_skills.tmpl          # → ~/dotfiles/agents/skills (pi; conditional)
+├── dot_pi/agent/symlink_settings.json.tmpl # → ~/dotfiles/pi/settings.json (pi; conditional)
+├── dot_pi/agent/symlink_mcp.json.tmpl      # → ~/dotfiles/pi/mcp.json (pi; conditional)
+├── run_once_install-pi-agent.sh.tmpl       # Clones ~/dotfiles when pi.enabled (conditional)
+├── .chezmoi.toml.tmpl              # Template → ~/.config/chezmoi/chezmoi.toml
+├── .chezmoiignore                  # Per-target + conditional ignore rules
+└── Makefile                        # Convenience targets (update, apply, add, …)
 ```
 
 ## Daily Operations
@@ -326,18 +352,19 @@ The proper chezmoi workflow for development:
 - Ensure scripts have execute permissions
 - Check state file: `cat ~/.cache/i3/current-theme`
 
-**External repos not updating?**
-- Check external definitions: `cat ~/.local/share/chezmoi/.chezmoiexternal.toml`
-- Force refresh: `chezmoi apply -R`
+**Submodules missing or empty (e.g. empty `dot_config/nvim`)?**
+- Init/update submodules: `chezmoi cd && git submodule update --init --recursive`
+- Then `chezmoi apply`
+
+**pi-agent symlinks not created?**
+- Confirm `pi.enabled = true` in `~/.config/chezmoi/chezmoi.toml`
+- Ensure `~/dotfiles` is cloned (re-run `chezmoi apply`, or clone it manually)
+- Check the wiring: `ls -l ~/.agents/skills ~/.pi/agent/settings.json ~/.pi/agent/mcp.json`
 
 **Template errors on new machine (`map has no entry for key`)?**
 - Chezmoi needs config data before processing templates
 - Re-run: `chezmoi init --apply git@github.com:floatingman/dotfiles.git`
-- Or create `~/.config/chezmoi/chezmoi.toml` with `[data]` section (see New Machine Bootstrap above)
-
-**Claude Code config not found?**
-- Check external was cloned: `ls ~/.local/share/chezmoi/dot_claude/settings.json.tmpl`
-- Force refresh: `chezmoi apply -R`
+- Or create `~/.config/chezmoi/chezmoi.toml` with a `[data]` section (see New Machine Bootstrap above)
 
 ## License
 
