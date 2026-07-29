@@ -33,3 +33,9 @@
     token = {{ $token | quote }}
   [data.claude]
     api_timeout_ms = "3000000"
+  [data.pi]
+    {{- /* Prompted once per machine (cached in chezmoistate.boltdb). When false, the
+          pi-agent symlinks and clone script are ignored (see .chezmoiignore), so
+          `chezmoi apply` leaves pi untouched on machines that don't use it. */ -}}
+    {{- $piEnabled := promptBoolOnce . "pi.enabled" "Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?" false }}
+    enabled = {{ $piEnabled }}

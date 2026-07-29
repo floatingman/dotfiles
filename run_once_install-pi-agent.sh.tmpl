@@ -1,0 +1,14 @@
+{{- /* Clones the private pi-dotfiles repo on machines where [data.pi].enabled is true.
+      The matching symlinks (dot_agents/symlink_skills, dot_pi/agent/symlink_*) resolve
+      into this clone. Gated by .chezmoiignore so it never runs where pi is disabled.
+      The user retains full git control of ~/dotfiles (pull/commit/push independently);
+      chezmoi only ensures the clone exists. */ -}}
+#!/usr/bin/env bash
+set -euo pipefail
+DOTFILES="$HOME/dotfiles"
+if [ -d "$DOTFILES/.git" ]; then
+  echo "pi-dotfiles already present at $DOTFILES"
+else
+  echo "Cloning pi-dotfiles into $DOTFILES ..."
+  git clone --quiet git@github.com:floatingman/pi-dotfiles.git "$DOTFILES"
+fi

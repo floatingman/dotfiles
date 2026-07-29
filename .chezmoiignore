@@ -73,3 +73,12 @@ claude-config/dot_claude/plugins/
 # Development tools (not user dotfiles)
 Makefile
 scripts/
+
+# pi-agent config — only apply where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
+# When disabled, the clone script + wiring symlinks are skipped so pi is untouched.
+{{- if not .pi.enabled }}
+dot_agents/symlink_skills.tmpl
+dot_pi/agent/symlink_settings.json.tmpl
+dot_pi/agent/symlink_mcp.json.tmpl
+run_once_install-pi-agent.sh.tmpl
+{{- end }}
