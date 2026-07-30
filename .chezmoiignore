@@ -71,11 +71,9 @@
 Makefile
 scripts/
 
-# pi-agent config — only apply where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
-# When disabled, the clone script + wiring symlinks are skipped so pi is untouched.
+# pi-agent config — only applied where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
+# The install script clones pi-dotfiles and wires the symlinks; if the configured
+# repo isn't reachable (e.g. someone else's private repo) it skips gracefully.
 {{- if not .pi.enabled }}
-dot_agents/symlink_skills.tmpl
-dot_pi/agent/symlink_settings.json.tmpl
-dot_pi/agent/symlink_mcp.json.tmpl
 run_once_install-pi-agent.sh.tmpl
 {{- end }}

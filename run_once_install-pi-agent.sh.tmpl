@@ -1,14 +1,44 @@
-{{- /* Clones the private pi-dotfiles repo on machines where [data.pi].enabled is true.
-      The matching symlinks (dot_agents/symlink_skills, dot_pi/agent/symlink_*) resolve
-      into this clone. Gated by .chezmoiignore so it never runs where pi is disabled.
-      The user retains full git control of ~/dotfiles (pull/commit/push independently);
-      chezmoi only ensures the clone exists. */ -}}
+{{- /* Wires pi-agent on machines where [data.pi].enabled is true (gated by
+      .chezmoiignore). Clones pi-dotfiles into ~/dotfiles — but only if the
+      configured repo (data.pi.repo, defaulting to the maintainer's private repo)
+      is actually reachable. If it isn't (e.g. someone forked these dotfiles and
+      can't access the maintainer's private pi-dotfiles), it SKIPS GRACEFULLY:
+      no clone, no symlinks, exit 0 — so `chezmoi apply` never breaks. Forkers
+      set [data.pi] repo = "<their-fork-url>" and re-run `chezmoi init`.
+      This script is the single owner of the pi wiring (clone + 3 symlinks) so
+      nothing is left dangling on a failed/inaccessible clone. */ -}}
+{{- if .pi.enabled -}}
 #!/usr/bin/env bash
-set -euo pipefail
+set -u
 DOTFILES="$HOME/dotfiles"
+REPO="{{ .pi.repo | default "git@github.com:floatingman/pi-dotfiles.git" }}"
+
 if [ -d "$DOTFILES/.git" ]; then
-  echo "pi-dotfiles already present at $DOTFILES"
+  echo "pi-agent: ~/dotfiles already present"
 else
-  echo "Cloning pi-dotfiles into $DOTFILES ..."
-  git clone --quiet git@github.com:floatingman/pi-dotfiles.git "$DOTFILES"
+  printf 'pi-agent: probing %s ...\n' "$REPO"
+  if ! GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code "$REPO" HEAD >/dev/null 2>&1; then
+    cat <<EOF
+pi-agent: cannot reach '$REPO' (private repo, no access, or wrong URL).
+  Skipping pi setup — no symlinks created, chezmoi apply continues.
+  To use pi-agent, fork pi-dotfiles and set:
+      [data.pi]
+        repo = "<your-fork-url>"
+  in ~/.config/chezmoi/chezmoi.toml, then: chezmoi init && chezmoi apply
+EOF
+    exit 0
+  fi
+  printf 'pi-agent: cloning into %s ...\n' "$DOTFILES"
+  if ! GIT_TERMINAL_PROMPT=0 git clone --quiet "$REPO" "$DOTFILES"; then
+    echo "pi-agent: clone failed; skipping pi setup."
+    exit 0
+  fi
 fi
+
+mkdir -p "$HOME/.agents" "$HOME/.pi/agent"
+ln -snf "$DOTFILES/agents/skills"    "$HOME/.agents/skills"
+ln -snf "$DOTFILES/pi/settings.json" "$HOME/.pi/agent/settings.json"
+ln -snf "$DOTFILES/pi/mcp.json"      "$HOME/.pi/agent/mcp.json"
+echo "pi-agent wired: ~/.agents/skills, ~/.pi/agent/{settings,mcp}.json -> $DOTFILES"
+exit 0
+{{- end }}

@@ -81,9 +81,9 @@ result to `~/.config/chezmoi/chezmoi.toml`. The template sets:
 - `[data]` — per-machine variables consumed by templates and conditional rules:
   - `anthropic.token` / `claude.api_timeout_ms` — API credentials/timeouts
     (defined for reuse; no managed template currently consumes them)
-  - `pi.enabled` — gates the [pi-agent config](#pi-agent-configuration-optional)
-    (prompted once per machine; when `false`, the pi symlinks and clone script
-    are skipped via `.chezmoiignore`)
+  - `pi.enabled` / `pi.repo` — gate the [pi-agent config](#pi-agent-configuration-optional)
+    and select the repo to clone (prompted once per machine; when `enabled=false`
+    the install script is skipped via `.chezmoiignore`)
 
 #### Secrets handling
 
@@ -111,7 +111,7 @@ chezmoi init
 chezmoi state delete --bucket=configState --key=anthropic.token
 chezmoi init
 
-# Re-prompt for pi.enabled, then regenerate
+# Re-prompt for pi.enabled / pi.repo, then regenerate
 chezmoi state delete --bucket=configState --key=pi.enabled
 chezmoi init
 ```
@@ -142,7 +142,8 @@ cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
     api_timeout_ms = "3000000"
 
   [data.pi]
-    enabled = true        # set false on machines that don't use pi-agent
+    enabled = true                # set false on machines that don't use pi-agent
+    repo = "git@github.com:floatingman/pi-dotfiles.git"  # or your fork
 EOF
 chezmoi apply
 ```
@@ -153,27 +154,33 @@ The templates are defensive — they work with empty data and fall back to envir
 
 [pi](https://github.com/earendil-works/pi-coding-agent) reads skills and config from
 `~/.agents/skills` and `~/.pi/agent/`. This repo wires those locations to a separate
-private working repo at `~/dotfiles` (remote: `pi-dotfiles`) — but **only on machines
-where you opt in**.
+working repo at `~/dotfiles` — but **only on machines where you opt in**.
 
-`chezmoi init` prompts once:
+`chezmoi init` prompts:
 
 ```
 Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?
+pi-dotfiles repo URL (set to YOUR fork if you have one)?
 ```
 
-- **Yes** → `chezmoi apply` clones `pi-dotfiles` into `~/dotfiles` (if missing) and
-  creates three symlinks:
+- **Yes** → `chezmoi apply` runs `run_once_install-pi-agent.sh`, which probes the
+  repo URL, clones it into `~/dotfiles` if reachable, and creates the symlinks:
   - `~/.agents/skills` → `~/dotfiles/agents/skills`
   - `~/.pi/agent/settings.json` → `~/dotfiles/pi/settings.json`
   - `~/.pi/agent/mcp.json` → `~/dotfiles/pi/mcp.json`
-- **No** → chezmoi leaves pi untouched on that machine (the entries are ignored via
+- **No** → chezmoi leaves pi untouched on that machine (the script is skipped via
   `.chezmoiignore`).
 
+**Forked these dotfiles and don't have access to the upstream `pi-dotfiles`?**
+The install script **probes the repo and skips gracefully** if it's unreachable
+(no clone, no symlinks, `chezmoi apply` continues — nothing breaks). To use
+pi-agent, fork `pi-dotfiles` too, then set `[data.pi] repo = "<your-fork-url>"`
+in `~/.config/chezmoi/chezmoi.toml` and re-run `chezmoi init && chezmoi apply`.
+
 `~/dotfiles` stays a normal git repo you edit and push independently; chezmoi only
-ensures the clone exists and the symlinks point at it. To change your answer later,
-set `pi.enabled` in `~/.config/chezmoi/chezmoi.toml` (or re-run `chezmoi init`) and
-`chezmoi apply`.
+ensures the clone exists and the symlinks point at it. To change your answers
+later, edit `pi.enabled` / `pi.repo` in `~/.config/chezmoi/chezmoi.toml` (or
+re-run `chezmoi init`) and `chezmoi apply`.
 
 > The Claude Code bundle (`dot_claude` submodule + `make claude`) was removed when
 > moving off Claude Code. The pi-agent skills were migrated from `~/.claude/skills`
@@ -250,10 +257,7 @@ git commit -m "Bump submodules"
 ├── dot_local/bin/                   # Personal scripts (submodule: bin)
 ├── dot_zshrc                        # Zsh configuration
 ├── dot_zsh/                         # Zsh framework
-├── dot_agents/symlink_skills.tmpl          # → ~/dotfiles/agents/skills (pi; conditional)
-├── dot_pi/agent/symlink_settings.json.tmpl # → ~/dotfiles/pi/settings.json (pi; conditional)
-├── dot_pi/agent/symlink_mcp.json.tmpl      # → ~/dotfiles/pi/mcp.json (pi; conditional)
-├── run_once_install-pi-agent.sh.tmpl       # Clones ~/dotfiles when pi.enabled (conditional)
+├── run_once_install-pi-agent.sh.tmpl  # Conditional: clones pi-dotfiles + wires 3 symlinks (skips if repo unreachable)
 ├── .chezmoi.toml.tmpl              # Template → ~/.config/chezmoi/chezmoi.toml
 ├── .chezmoiignore                  # Per-target + conditional ignore rules
 └── Makefile                        # Convenience targets (update, apply, add, …)
@@ -358,7 +362,11 @@ The proper chezmoi workflow for development:
 
 **pi-agent symlinks not created?**
 - Confirm `pi.enabled = true` in `~/.config/chezmoi/chezmoi.toml`
-- Ensure `~/dotfiles` is cloned (re-run `chezmoi apply`, or clone it manually)
+- Check `data.pi.repo` is reachable: `GIT_TERMINAL_PROMPT=0 git ls-remote <url> HEAD`
+  (the install script skips silently if not — common if you forked these dotfiles
+  but can't access the upstream private `pi-dotfiles`; point `repo` at your fork)
+- Re-run `chezmoi init && chezmoi apply` (the run_once script re-runs when its
+  content changes; force with `chezmoi state delete-bucket run-state` if needed)
 - Check the wiring: `ls -l ~/.agents/skills ~/.pi/agent/settings.json ~/.pi/agent/mcp.json`
 
 **Template errors on new machine (`map has no entry for key`)?**

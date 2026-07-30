@@ -34,7 +34,10 @@
     api_timeout_ms = "3000000"
   [data.pi]
     {{- /* Prompted once per machine (cached in chezmoistate.boltdb). When false, the
-          pi-agent symlinks and clone script are ignored (see .chezmoiignore), so
-          `chezmoi apply` leaves pi untouched on machines that don't use it. */ -}}
+          pi-agent install script is ignored (see .chezmoiignore), so `chezmoi apply`
+          leaves pi untouched on machines that don't use it. `repo` defaults to the
+          maintainer's private pi-dotfiles; forkers override it with their own URL. */ -}}
     {{- $piEnabled := promptBoolOnce . "pi.enabled" "Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?" false }}
+    {{- $piRepo := promptStringOnce . "pi.repo" "pi-dotfiles repo URL (set to YOUR fork if you have one)" "git@github.com:floatingman/pi-dotfiles.git" }}
     enabled = {{ $piEnabled }}
+    repo = {{ $piRepo | quote }}
