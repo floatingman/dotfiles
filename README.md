@@ -81,9 +81,9 @@ result to `~/.config/chezmoi/chezmoi.toml`. The template sets:
 - `[data]` — per-machine variables consumed by templates and conditional rules:
   - `anthropic.token` / `claude.api_timeout_ms` — API credentials/timeouts
     (defined for reuse; no managed template currently consumes them)
-  - `pi.enabled` / `pi.repo` — gate the [pi-agent config](#pi-agent-configuration-optional)
-    and select the repo to clone (prompted once per machine; when `enabled=false`
-    the install script is skipped via `.chezmoiignore`)
+  - `pi.enabled` / `pi.repo` / `pi.reviewerRepo` — gate the [pi-agent config](#pi-agent-configuration-optional)
+    and select the repos to clone (prompted once per machine; when `enabled=false`
+    the install scripts are skipped via `.chezmoiignore`)
 
 #### Secrets handling
 
@@ -144,6 +144,7 @@ cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
   [data.pi]
     enabled = true                # set false on machines that don't use pi-agent
     repo = "git@github.com:floatingman/pi-dotfiles.git"  # or your fork
+    reviewerRepo = "git@github.com:floatingman/pi-reviewer.git"  # or your fork
 EOF
 chezmoi apply
 ```
@@ -163,19 +164,20 @@ Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?
 pi-dotfiles repo URL (set to YOUR fork if you have one)?
 ```
 
-- **Yes** → `chezmoi apply` runs `run_once_install-pi-agent.sh`, which probes the
-  repo URL, clones it into `~/dotfiles` if reachable, and creates the symlinks:
-  - `~/.agents/skills` → `~/dotfiles/agents/skills`
-  - `~/.pi/agent/settings.json` → `~/dotfiles/pi/settings.json`
-  - `~/.pi/agent/mcp.json` → `~/dotfiles/pi/mcp.json`
-- **No** → chezmoi leaves pi untouched on that machine (the script is skipped via
-  `.chezmoiignore`).
+- **Yes** → `chezmoi apply` runs the install scripts, which probe each repo URL and
+  clone if reachable:
+  - `run_once_install-pi-agent.sh` → `~/dotfiles` (skills + settings), wiring
+    `~/.agents/skills`, `~/.pi/agent/settings.json`, `~/.pi/agent/mcp.json`
+  - `run_once_install-pi-reviewer.sh` → `~/git/pi-reviewer` (so the settings.json
+    package `../../git/pi-reviewer` resolves)
+- **No** → chezmoi leaves pi untouched on that machine (the scripts are skipped
+  via `.chezmoiignore`).
 
-**Forked these dotfiles and don't have access to the upstream `pi-dotfiles`?**
-The install script **probes the repo and skips gracefully** if it's unreachable
-(no clone, no symlinks, `chezmoi apply` continues — nothing breaks). To use
-pi-agent, fork `pi-dotfiles` too, then set `[data.pi] repo = "<your-fork-url>"`
-in `~/.config/chezmoi/chezmoi.toml` and re-run `chezmoi init && chezmoi apply`.
+**Forked these dotfiles and don't have access to the upstream `pi-dotfiles` or
+`pi-reviewer`?** Each install script **probes its repo and skips gracefully** if
+it's unreachable (no clone, `chezmoi apply` continues — nothing breaks). To use
+them, fork the repos and set `[data.pi] repo` / `reviewerRepo` to your fork URLs
+in `~/.config/chezmoi/chezmoi.toml`, then re-run `chezmoi init && chezmoi apply`.
 
 `~/dotfiles` stays a normal git repo you edit and push independently; chezmoi only
 ensures the clone exists and the symlinks point at it. To change your answers
@@ -257,7 +259,8 @@ git commit -m "Bump submodules"
 ├── dot_local/bin/                   # Personal scripts (submodule: bin)
 ├── dot_zshrc                        # Zsh configuration
 ├── dot_zsh/                         # Zsh framework
-├── run_once_install-pi-agent.sh.tmpl  # Conditional: clones pi-dotfiles + wires 3 symlinks (skips if repo unreachable)
+├── run_once_install-pi-agent.sh.tmpl     # Conditional: clones pi-dotfiles + wires 3 symlinks
+├── run_once_install-pi-reviewer.sh.tmpl  # Conditional: clones pi-reviewer → ~/git/pi-reviewer (skips if repo unreachable)
 ├── .chezmoi.toml.tmpl              # Template → ~/.config/chezmoi/chezmoi.toml
 ├── .chezmoiignore                  # Per-target + conditional ignore rules
 └── Makefile                        # Convenience targets (update, apply, add, …)

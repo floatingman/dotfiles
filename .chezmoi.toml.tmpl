@@ -39,5 +39,7 @@
           maintainer's private pi-dotfiles; forkers override it with their own URL. */ -}}
     {{- $piEnabled := promptBoolOnce . "pi.enabled" "Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?" false }}
     {{- $piRepo := promptStringOnce . "pi.repo" "pi-dotfiles repo URL (set to YOUR fork if you have one)" "git@github.com:floatingman/pi-dotfiles.git" }}
+    {{- $piReviewerRepo := promptStringOnce . "pi.reviewerRepo" "pi-reviewer repo URL (your fork if you have one)" "git@github.com:floatingman/pi-reviewer.git" }}
     enabled = {{ $piEnabled }}
     repo = {{ $piRepo | quote }}
+    reviewerRepo = {{ $piReviewerRepo | quote }}

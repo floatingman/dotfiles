@@ -1,0 +1,36 @@
+{{- /* Clones pi-reviewer into ~/git/pi-reviewer on machines where [data.pi].enabled
+      is true, so the settings.json package "../../git/pi-reviewer" resolves. Probes
+      the configured repo (data.pi.reviewerRepo) and skips gracefully if unreachable
+      (e.g. a forker without access), so chezmoi apply never breaks. The user keeps
+      full git control of ~/git/pi-reviewer. */ -}}
+{{- if .pi.enabled -}}
+#!/usr/bin/env bash
+set -u
+TARGET="$HOME/git/pi-reviewer"
+REPO="{{ .pi.reviewerRepo | default "git@github.com:floatingman/pi-reviewer.git" }}"
+
+if [ -d "$TARGET/.git" ]; then
+  echo "pi-reviewer: already present at $TARGET"
+  exit 0
+fi
+
+mkdir -p "$HOME/git"
+printf 'pi-reviewer: probing %s ...\n' "$REPO"
+if ! GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code "$REPO" HEAD >/dev/null 2>&1; then
+  cat <<EOF
+pi-reviewer: cannot reach '$REPO' (private repo, no access, or wrong URL).
+  Skipping — chezmoi apply continues. Note: settings.json lists
+  "../../git/pi-reviewer" as a pi package, so pi will error loading it until you
+  clone pi-reviewer to ~/git/pi-reviewer (or drop it from packages). Forkers: set
+      [data.pi]
+        reviewerRepo = "<your-fork-url>"
+  in ~/.config/chezmoi/chezmoi.toml, then: chezmoi init && chezmoi apply
+EOF
+  exit 0
+fi
+printf 'pi-reviewer: cloning into %s ...\n' "$TARGET"
+if ! GIT_TERMINAL_PROMPT=0 git clone --quiet "$REPO" "$TARGET"; then
+  echo "pi-reviewer: clone failed; skipping."
+fi
+exit 0
+{{- end }}
