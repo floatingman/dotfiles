@@ -20,10 +20,6 @@ help: ## Show this help message
 	@echo "  make verify      - Verify no uncommitted changes"
 	@echo "  make clean       - Remove all managed files"
 	@echo ""
-	@echo "Claude Code (optional):"
-	@echo "  make claude       - Auto-detects Claude, sets up if found"
-	@echo "  make claude-force - Force Claude setup (skip detection)"
-	@echo ""
 	@echo "Examples:"
 	@echo "  make add ~/.zshrc"
 	@echo "  make edit ~/.zshrc"
@@ -37,21 +33,20 @@ install: ## Initial installation on a new machine
 	@echo ""
 	@echo "Next steps:"
 	@echo "  1. Reload shell: source ~/.zshrc"
-	@echo "  2. Optional: make claude (for Claude Code setup)"
+	@echo "  2. Enable pi-agent (if skipped): chezmoi init, then chezmoi apply"
 
 bootstrap: ## Set up chezmoi config on a new machine (fixes template errors)
 	@mkdir -p ~/.config/chezmoi
 	@if [ ! -f ~/.config/chezmoi/chezmoi.toml ]; then \
 		echo "Creating ~/.config/chezmoi/chezmoi.toml with defaults..."; \
-		cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'; \
-[data.anthropic]\
-\
-  token = ""\
-\
-[data.claude]\
-\
-  api_timeout_ms = "3000000"\
-EOF\
+		printf '%s\n' \
+			'[data.anthropic]' \
+			'token = ""' \
+			'[data.claude]' \
+			'api_timeout_ms = "3000000"' \
+			'[data.pi]' \
+			'enabled = false' \
+			> ~/.config/chezmoi/chezmoi.toml; \
 		echo "✅ Config created. Run 'make apply' to apply templates."; \
 	else \
 		echo "✅ ~/.config/chezmoi/chezmoi.toml already exists."; \
@@ -123,9 +118,3 @@ clean: ## Remove all managed files (DANGEROUS!)
 		else \
 			echo "Cancelled"; \
 		fi
-
-claude: ## One-time Claude Code template setup (auto-detects Claude)
-	@./scripts/setup-claude-template.sh
-
-claude-force: ## Force Claude Code template setup (even if Claude not detected)
-	@./scripts/setup-claude-template.sh --force
