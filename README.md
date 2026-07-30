@@ -9,7 +9,7 @@ Machine-specific dotfiles managed with [Chezmoi](https://www.chezmoi.io).
 - Editors: Neovim (LazyVim), Vim
 - Terminal: Tmux, Yazi file manager
 - CLI tools: Atuin shell history, Git configs
-- AI coding: [pi-agent](https://github.com/earendil-works/pi-coding-agent) config + skills (conditional — see [pi-agent Configuration](#pi-agent-configuration-optional))
+- AI coding: [pi-agent](https://github.com/earendil-works/pi-coding-agent) skills + config (conditional — see [pi-agent Configuration](#pi-agent-configuration-optional))
 
 **Linux desktop** (GUI apps only):
 - Window managers: i3, bspwm, Awesome
@@ -82,8 +82,8 @@ result to `~/.config/chezmoi/chezmoi.toml`. The template sets:
   - `anthropic.token` / `claude.api_timeout_ms` — API credentials/timeouts
     (defined for reuse; no managed template currently consumes them)
   - `pi.enabled` / `pi.repo` / `pi.reviewerRepo` — gate the [pi-agent config](#pi-agent-configuration-optional)
-    and select the repos to clone (prompted once per machine; when `enabled=false`
-    the install scripts are skipped via `.chezmoiignore`)
+    and select the skills/reviewer repos to clone (prompted once per machine; when
+    `enabled=false` all pi entries are skipped via `.chezmoiignore`)
 
 #### Secrets handling
 
@@ -153,9 +153,10 @@ The templates are defensive — they work with empty data and fall back to envir
 
 ### pi-agent Configuration (Optional)
 
-[pi](https://github.com/earendil-works/pi-coding-agent) reads skills and config from
-`~/.agents/skills` and `~/.pi/agent/`. This repo wires those locations to a separate
-working repo at `~/dotfiles` — but **only on machines where you opt in**.
+[pi](https://github.com/earendil-works/pi-coding-agent) reads skills from
+`~/.pi/agent/skills/` and config from `~/.pi/agent/{settings,mcp}.json`. Chezmoi
+provisions all of it directly under `~/.pi/agent/` — **no symlinks, no separate
+`~/dotfiles` repo** — but only on machines where you opt in.
 
 `chezmoi init` prompts:
 
@@ -164,29 +165,25 @@ Enable pi-agent config (skills + settings via ~/dotfiles) on this machine?
 pi-dotfiles repo URL (set to YOUR fork if you have one)?
 ```
 
-- **Yes** → `chezmoi apply` runs the install scripts, which probe each repo URL and
-  clone if reachable:
-  - `run_once_install-pi-agent.sh` → `~/dotfiles` (skills + settings), wiring
-    `~/.agents/skills`, `~/.pi/agent/settings.json`, `~/.pi/agent/mcp.json`
-  - `run_once_install-pi-reviewer.sh` → `~/git/pi-reviewer` (so the settings.json
-    package `../../git/pi-reviewer` resolves)
-- **No** → chezmoi leaves pi untouched on that machine (the scripts are skipped
-  via `.chezmoiignore`).
+- **Yes** → `chezmoi apply` provisions pi under `~/.pi/agent/`:
+  - `run_once_install-pi-agent.sh` clones the skills repo **in place** to
+    `~/.pi/agent/skills/` — a normal git checkout, so you edit and push right
+    there (`cd ~/.pi/agent/skills && git commit && git push`).
+  - `dot_pi/agent/create_settings.json` creates `~/.pi/agent/settings.json` once
+    (chezmoi `create_` — then pi owns it; pi adds `lastChangelogVersion`, theme
+    changes, etc. on top of the static config).
+  - `dot_pi/agent/mcp.json` manages `~/.pi/agent/mcp.json` (static).
+  - `run_once_install-pi-reviewer.sh` clones `pi-reviewer` to `~/git/pi-reviewer`
+    (so the settings.json package `../../git/pi-reviewer` resolves).
+- **No** → chezmoi leaves pi untouched (all pi entries are skipped via `.chezmoiignore`).
 
-**Forked these dotfiles and don't have access to the upstream `pi-dotfiles` or
-`pi-reviewer`?** Each install script **probes its repo and skips gracefully** if
-it's unreachable (no clone, `chezmoi apply` continues — nothing breaks). To use
-them, fork the repos and set `[data.pi] repo` / `reviewerRepo` to your fork URLs
-in `~/.config/chezmoi/chezmoi.toml`, then re-run `chezmoi init && chezmoi apply`.
+Each install script **probes its repo and skips gracefully** if unreachable (no
+clone, `chezmoi apply` continues — nothing breaks). Forkers: set `[data.pi] repo`
+/ `reviewerRepo` to your fork URLs in `~/.config/chezmoi/chezmoi.toml`, then
+re-run `chezmoi init && chezmoi apply`.
 
-`~/dotfiles` stays a normal git repo you edit and push independently; chezmoi only
-ensures the clone exists and the symlinks point at it. To change your answers
-later, edit `pi.enabled` / `pi.repo` in `~/.config/chezmoi/chezmoi.toml` (or
-re-run `chezmoi init`) and `chezmoi apply`.
-
-> The Claude Code bundle (`dot_claude` submodule + `make claude`) was removed when
-> moving off Claude Code. The pi-agent skills were migrated from `~/.claude/skills`
-> into the `pi-dotfiles` repo.
+To change your answers later, edit `pi.enabled` / `pi.repo` in
+`~/.config/chezmoi/chezmoi.toml` (or re-run `chezmoi init`) and `chezmoi apply`.
 
 ## Machine-Specific Configurations
 
@@ -259,8 +256,11 @@ git commit -m "Bump submodules"
 ├── dot_local/bin/                   # Personal scripts (submodule: bin)
 ├── dot_zshrc                        # Zsh configuration
 ├── dot_zsh/                         # Zsh framework
-├── run_once_install-pi-agent.sh.tmpl     # Conditional: clones pi-dotfiles + wires 3 symlinks
-├── run_once_install-pi-reviewer.sh.tmpl  # Conditional: clones pi-reviewer → ~/git/pi-reviewer (skips if repo unreachable)
+├── dot_pi/agent/                    # pi-agent config (conditional on pi.enabled)
+│   ├── create_settings.json         #   ~/.pi/agent/settings.json (create-once; pi owns runtime state)
+│   └── mcp.json                     #   ~/.pi/agent/mcp.json (static)
+├── run_once_install-pi-agent.sh.tmpl   # Conditional: clones skills repo → ~/.pi/agent/skills
+├── run_once_install-pi-reviewer.sh.tmpl# Conditional: clones pi-reviewer → ~/git/pi-reviewer
 ├── .chezmoi.toml.tmpl              # Template → ~/.config/chezmoi/chezmoi.toml
 ├── .chezmoiignore                  # Per-target + conditional ignore rules
 └── Makefile                        # Convenience targets (update, apply, add, …)
@@ -363,14 +363,13 @@ The proper chezmoi workflow for development:
 - Init/update submodules: `chezmoi cd && git submodule update --init --recursive`
 - Then `chezmoi apply`
 
-**pi-agent symlinks not created?**
+**pi skills/config not present?**
 - Confirm `pi.enabled = true` in `~/.config/chezmoi/chezmoi.toml`
-- Check `data.pi.repo` is reachable: `GIT_TERMINAL_PROMPT=0 git ls-remote <url> HEAD`
-  (the install script skips silently if not — common if you forked these dotfiles
-  but can't access the upstream private `pi-dotfiles`; point `repo` at your fork)
-- Re-run `chezmoi init && chezmoi apply` (the run_once script re-runs when its
-  content changes; force with `chezmoi state delete-bucket run-state` if needed)
-- Check the wiring: `ls -l ~/.agents/skills ~/.pi/agent/settings.json ~/.pi/agent/mcp.json`
+- Skills: check `~/.pi/agent/skills/.git` exists; if not, the clone script skipped
+  (`data.pi.repo` unreachable) — run `chezmoi init && chezmoi apply`
+- settings.json/mcp.json are chezmoi-managed — `chezmoi diff ~/.pi/agent/` to check
+- `chezmoi apply` prompting "has changed since last wrote it"? Answer yes (or use
+  `--force`) — it's chezmoi protecting a file modified outside chezmoi
 
 **Template errors on new machine (`map has no entry for key`)?**
 - Chezmoi needs config data before processing templates

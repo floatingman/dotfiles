@@ -72,9 +72,11 @@ Makefile
 scripts/
 
 # pi-agent config — only applied where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
-# The install scripts clone pi-dotfiles + pi-reviewer and wire the symlinks; if a
-# configured repo isn't reachable (e.g. someone else's private repo) they skip gracefully.
+# The install scripts clone pi-skills + pi-reviewer in place; settings.json/mcp.json
+# are chezmoi-managed. Scripts skip gracefully if a repo isn't reachable.
 {{- if not .pi.enabled }}
 run_once_install-pi-agent.sh.tmpl
 run_once_install-pi-reviewer.sh.tmpl
+.pi/agent/settings.json
+.pi/agent/mcp.json
 {{- end }}

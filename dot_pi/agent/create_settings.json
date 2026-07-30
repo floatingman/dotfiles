@@ -1,0 +1,14 @@
+{
+  "defaultProvider": "zai",
+  "defaultModel": "glm-5.2",
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "npm:pi-mcp-adapter",
+    "../../git/pi-reviewer",
+    "npm:pi-kilocode",
+    "npm:pi-provider-kimi-code",
+    "npm:pi-subagents",
+    "npm:context-mode"
+  ],
+  "theme": "dark"
+}
