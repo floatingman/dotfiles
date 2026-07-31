@@ -15,6 +15,26 @@ if [ -d "$TARGET/.git" ]; then
 fi
 
 mkdir -p "$HOME/.pi/agent"
+
+# Self-heal: a previous setup symlinked skills into $TARGET from
+# ~/.agents/skills/. If that source dir is gone the symlinks dangle, and
+# `git clone` will refuse the non-empty directory. Remove broken symlinks
+# (and only broken symlinks) so a fresh clone can land.
+if [ -d "$TARGET" ]; then
+  removed=$(find "$TARGET" -maxdepth 1 -mindepth 1 -type l ! -exec test -e {} \; -print -delete 2>/dev/null | wc -l)
+  if [ "$removed" -gt 0 ]; then
+    printf 'pi-skills: removed %d stale/broken symlinks from %s\n' "$removed" "$TARGET"
+  fi
+fi
+
+# If real (non-symlink) content is still there and it isn't a git checkout,
+# bail out instead of clobbering user files.
+if [ -d "$TARGET" ] && [ -n "$(ls -A "$TARGET" 2>/dev/null)" ]; then
+  echo "pi-skills: $TARGET exists and is not empty and is not a git checkout;" >&2
+  echo "  refusing to clone over it. Move it aside and re-run chezmoi apply." >&2
+  exit 0
+fi
+
 printf 'pi-skills: probing %s ...\n' "$REPO"
 if ! GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code "$REPO" HEAD >/dev/null 2>&1; then
   cat <<EOF
