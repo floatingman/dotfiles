@@ -172,7 +172,12 @@ pi-dotfiles repo URL (set to YOUR fork if you have one)?
   - `dot_pi/agent/create_settings.json` creates `~/.pi/agent/settings.json` once
     (chezmoi `create_` — then pi owns it; pi adds `lastChangelogVersion`, theme
     changes, etc. on top of the static config).
-  - `dot_pi/agent/mcp.json` manages `~/.pi/agent/mcp.json` (static).
+  - `dot_pi/agent/create_mcp.json` creates `~/.pi/agent/mcp.json` once (chezmoi
+    `create_` — then you own it; safe to add machine-local secrets like webhook
+    URLs, since chezmoi never overwrites it).
+  - `dot_pi/agent/run_onchange_install-pi-packages.sh.tmpl` reconciles the
+    baseline extension list into `settings.json`'s `packages` array (additive —
+    never removes locally-added packages; re-runs when you edit the list).
   - `run_once_install-pi-reviewer.sh` clones `pi-reviewer` to `~/git/pi-reviewer`
     (so the settings.json package `../../git/pi-reviewer` resolves).
 - **No** → chezmoi leaves pi untouched (all pi entries are skipped via `.chezmoiignore`).
@@ -258,7 +263,8 @@ git commit -m "Bump submodules"
 ├── dot_zsh/                         # Zsh framework
 ├── dot_pi/agent/                    # pi-agent config (conditional on pi.enabled)
 │   ├── create_settings.json         #   ~/.pi/agent/settings.json (create-once; pi owns runtime state)
-│   └── mcp.json                     #   ~/.pi/agent/mcp.json (static)
+│   ├── create_mcp.json              #   ~/.pi/agent/mcp.json (create-once; safe for machine-local secrets)
+│   └── run_onchange_install-pi-packages.sh.tmpl  # additive reconcile of baseline packages
 ├── run_once_install-pi-agent.sh.tmpl   # Conditional: clones skills repo → ~/.pi/agent/skills
 ├── run_once_install-pi-reviewer.sh.tmpl# Conditional: clones pi-reviewer → ~/git/pi-reviewer
 ├── .chezmoi.toml.tmpl              # Template → ~/.config/chezmoi/chezmoi.toml
@@ -367,7 +373,8 @@ The proper chezmoi workflow for development:
 - Confirm `pi.enabled = true` in `~/.config/chezmoi/chezmoi.toml`
 - Skills: check `~/.pi/agent/skills/.git` exists; if not, the clone script skipped
   (`data.pi.repo` unreachable) — run `chezmoi init && chezmoi apply`
-- settings.json/mcp.json are chezmoi-managed — `chezmoi diff ~/.pi/agent/` to check
+- settings.json/mcp.json are create-once (chezmoi seeds them; you/pi own runtime
+  state after). The extension list lives in `run_onchange_install-pi-packages.sh.tmpl`.
 - `chezmoi apply` prompting "has changed since last wrote it"? Answer yes (or use
   `--force`) — it's chezmoi protecting a file modified outside chezmoi
 
