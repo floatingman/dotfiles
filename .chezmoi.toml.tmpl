@@ -21,17 +21,6 @@
   templateSymlinks = true
 
 [data]
-  [data.anthropic]
-    {{- /* Resolve the token at init time, in priority order:
-          1. ANTHROPIC_AUTH_TOKEN env var (preferred, never committed)
-          2. interactive prompt, cached in chezmoi's local state
-             (~/.config/chezmoi/chezmoistate.boltdb, not in the repo)
-          Defined here for reuse by any template needing an Anthropic token;
-          no managed template currently consumes it. */ -}}
-    {{- $token := env "ANTHROPIC_AUTH_TOKEN" | default (promptStringOnce . "anthropic.token" "Anthropic API token (leave blank to use ANTHROPIC_AUTH_TOKEN at runtime)" "") }}
-    token = {{ $token | quote }}
-  [data.claude]
-    api_timeout_ms = "3000000"
   [data.pi]
     {{- /* Prompted once per machine (cached in chezmoistate.boltdb). When false, the
           pi-agent install script is ignored (see .chezmoiignore), so `chezmoi apply`
