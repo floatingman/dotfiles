@@ -1,0 +1,51 @@
+{{- /* Ensures the baseline pi package list is present in ~/.pi/agent/settings.json.
+      Additive & idempotent: appends missing entries, never removes locally-added
+      packages or object-form (filtered) entries. pi installs the actual packages
+      on next startup. Edit PACKAGES below to change the baseline.
+
+      Re-runs automatically when this template changes (run_onchange_ hashes the
+      rendered script), so editing the list triggers a re-apply. */ -}}
+{{- if .pi.enabled -}}
+#!/usr/bin/env bash
+set -u
+
+SETTINGS="$HOME/.pi/agent/settings.json"
+mkdir -p "$(dirname "$SETTINGS")"
+[ -f "$SETTINGS" ] || echo '{}' > "$SETTINGS"
+
+# ─── Baseline package list (edit me) ────────────────────────────────────────
+PACKAGES=(
+  "npm:pi-mcp-adapter"
+  "../../git/pi-reviewer"
+  "npm:pi-kilocode"
+  "npm:pi-provider-kimi-code"
+  "npm:pi-subagents"
+  "npm:context-mode"
+  "npm:pi-rtk"
+)
+# ────────────────────────────────────────────────────────────────────────────
+
+# Stringify the bash array into a JSON array via jq.
+mapfile -t quoted < <(printf '%s\n' "${PACKAGES[@]}" | jq -R .)
+baseline=$(printf '%s\n' "${quoted[@]}" | jq -s .)
+
+# Diff baseline against existing packages (keying object-form entries on .source).
+to_add=$(jq --argjson baseline "$baseline" '
+  (.packages // []) | map(if type == "string" then . else .source end) as $existing
+  | ($baseline - $existing)
+' "$SETTINGS")
+
+if [ "$(printf '%s' "$to_add" | jq 'length')" -gt 0 ]; then
+  tmp=$(mktemp)
+  jq --argjson baseline "$baseline" '
+    (.packages // []) as $p
+    | ($p | map(if type == "string" then . else .source end)) as $existing
+    | .packages = ($p + ($baseline - $existing))
+  ' "$SETTINGS" > "$tmp" && mv "$tmp" "$SETTINGS"
+  echo "pi-packages: added -> $(printf '%s' "$to_add" | jq -rc '. | join(", ")')"
+else
+  echo "pi-packages: baseline already complete"
+fi
+
+exit 0
+{{- end }}
