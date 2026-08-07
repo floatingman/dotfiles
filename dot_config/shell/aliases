@@ -54,11 +54,11 @@ fi
 # Package Management #
 ######################
 if $_isarch; then
-    alias pacup='sudo pacman -Syu' 
-    alias pacin='sudo pacman -S' 
-    alias pacls='pacman -Q' 
-    alias pacse='pacman -Ss' 
-    alias pacrm='sudo pacman -Rss' 
+    alias pacup='sudo pacman -Syu'
+    alias pacin='sudo pacman -S'
+    alias pacls='pacman -Q'
+    alias pacse='pacman -Ss'
+    alias pacrm='sudo pacman -Rss'
     alias paccl='sudo pacman -Rsn $(${AUR_MANAGER:-pacman} -Qdtq)'
     alias p="sudo pacman"
     alias pacman='sudo pacman --color always'
@@ -353,19 +353,6 @@ cheat() {
 }
 
 ###############
-# Colorscheme #
-###############
-# Set kitty terminal colors
-LIGHT_COLOR='Catppuccin-Latte'
-DARK_COLOR='Catppuccin-Mocha'
-
-alias day="kitten themes --reload-in=all $LIGHT_COLOR"
-alias night="kitten themes --reload-in=all $DARK_COLOR"
-
-# Interactively enable sdkman to manage java versions
-alias mach_java_mode="export SDKMAN_DIR='$HOME/.sdkman' && [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source '$HOME/.sdkman/bin/sdkman-init.sh'"
-
-###############
 # X11 Helpers #
 ###############
 alias xpropc='xprop | grep WM_CLASS' # display xprop class
@@ -436,3 +423,16 @@ alias pw:a='_pw "[:alnum:]"'
 alias pw:d='_pw "[:digit:]"'
 
 alias tf='terraform'
+
+if _have kubectl; then
+  alias k=kubectl
+  alias kaf='kubectl apply -f'
+  alias kd='kubectl describe'
+  alias kgp='kubectl get pods'
+  alias kgs='kubectl get svc'
+  alias kgn='kubectl get nodes'
+  alias kgd='kubectl get deploy'
+  alias kgj='kubectl get jobs'
+  alias kgcj='kubectl get cj'
+  alias kn='kubectl config set-context --current --namespace'
+fi
