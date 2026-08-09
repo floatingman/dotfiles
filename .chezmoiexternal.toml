@@ -1,0 +1,14 @@
+# External git repos cloned into the source state (always latest).
+# refreshPeriod controls how often chezmoi re-pulls them on `chezmoi update`.
+
+[".config/nvim"]
+    type = "git-repo"
+    url = "git@github.com:floatingman/lazyvim.git"
+    refreshPeriod = "24h"
+    pull = { args = ["--rebase", "--autostash"] }
+
+[".config/tmux"]
+    type = "git-repo"
+    url = "git@github.com:floatingman/.tmux.git"
+    refreshPeriod = "24h"
+    pull = { args = ["--rebase", "--autostash"] }
