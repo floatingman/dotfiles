@@ -20,6 +20,7 @@ x-scheme-handler/mailto=userapp-Thunderbird-6GNAE3.desktop;
 x-scheme-handler/mid=userapp-Thunderbird-6GNAE3.desktop;
 x-scheme-handler/webcal=userapp-Thunderbird-T1P9D3.desktop;
 x-scheme-handler/webcals=userapp-Thunderbird-T1P9D3.desktop;
+application/x-zerosize=code.desktop;
 
 [Default Applications]
 application/x-synology-drive-doc=synology-drive-open-file.desktop
@@ -40,3 +41,4 @@ text/calendar=userapp-Thunderbird-T1P9D3.desktop
 application/x-extension-ics=userapp-Thunderbird-T1P9D3.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-T1P9D3.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+application/x-zerosize=code.desktop
