@@ -170,7 +170,7 @@ zinit light starship/starship
 [[ -d "$HOME/.arkade/" ]] && export PATH=$PATH:$HOME/.arkade/bin
 
 # SSH keychain setup - cache SSH key passphrases
-eval $(keychain --eval --agents ssh id_ed25519_dlp id_ed25519_suse)
+eval "$(keychain add --eval --quiet --immediate id_ed25519_dlp id_ed25519_suse)"
 
 # opencode
 [[ -d "$HOME/.opencode/" ]] && export PATH=/home/dnewman/.opencode/bin:$PATH
