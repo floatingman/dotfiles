@@ -159,8 +159,26 @@ zinit light starship/starship
 [[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 [[ -d "$HOME/.arkade/" ]] && export PATH=$PATH:$HOME/.arkade/bin
 
-# SSH keychain setup - cache SSH key passphrases
-eval "$(keychain add --eval --quiet --immediate id_ed25519_dlp id_ed25519_suse)"
+# SSH keychain setup - cache SSH key passphrases.
+# Self-heal first: keychain's state.json records "activation.in_progress" with no
+# owner-PID tracking. If the prompting terminal dies mid-passphrase (SIGHUP), every
+# later shell blocks on that stale state. Detect a dead owner via the cancel FIFO's
+# PID and clear the coordination artifacts before invoking keychain.
+() {
+  local state="$HOME/.keychain/$HOST.state.json" fifo pid alive=0
+  [[ -r $state ]] && command grep -q '"in_progress": *true' $state || return 0
+  for fifo in $HOME/.keychain/$HOST-waiters/cancel.*.fifo(N); do
+    pid=${${fifo:t}#cancel.}; pid=${pid%%.*}
+    if [[ -n $pid ]] && kill -0 $pid 2>/dev/null; then alive=1; break; fi
+  done
+  (( alive )) && return 0
+  command rm -f $state "$HOME/.keychain/$HOST.activation.lock" \
+    "$HOME/.keychain/$HOST.state.lock" $HOME/.keychain/$HOST-waiters/*.fifo(N)
+}
+# --foreground keeps keychain in the shell's foreground process group so ssh-add can
+# prompt on /dev/tty (a background pgroup gets SIGTTIN/SIGTTOU-stopped). SIGINT at
+# timeout lets keychain's cleanup run, leaving coordination state consistent.
+eval "$(timeout --foreground --signal=INT 15 keychain add --eval --quiet --immediate id_ed25519_dlp id_ed25519_suse)"
 
 # opencode
 [[ -d "$HOME/.opencode/" ]] && export PATH=/home/dnewman/.opencode/bin:$PATH
