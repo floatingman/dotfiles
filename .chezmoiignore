@@ -71,6 +71,9 @@
 Makefile
 scripts/
 
+# Shared content backing symlink_ entries (not applied as targets)
+files/
+
 # pi-agent config — only applied where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
 # The install scripts clone pi-skills + pi-reviewer in place; settings.json/mcp.json
 # are chezmoi-managed. Scripts skip gracefully if a repo isn't reachable.

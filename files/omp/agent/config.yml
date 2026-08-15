@@ -1,0 +1,10 @@
+providers: 
+  webSearchOrder: 
+    []
+modelRoles: 
+  default: zai/glm-5.2
+symbolPreset: nerd
+theme: 
+  dark: titanium
+  light: light
+setupVersion: 1

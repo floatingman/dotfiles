@@ -190,6 +190,36 @@ re-run `chezmoi init && chezmoi apply`.
 To change your answers later, edit `pi.enabled` / `pi.repo` in
 `~/.config/chezmoi/chezmoi.toml` (or re-run `chezmoi init`) and `chezmoi apply`.
 
+### omp (oh-my-pi) Configuration
+
+[oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`, successor to pi) keeps global
+settings in `~/.omp/agent/config.yml`. Unlike pi's `settings.json`, omp's config is
+pure portable settings with no machine-local runtime state, and omp writes it in place
+through a symlink — so it syncs with a `symlink_` entry instead of `create_`:
+
+- `files/omp/agent/config.yml` — the real settings content (committed; never applied
+  as a target — `files/` is ignored)
+- `dot_omp/agent/symlink_config.yml.tmpl` — renders to
+  `{{ .chezmoi.sourceDir }}/files/omp/agent/config.yml`, so `chezmoi apply` installs
+  `~/.omp/agent/config.yml` as a symlink into this repo
+
+Workflow: `/settings` or `omp config set` edits land **directly in the repo copy** —
+commit and push them. `chezmoi update` on other machines picks them up (live on the
+next `omp` launch). `chezmoi diff` never reports drift (it compares the link target,
+not the contents).
+
+On a machine where omp already created a regular `config.yml`: merge any local
+differences into `files/omp/agent/config.yml` first, then `chezmoi apply` replaces
+the file with the symlink.
+
+Never sync (machine-local state): `agent.db`, `models.db`, `history.db`, `sessions/`,
+`terminal-sessions/`, `last-changelog-version`. Keep credentials out of `config.yml`
+(env vars / auth store) — through the symlink they would sync straight into the repo.
+
+Future: `models.yml`, `SYSTEM.md`, `RULES.md`, `keybindings.*` follow the same
+content + `symlink_` pair; `mcp.json` should use `create_` (may hold machine-local
+secrets).
+
 ## Machine-Specific Configurations
 
 Configs are automatically filtered based on:
@@ -261,6 +291,8 @@ git commit -m "Bump submodules"
 ├── dot_local/bin/                   # Personal scripts (submodule: bin)
 ├── dot_zshrc                        # Zsh configuration
 ├── dot_zsh/                         # Zsh framework
+├── dot_omp/agent/symlink_config.yml.tmpl  # ~/.omp/agent/config.yml → symlink into this repo
+├── files/omp/agent/config.yml             # omp settings content (symlink target; ignored as target)
 ├── dot_pi/agent/                    # pi-agent config (conditional on pi.enabled)
 │   ├── create_settings.json         #   ~/.pi/agent/settings.json (create-once; pi owns runtime state)
 │   ├── create_mcp.json              #   ~/.pi/agent/mcp.json (create-once; safe for machine-local secrets)
