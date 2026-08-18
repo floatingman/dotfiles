@@ -1,10 +1,28 @@
 providers: 
   webSearchOrder: 
     []
+  memoryModel: online
+  tinyModelDevice: auto
 modelRoles: 
-  default: zai/glm-5.2
+  default: clinepass/cline-pass/deepseek-v4-flash:high
+  plan: clinepass/cline-pass/kimi-k3
+  task: clinepass/cline-pass/deepseek-v4-flash
 symbolPreset: nerd
 theme: 
   dark: titanium
   light: light
 setupVersion: 1
+compaction: 
+  handoffSaveToDisk: true
+task: 
+  prewalk: true
+prewalk: 
+  enabled: true
+speech: 
+  enhanced: true
+memory: 
+  backend: mnemopi
+autolearn: 
+  enabled: true
+mnemopi: 
+  proactiveLinking: true
