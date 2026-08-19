@@ -4,7 +4,7 @@ providers:
   memoryModel: online
   tinyModelDevice: auto
 modelRoles: 
-  default: clinepass/cline-pass/deepseek-v4-flash:high
+  default: zai/glm-5.3
   plan: clinepass/cline-pass/kimi-k3
   task: clinepass/cline-pass/deepseek-v4-flash
 symbolPreset: nerd
@@ -26,3 +26,4 @@ autolearn:
   enabled: true
 mnemopi: 
   proactiveLinking: true
+defaultThinkingLevel: auto
