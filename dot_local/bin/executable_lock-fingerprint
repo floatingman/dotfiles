@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Lock with betterlockscreen; unlock by fingerprint or password.
+#
+# i3lock only starts its PAM conversation after Enter is pressed, so
+# pam_fprintd in /etc/pam.d/i3lock never gets a chance to run. Instead we
+# run fprintd-verify alongside the lock; a successful scan (equivalent
+# authentication) unlocks by stopping i3lock. Password unlock still works.
+
+set -u
+
+LOCK_BIN=""
+for b in i3lock-color i3lock; do
+    command -v "$b" >/dev/null 2>&1 && LOCK_BIN="$b" && break
+done
+if [ -z "$LOCK_BIN" ]; then
+    notify-send -u critical "lock-fingerprint" "No i3lock binary found" 2>/dev/null
+    exit 1
+fi
+
+betterlockscreen -l dim &
+
+# Wait (up to 5s) for the lock process to actually appear
+for _ in {1..50}; do
+    pgrep -x "$LOCK_BIN" >/dev/null && break
+    sleep 0.1
+done
+
+while pgrep -x "$LOCK_BIN" >/dev/null; do
+    # Blocks until a finger touches the sensor (or an error)
+    fprintd-verify >/dev/null 2>&1 &
+    verify_pid=$!
+
+    # Wait for either: scan result, or the lock is gone (password unlock)
+    while pgrep -x "$LOCK_BIN" >/dev/null && kill -0 "$verify_pid" 2>/dev/null; do
+        sleep 0.3
+    done
+
+    if kill -0 "$verify_pid" 2>/dev/null; then
+        # Lock exited first (password unlock) — stop waiting for a finger
+        kill "$verify_pid" 2>/dev/null
+        wait "$verify_pid" 2>/dev/null
+    else
+        wait "$verify_pid"
+        rc=$?
+        if [ "$rc" -eq 0 ]; then
+            # Fingerprint verified — unlock
+            pkill -x "$LOCK_BIN"
+            break
+        fi
+        # Failed/aborted scan — brief backoff before retrying
+        sleep 1
+    fi
+done
+
+wait

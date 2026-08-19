@@ -189,7 +189,7 @@ bindsym $mod+r mode "resize"
 # exec_always --no-startup-id ff-theme-util
 # exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id sxhkd
-exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --socket /tmp/xidlehook.sock --timer 600 "betterlockscreen -l dim" ""
+exec_always --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --socket /tmp/xidlehook.sock --timer 600 "~/.local/bin/lock-fingerprint" ""
 exec_always --no-startup-id mpd
 exec_always --no-startup-id unclutter
 exec_always --no-startup-id udiskie
@@ -197,11 +197,15 @@ exec_always --no-startup-id synology-drive
 exec_always --no-startup-id autorandr --change --default mobile
 exec_always --no-startup-id autotiling
 exec_always --no-startup-id dunst
+
+# Manual lock with fingerprint unlock support
+bindsym $mod+Shift+x exec --no-startup-id ~/.local/bin/lock-fingerprint
 exec_always --no-startup-id picom
 exec_always --no-startup-id pasystray
 exec_always --no-startup-id nm-applet
 exec_always --no-startup-id redswitch -g
 exec_always --no-startup-id blueman-applet
+exec_always --no-startup-id /usr/lib/polkit-kde-authentication-agent-1
 exec_always --no-startup-id /opt/Synergy/synergy-service
 exec_always --no-startup-id syncthingtray-qt6
 exec_always --no-startup-id xiccd
