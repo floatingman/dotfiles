@@ -6,6 +6,7 @@ providers:
 modelRoles:
   task: clinepass/cline-pass/deepseek-v4-flash
   plan: clinepass/cline-pass/kimi-k3:max
+  default: zai/glm-5.3:max
 symbolPreset: nerd
 theme:
   dark: titanium
