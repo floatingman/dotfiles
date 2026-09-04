@@ -71,6 +71,10 @@
 Makefile
 scripts/
 
+# Rendered by the my-configuration dotfiles role from asdf_plugins
+# (group_vars/all/base.yml) — not a dotfiles-managed file.
+.tool-versions
+
 # Shared content backing symlink_ entries (not applied as targets)
 files/
 
