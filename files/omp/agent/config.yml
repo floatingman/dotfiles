@@ -31,4 +31,4 @@ composer:
   shape: box
 skills:
   customDirectories:
-    - /home/dnewman/.pi/agent/skills
+    - ~/.pi/agent/skills
