@@ -1,31 +1,3 @@
-providers:
-  webSearchOrder:
-    []
-  memoryModel: online
-  tinyModelDevice: auto
-modelRoles:
-  task: clinepass/cline-pass/deepseek-v4-flash
-  plan: clinepass/cline-pass/kimi-k3:max
-  default: zai/glm-5.3:max
-symbolPreset: nerd
-theme:
-  dark: titanium
-  light: light
-setupVersion: 2
-compaction:
-  handoffSaveToDisk: true
-task:
-  prewalk: true
-prewalk:
-  enabled: true
-speech:
-  enhanced: true
-memory:
-  backend: mnemopi
-autolearn:
-  enabled: true
-mnemopi:
-  proactiveLinking: true
-defaultThinkingLevel: auto
-composer:
-  shape: box
+skills:
+  customDirectories:
+    - /home/dnewman/.pi/agent/skills
