@@ -7,3 +7,6 @@ theme:
   dark: titanium
   light: light
 setupVersion: 2
+skills:
+  customDirectories:
+    - /home/dnewman/.pi/agent/skills
