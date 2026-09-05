@@ -3,16 +3,27 @@ providers:
     []
   memoryModel: online
   tinyModelDevice: auto
+<<<<<<< Updated upstream
 modelRoles:
   task: clinepass/cline-pass/deepseek-v4-flash
   plan: clinepass/cline-pass/kimi-k3:max
   default: zai/glm-5.3:max
+=======
+modelRoles: 
+  plan: clinepass/cline-pass/kimi-k3
+  task: clinepass/cline-pass/deepseek-v4-flash
+  default: zai/glm-5.3
+>>>>>>> Stashed changes
 symbolPreset: nerd
 theme:
   dark: titanium
   light: light
 setupVersion: 2
+<<<<<<< Updated upstream
 compaction:
+=======
+compaction: 
+>>>>>>> Stashed changes
   handoffSaveToDisk: true
 task:
   prewalk: true
@@ -27,8 +38,13 @@ autolearn:
 mnemopi:
   proactiveLinking: true
 defaultThinkingLevel: auto
+<<<<<<< Updated upstream
 composer:
   shape: box
 skills:
   customDirectories:
     - ~/.pi/agent/skills
+=======
+composer: 
+  shape: pi
+>>>>>>> Stashed changes
