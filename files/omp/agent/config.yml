@@ -10,3 +10,13 @@ setupVersion: 2
 skills:
   customDirectories:
     - /home/dnewman/.pi/agent/skills
+memory:
+  backend: mnemopi
+providers:
+  memoryModel: online
+autolearn:
+  enabled: true
+vault:
+  enabled: true
+github:
+  enabled: true
