@@ -20,3 +20,28 @@ vault:
   enabled: true
 github:
   enabled: true
+stt:
+  enabled: true
+  modelName: parakeet
+  submitTrigger: never
+update:
+  channel: stable
+features:
+  unexpectedStopDetection: smart
+contextPromotion:
+  enabled: true
+extendedContext: true
+branchSummary:
+  enabled: true
+compaction:
+  handoffSaveToDisk: true
+speech:
+  enabled: true
+  mode: assistant
+  enhanced: true
+  voice: af_kore
+tts:
+  localModel: kokoro
+  localVoice: af_kore
+searxng:
+  endpoint: search.thenewmans.casa
