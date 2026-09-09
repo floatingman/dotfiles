@@ -22,3 +22,7 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# dot_claude/ must be tracked despite the global *claude*/ ignore
+!dot_claude/
+!dot_claude/CLAUDE.md

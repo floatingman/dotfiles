@@ -86,4 +86,5 @@ run_once_install-pi-agent.sh.tmpl
 run_once_install-pi-reviewer.sh.tmpl
 .pi/agent/settings.json
 .pi/agent/mcp.json
+.pi/agent/AGENTS.md
 {{- end }}
