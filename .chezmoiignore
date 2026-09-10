@@ -82,8 +82,8 @@ files/
 # The install scripts clone pi-skills + pi-reviewer in place; settings.json/mcp.json
 # are chezmoi-managed. Scripts skip gracefully if a repo isn't reachable.
 {{- if not .pi.enabled }}
-run_once_install-pi-agent.sh.tmpl
-run_once_install-pi-reviewer.sh.tmpl
+.chezmoiscripts/run_once_install-pi-agent.sh.tmpl
+.chezmoiscripts/run_once_install-pi-reviewer.sh.tmpl
 .pi/agent/settings.json
 .pi/agent/mcp.json
 .pi/agent/AGENTS.md
