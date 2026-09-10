@@ -1,0 +1,40 @@
+{{- /* Syncs omp managed skills from the dotfiles payload dir (omp-managed-skills/,
+      kept out of target deployment via .chezmoiignore — same pattern as files/)
+      into ~/.omp/agent/managed-skills on every apply. Repo content is the source
+      of truth: skills versioned here converge across servers and local
+      manage_skill edits are overwritten on the next apply. Skills that exist
+      only locally are left untouched — delete them by hand after removing the
+      payload dir from this repo. */ -}}
+#!/usr/bin/env bash
+set -u
+SRC="{{ .chezmoi.sourceDir }}/omp-managed-skills"
+DEST="$HOME/.omp/agent/managed-skills"
+
+if [ ! -d "$SRC" ]; then
+  echo "omp-managed-skills: no payload dir at $SRC; skipping"
+  exit 0
+fi
+
+mkdir -p "$DEST"
+
+changed=0
+for skill_dir in "$SRC"/*/; do
+  [ -d "$skill_dir" ] || continue
+  name="$(basename "$skill_dir")"
+  mkdir -p "$DEST/$name"
+  while IFS= read -r -d '' f; do
+    rel="${f#"$skill_dir"}"
+    target="$DEST/$name/$rel"
+    mkdir -p "$(dirname "$target")"
+    if [ ! -f "$target" ] || ! cmp -s "$f" "$target"; then
+      cp -f "$f" "$target"
+      echo "omp-managed-skills: updated $name/$rel"
+      changed=1
+    fi
+  done < <(find "$skill_dir" -type f -print0)
+done
+
+if [ "$changed" -eq 0 ]; then
+  echo "omp-managed-skills: already in sync"
+fi
+exit 0

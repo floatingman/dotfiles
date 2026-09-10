@@ -88,3 +88,7 @@ run_once_install-pi-reviewer.sh.tmpl
 .pi/agent/mcp.json
 .pi/agent/AGENTS.md
 {{- end }}
+
+# omp managed-skills payload — synced into ~/.omp/agent/managed-skills by
+# run_sync-omp-managed-skills.sh.tmpl, not applied as target files.
+omp-managed-skills/
