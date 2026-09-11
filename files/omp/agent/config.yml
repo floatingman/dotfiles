@@ -37,11 +37,18 @@ compaction:
   handoffSaveToDisk: true
 speech:
   enabled: true
-  mode: assistant
+  mode: yield
   enhanced: true
-  voice: af_kore
+  voice: af_heart
 tts:
   localModel: kokoro
-  localVoice: af_kore
+  localVoice: af_heart
 searxng:
   endpoint: search.thenewmans.casa
+steeringMode: one-at-a-time
+tools:
+  approvalMode: yolo
+live:
+  voice: ember
+secrets:
+  enabled: true
