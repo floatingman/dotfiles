@@ -1,0 +1,24 @@
+{{- /* Updates the pi skills checkout at ~/.pi/agent/skills on every apply so
+      skill changes pushed to [data.pi].repo converge across servers —
+      run_once_install-pi-agent.sh.tmpl only bootstraps the clone and then
+      never runs again. Fast-forward only: local commits, a dirty tree, or a
+      detached HEAD are left for the user to reconcile; this never merges,
+      rebases, or discards work, and offline machines skip gracefully. */ -}}
+{{- if .pi.enabled -}}
+#!/usr/bin/env bash
+set -u
+TARGET="$HOME/.pi/agent/skills"
+
+if [ ! -d "$TARGET/.git" ]; then
+  echo "pi-skills: no checkout at $TARGET (run_once_install-pi-agent bootstraps it); skipping"
+  exit 0
+fi
+
+if ! out=$(GIT_TERMINAL_PROMPT=0 git -C "$TARGET" pull --ff-only --quiet 2>&1); then
+  echo "pi-skills: pull skipped (offline, dirty tree, or local commits ahead): $out"
+  exit 0
+fi
+
+echo "pi-skills: updated (or already current) at $TARGET"
+exit 0
+{{- end }}
