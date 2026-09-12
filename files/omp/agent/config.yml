@@ -14,6 +14,9 @@ memory:
   backend: mnemopi
 providers:
   memoryModel: online
+  openai-codex:
+    codeMode: auto
+  tts: auto
 autolearn:
   enabled: true
 vault:
@@ -21,7 +24,7 @@ vault:
 github:
   enabled: true
 stt:
-  enabled: true
+  enabled: false
   modelName: parakeet
   submitTrigger: never
 update:
@@ -36,7 +39,7 @@ branchSummary:
 compaction:
   handoffSaveToDisk: true
 speech:
-  enabled: true
+  enabled: false
   mode: yield
   enhanced: true
   voice: af_heart
@@ -49,6 +52,6 @@ steeringMode: one-at-a-time
 tools:
   approvalMode: yolo
 live:
-  voice: ember
+  voice: sol
 secrets:
   enabled: true
