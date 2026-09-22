@@ -65,7 +65,7 @@ function on_load()
 end
 
 function removefile_linux(file)
-  return { "gio", "trash", file }
+  return { "rm", "--", file }
 end
 
 function removefile_windows(file)
