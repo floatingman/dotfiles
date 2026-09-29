@@ -1,6 +1,6 @@
 modelRoles:
   plan: clinepass/cline-pass/kimi-k3:max
-  default: zai/glm-5.3-flash
+  default: zai/glm-5.3-flash:high
 symbolPreset: nerd
 composer:
   shape: band
