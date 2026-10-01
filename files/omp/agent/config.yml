@@ -1,6 +1,6 @@
 modelRoles:
   plan: clinepass/cline-pass/kimi-k3:max
-  default: zai/glm-5.3-flash:high
+  default: zai/glm-5.3:high
 symbolPreset: nerd
 composer:
   shape: band
@@ -52,3 +52,5 @@ live:
   voice: sol
 secrets:
   enabled: true
+dev:
+  autoqaConsent: granted
