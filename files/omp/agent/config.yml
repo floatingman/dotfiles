@@ -54,3 +54,4 @@ secrets:
   enabled: true
 dev:
   autoqaConsent: granted
+  enabled: true
