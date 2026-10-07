@@ -2,14 +2,6 @@ Host 45.33.107.248
   User jumpuser
   IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
 
-Host ec2-*
-  ProxyJump 45.33.107.248
-  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
-
-Host 52.* 18.* 13.* 3.*
-  ProxyJump 45.33.107.248
-  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
-
 Host *
   AddKeysToAgent yes
   ForwardAgent yes
