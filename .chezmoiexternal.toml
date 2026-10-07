@@ -3,12 +3,12 @@
 
 [".config/nvim"]
     type = "git-repo"
-    url = "git@github.com:floatingman/lazyvim.git"
+    url = "https://github.com/floatingman/lazyvim.git"
     refreshPeriod = "24h"
     pull = { args = ["--rebase", "--autostash"] }
 
 [".config/tmux"]
     type = "git-repo"
-    url = "git@github.com:floatingman/.tmux.git"
+    url = "https://github.com/floatingman/.tmux.git"
     refreshPeriod = "24h"
     pull = { args = ["--rebase", "--autostash"] }
