@@ -1,16 +1,41 @@
-{{- /* Updates the pi skills checkout at ~/.pi/agent/skills on every apply so
-      skill changes pushed to [data.pi].repo converge across servers —
-      run_once_install-pi-agent.sh.tmpl only bootstraps the clone and then
-      never runs again. Fast-forward only: local commits, a dirty tree, or a
-      detached HEAD are left for the user to reconcile; this never merges,
-      rebases, or discards work, and offline machines skip gracefully. */ -}}
+{{- /* Keeps the pi skills checkout at ~/.pi/agent/skills converged on every
+      apply: bootstraps the clone when missing (self-healing, so a run_once
+      that skipped gracefully during provisioning cannot leave the machine
+      permanently without skills), then fast-forward pulls on later applies.
+      Local commits, a dirty tree, or a detached HEAD are left for the user
+      to reconcile; this never merges, rebases, or discards work, and offline
+      machines skip gracefully. */ -}}
 {{- if .pi.enabled -}}
 #!/usr/bin/env bash
 set -u
 TARGET="$HOME/.pi/agent/skills"
+REPO="{{ .pi.repo | default "git@github.com:floatingman/pi-dotfiles.git" }}"
 
 if [ ! -d "$TARGET/.git" ]; then
-  echo "pi-skills: no checkout at $TARGET (run_once_install-pi-agent bootstraps it); skipping"
+  # Mirror run_once_install-pi-agent: clear broken symlinks a previous setup
+  # may have left, and never clobber real non-git content.
+  if [ -d "$TARGET" ]; then
+    removed=$(find "$TARGET" -maxdepth 1 -mindepth 1 -type l ! -exec test -e {} \; -print -delete 2>/dev/null | wc -l)
+    if [ "$removed" -gt 0 ]; then
+      printf 'pi-skills: removed %d stale/broken symlinks from %s\n' "$removed" "$TARGET"
+    fi
+  fi
+
+  if [ -d "$TARGET" ] && [ -n "$(ls -A "$TARGET" 2>/dev/null)" ]; then
+    echo "pi-skills: $TARGET exists and is not empty and is not a git checkout; leaving it alone" >&2
+    exit 0
+  fi
+
+  if ! GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code "$REPO" HEAD >/dev/null 2>&1; then
+    echo "pi-skills: no checkout at $TARGET and repo '$REPO' unreachable; skipping"
+    exit 0
+  fi
+
+  if GIT_TERMINAL_PROMPT=0 git clone --quiet "$REPO" "$TARGET"; then
+    echo "pi-skills: bootstrapped at $TARGET"
+  else
+    echo "pi-skills: clone failed; skipping"
+  fi
   exit 0
 fi
 
