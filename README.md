@@ -215,6 +215,9 @@ the file with the symlink.
 Never sync (machine-local state): `agent.db`, `models.db`, `history.db`, `sessions/`,
 `terminal-sessions/`, `last-changelog-version`. Keep credentials out of `config.yml`
 (env vars / auth store) — through the symlink they would sync straight into the repo.
+Machine-local secrets live in `~/.omp/agent/.env` (autoloaded by omp, e.g.
+`CLINE_API_KEY`, `HINDSIGHT_API_TOKEN`); the file is neither managed nor committed
+by chezmoi.
 
 Future: `models.yml`, `SYSTEM.md`, `RULES.md`, `keybindings.*` follow the same
 content + `symlink_` pair; `mcp.json` should use `create_` (may hold machine-local
