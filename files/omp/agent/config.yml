@@ -1,12 +1,16 @@
 modelRoles:
   plan: clinepass/cline-pass/kimi-k3:max
-  default: zai/glm-5.3:high
+  default: zai/glm-5.3:max
+  smol: zai/glm-5.3-flash
+  advisor: clinepass/cline-pass/kimi-k3:max
+  vision: zai/glm-5v-turbo:auto
 symbolPreset: nerd
 composer:
-  shape: band
+  shape: box
+  tokenRate: true
 theme:
-  dark: titanium
-  light: light
+  dark: dark-gruvbox
+  light: light-gruvbox
 setupVersion: 2
 skills:
   customDirectories:
@@ -36,6 +40,8 @@ branchSummary:
   enabled: true
 compaction:
   handoffSaveToDisk: true
+  thresholdPercent: 40
+  idleEnabled: true
 speech:
   enabled: false
   mode: yield
@@ -55,3 +61,72 @@ secrets:
 dev:
   autoqaConsent: granted
   enabled: true
+colorBlindMode: false
+statusLine:
+  separator: powerline
+  contextLine: percentage
+  transparent: false
+defaultThinkingLevel: max
+hideThinkingBlock: true
+omitThinking: true
+personality: pragmatic
+retry:
+  waitForUsageReset: true
+  fallbackChains: {}
+  fallbackOn: usage-limit
+advisor:
+  enabled: true
+  syncBacklog: strict
+prewalk:
+  enabled: true
+  auto: suggest
+loop:
+  mode: prompt
+error:
+  notify: "on"
+ask:
+  timeout: 60
+startup:
+  quiet: true
+mnemopi:
+  enhancedRecall: true
+edit:
+  mode: hashline
+  autoRepair:
+    enabled: true
+read:
+  summarize:
+    prose: true
+lsp:
+  formatOnWrite: true
+bash:
+  allowCompoundCommands: true
+  gitGuard: true
+bashInterceptor:
+  enabled: true
+shellMinimizer:
+  sourceOutlineLevel: default
+eval:
+  workpool:
+    freshAgents: true
+  autoBackground:
+    enabled: true
+python:
+  kernelMode: session
+astGrep:
+  enabled: true
+computer:
+  enabled: true
+ratchet:
+  enabled: true
+checkpoint:
+  enabled: true
+security:
+  enabled: true
+browser:
+  relay: true
+task:
+  isolation:
+    enabled: true
+commands:
+  enableClaudeUser: true
