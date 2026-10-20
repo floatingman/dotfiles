@@ -16,7 +16,7 @@ skills:
   customDirectories:
     - /home/dnewman/.pi/agent/skills
 memory:
-  backend: mnemopi
+  backend: hindsight
 providers:
   openai-codex:
     codeMode: auto
@@ -130,3 +130,6 @@ task:
     enabled: true
 commands:
   enableClaudeUser: true
+hindsight:
+  apiUrl: https://hindsight.thenewmans.casa
+  apiToken: hs_6a8c39c18fc87fded5129892ac8f08c45f8ef27b264be4ed
