@@ -4,6 +4,8 @@ modelRoles:
   smol: zai/glm-5.3-flash
   advisor: clinepass/cline-pass/kimi-k3:max
   vision: zai/glm-5v-turbo:auto
+  REVIEWER1: clinepass/cline-pass/deepseek-v4-pro
+  REVIEWER2: clinepass/cline-pass/kimi-k3
 symbolPreset: nerd
 composer:
   shape: box
