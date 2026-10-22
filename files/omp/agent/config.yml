@@ -2,10 +2,11 @@ modelRoles:
   plan: clinepass/cline-pass/kimi-k3:max
   default: zai/glm-5.3:max
   smol: zai/glm-5.3-flash
-  advisor: clinepass/cline-pass/kimi-k3:max
+  advisor: openrouter/openai/gpt-6.1-sol:high
   vision: zai/glm-5v-turbo:auto
   REVIEWER1: clinepass/cline-pass/deepseek-v4-pro
   REVIEWER2: clinepass/cline-pass/kimi-k3
+  slow: openrouter/moonshotai/kimi-k3:max
 symbolPreset: nerd
 composer:
   shape: box
@@ -134,4 +135,3 @@ commands:
   enableClaudeUser: true
 hindsight:
   apiUrl: https://hindsight.thenewmans.casa
-  # Token comes from HINDSIGHT_API_TOKEN in ~/.omp/agent/.env (machine-local, never committed).
