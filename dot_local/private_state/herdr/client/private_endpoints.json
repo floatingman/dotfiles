@@ -15,6 +15,13 @@
       "target": "dnewman@100.75.235.8",
       "session": "default",
       "enabled": true
+    },
+    {
+      "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "label": "zz-merge-probe",
+      "target": "probe@laptop",
+      "session": "default",
+      "enabled": true
     }
   ]
 }
