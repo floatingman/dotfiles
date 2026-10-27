@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "selected_profile": "f999dd0dd0b88c8f9139592a70198cec",
+  "ssh": [
+    {
+      "id": "f999dd0dd0b88c8f9139592a70198cec",
+      "label": "bigheartedlabs.com",
+      "target": "dnewman@bigheartedlabs.com",
+      "session": "default",
+      "enabled": true
+    },
+    {
+      "id": "4b4b391c980d3c7b5f4eee87480a22ea",
+      "label": "100.75.235.8",
+      "target": "dnewman@100.75.235.8",
+      "session": "default",
+      "enabled": true
+    }
+  ]
+}
