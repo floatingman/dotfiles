@@ -1,13 +1,14 @@
 modelRoles:
-  plan: openrouter/moonshotai/kimi-k3:max
+  plan: kilo/moonshotai/kimi-k3:max
   default: zai/glm-5.3:max
   smol: zai/glm-5.3-flash
-  advisor: kilo/deepseek/deepseek-v4-pro:auto
+  advisor: kilo/moonshotai/kimi-k3:high
   vision: zai/glm-5v-turbo:auto
   REVIEWER1: clinepass/cline-pass/deepseek-v4-pro
   REVIEWER2: clinepass/cline-pass/kimi-k3
-  slow: openrouter/moonshotai/kimi-k3:max
-  judge: openrouter/~typesafe/jev-latest:auto
+  slow: kilo/moonshotai/kimi-k3:max
+  judge: typesafe/jev-1.14.0
+  task: zai/glm-5.3-flash:auto
 symbolPreset: nerd
 composer:
   shape: box
@@ -89,7 +90,7 @@ loop:
 error:
   notify: "on"
 ask:
-  timeout: 60
+  timeout: 120
 startup:
   quiet: true
 mnemopi:
@@ -136,3 +137,4 @@ commands:
   enableClaudeUser: true
 hindsight:
   apiUrl: https://hindsight.thenewmans.casa
+interruptMode: immediate
