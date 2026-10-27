@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# herdr-machines — share herdr's saved SSH machines between your workstations.
+#
+# Shares exactly one file, through the chezmoi dotfiles repo:
+#   local: ~/.local/state/herdr/client/endpoints.json   (herdr's machine catalog)
+#   repo:  dot_local/private_state/herdr/client/private_endpoints.json
+#
+# Commands:
+#   herdr-machines status   show local vs repo machines and drift
+#   herdr-machines pull     apply the repo catalog here. Machines that exist
+#                           only locally are merged in, never dropped; the repo
+#                           version wins where both have the same machine.
+#                           Then run "push" to publish a merge.
+#   herdr-machines push     adopt the current local catalog into the repo,
+#                           commit and push (no commit when nothing changed).
+#
+# Every chezmoi command is path-targeted: a bare "chezmoi apply" is never run,
+# so unrelated local drift (themes etc.) is never touched.
+
+set -euo pipefail
+
+CATALOG="$HOME/.local/state/herdr/client/endpoints.json"
+
+die() { echo "herdr-machines: $*" >&2; exit 1; }
+need() { command -v "$1" >/dev/null 2>&1 || die "needs $1 on PATH"; }
+need chezmoi
+need git
+
+SRC_DIR="$(chezmoi source-path)"
+[ -d "$SRC_DIR" ] || die "chezmoi source directory not found"
+
+repo_file() { chezmoi source-path "$CATALOG" 2>/dev/null || true; }
+
+ensure_managed() {
+  if [ -z "$(repo_file)" ]; then
+    [ -f "$CATALOG" ] || die "no catalog at $CATALOG; run herdr once on this machine first"
+    chezmoi add "$CATALOG" >&2
+  fi
+  REPO="$(repo_file)"
+  [ -f "$REPO" ] || die "chezmoi source copy missing: $REPO"
+  REL="${REPO#"$SRC_DIR"/}"
+}
+
+ids()   { jq -r '.ssh[]?.id' "$1" 2>/dev/null | sort -u; }
+labels(){ jq -r '.ssh[]? | "\(.id)  \(.label)"' "$1" 2>/dev/null | sort; }
+
+cmd_status() {
+  ensure_managed
+  echo "local: $CATALOG"
+  echo "repo:  $REPO"
+  echo "machines (local):"
+  labels "$CATALOG" | sed 's/^/  /'
+  if cmp -s "$CATALOG" "$REPO"; then
+    echo "local and repo copies are identical"
+  else
+    echo "local and repo copies differ: run pull (take repo) or push (take local)"
+  fi
+  n="$(comm -23 <(ids "$CATALOG") <(ids "$REPO") | grep -c . || true)"
+  if [ "$n" -gt 0 ]; then
+    echo "note: $n machine(s) exist only locally; pull will merge them, push will publish them"
+  fi
+}
+
+cmd_pull() {
+  ensure_managed
+  mkdir -p "$(dirname "$CATALOG")"
+  if [ ! -f "$CATALOG" ]; then
+    chezmoi apply --force "$CATALOG"
+    echo "created $CATALOG from the repo"
+    return
+  fi
+  if ! command -v jq >/dev/null 2>&1 || ! jq -e . "$CATALOG" >/dev/null 2>&1; then
+    echo "herdr-machines: jq unavailable or local catalog unreadable; forcing repo copy over it" >&2
+    chezmoi apply --force "$CATALOG"
+    echo "repo catalog applied"
+    return
+  fi
+  n="$(comm -23 <(ids "$CATALOG") <(ids "$REPO") | grep -c . || true)"
+  if [ "$n" -eq 0 ]; then
+    chezmoi apply --force "$CATALOG"
+    echo "in sync with the repo ($(ids "$CATALOG" | grep -c . || true) machines)"
+    return
+  fi
+  tmp="$(mktemp)"
+  jq -n --slurpfile l "$CATALOG" --slurpfile r "$REPO" '
+    ($r[0] // {version:1, selected_profile:null, ssh:[]}) as $base
+    | $base
+    | .ssh = (.ssh + [ $l[0].ssh[]?
+        | select(.id as $id | ($base.ssh | map(.id) | index($id)) | not) ])' > "$tmp"
+  jq -e . "$tmp" >/dev/null || { rm -f "$tmp"; die "merge produced invalid JSON; nothing was changed"; }
+  cp "$tmp" "$CATALOG"
+  rm -f "$tmp"
+  cp "$CATALOG" "$REPO"
+  chezmoi apply --force "$CATALOG"
+  echo "merged $n local-only machine(s) into the catalog (repo versions win where both exist)"
+  echo "run 'herdr-machines push' to publish the merged list"
+}
+
+cmd_push() {
+  ensure_managed
+  [ -f "$CATALOG" ] || die "no catalog at $CATALOG"
+  chezmoi re-add "$CATALOG"
+  git -C "$SRC_DIR" add "$REL"
+  if git -C "$SRC_DIR" diff --quiet HEAD -- "$REL"; then
+    echo "repo already matches the local catalog; nothing to push"
+  else
+    git -C "$SRC_DIR" commit -m "herdr: update saved machine catalog"
+    git -C "$SRC_DIR" push
+    echo "pushed"
+  fi
+}
+
+case "${1:-}" in
+  status) cmd_status ;;
+  pull|sync) cmd_pull ;;
+  push|publish) cmd_push ;;
+  *)
+    sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'
+    exit 1
+    ;;
+esac
