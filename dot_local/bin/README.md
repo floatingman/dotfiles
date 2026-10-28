@@ -7,3 +7,25 @@ I put them in a directory in my path for easy access.
 Scripts are made executable via a `run_` chezmoi script that runs on every `chezmoi apply`.
 This causes chezmoi to detect permission changes and prompt to overwrite. Use `chezmoi apply --force`
 or accept the prompt to proceed.
+
+## herdr-machines
+
+Shares herdr's saved SSH machine catalog (`~/.local/state/herdr/client/endpoints.json`)
+between my machines through this repo (`dot_local/private_state/herdr/client/`).
+The catalog carries no secrets; SSH auth stays with my own keys on each machine.
+
+- `herdr-machines status` — show both copies and any drift
+- `herdr-machines pull` — take the repo copy. Machines that exist only on this machine
+  are merged in, not dropped (repo wins where both have the same machine). Run
+  `herdr-machines push` afterwards to publish a merge.
+- `herdr-machines push` — adopt the local catalog into the repo, commit, push
+  (no commit when nothing changed).
+
+Footguns already hit, so you don't have to:
+
+- Always path-target chezmoi: a bare `chezmoi apply` reverts unrelated local drift.
+- On a fresh machine, plain `chezmoi update` is enough. A path-targeted apply fails
+  until `~/.local/state/herdr/client/` exists, which only happens after herdr has
+  run as a client there.
+- `--force` overwrites without asking and silently drops machines only this machine
+  had. `pull` merges first automatically; when merging by hand, do it before forcing.
