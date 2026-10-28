@@ -1,18 +1,22 @@
 Host bigheartedlabs
   HostName bigheartedlabs.com
   User dnewman
+  IdentityFile ~/.ssh/id_ed25519_dlp
 
 Host media-vm
   HostName 100.75.235.8
   User dnewman
+  IdentityFile ~/.ssh/id_ed25519_dlp
 
 Host windcharger
   HostName 100.95.43.104
   User dnewman
+  IdentityFile ~/.ssh/id_ed25519_dlp
 
 Host tracks
   HostName 100.70.7.61
   User dnewman
+  IdentityFile ~/.ssh/id_ed25519_dlp
 
 Host 45.33.107.248
   User jumpuser
