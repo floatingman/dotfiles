@@ -27,5 +27,10 @@ Footguns already hit, so you don't have to:
 - On a fresh machine, plain `chezmoi update` is enough. A path-targeted apply fails
   until `~/.local/state/herdr/client/` exists, which only happens after herdr has
   run as a client there.
+- A pulled catalog isn't enough on a fresh machine: herdr checks host keys strictly,
+  and `known_hosts` matches by the exact target string — trust recorded under another
+  name (hostname, LAN IP) doesn't cover the catalog's target. One plain `ssh <target>`
+  per machine, or `herdr machine reconnect <label>`, seeds it; open herdr clients
+  reconnect within ~30s.
 - `--force` overwrites without asking and silently drops machines only this machine
   had. `pull` merges first automatically; when merging by hand, do it before forcing.
