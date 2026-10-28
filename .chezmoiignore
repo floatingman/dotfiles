@@ -92,3 +92,8 @@ files/
 # omp managed-skills payload — synced into ~/.omp/agent/managed-skills by
 # run_sync-omp-managed-skills.sh.tmpl, not applied as target files.
 omp-managed-skills/
+
+# herdr per-machine state — managed locally on each host, never synced
+.local/state/herdr/client/endpoints.json
+.local/state/herdr/client/endpoint-selection.json
+.local/state/herdr/client/ssh-metadata/
