@@ -10,6 +10,10 @@ Host windcharger
   HostName 100.95.43.104
   User dnewman
 
+Host tracks
+  HostName 100.70.7.61
+  User dnewman
+
 Host 45.33.107.248
   User jumpuser
   IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
