@@ -101,10 +101,6 @@ eval "$(starship init bash)"
 # Added by LM Studio CLI (lms)
 [[ -d "$HOME/.lmstudio/" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 
-if [ -e "/usr/bin/asdf" ]; then
-  export ASDF_DATA_DIR="${HOME}/.asdf"
-  export PATH="$ASDF_DATA_DIR/shims:$PATH"
-fi
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 bleopt highlight_syntax=true
