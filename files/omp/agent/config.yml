@@ -2,12 +2,12 @@ modelRoles:
   plan: clinepass/cline-pass/kimi-k3:max
   default: zai/glm-5.3:max
   smol: zai/glm-5.3-flash
-  advisor: clinepass/cline-pass/deepseek-v4-pro:high
+  advisor: amazon-bedrock/us.anthropic.claude-opus-5-5:high
   vision: zai/glm-5v-turbo:auto
   REVIEWER1: clinepass/cline-pass/deepseek-v4-pro
   REVIEWER2: clinepass/cline-pass/kimi-k3
   slow: clinepass/cline-pass/kimi-k3:max
-  judge: typesafe/jev-1.14.0
+  judge: typesafe/jev-latest
   task: zai/glm-5.3-flash:auto
 symbolPreset: nerd
 composer:
