@@ -1,12 +1,12 @@
 modelRoles:
-  plan: kilo/moonshotai/kimi-k3:max
+  plan: clinepass/cline-pass/kimi-k3:max
   default: zai/glm-5.3:max
   smol: zai/glm-5.3-flash
-  advisor: kilo/moonshotai/kimi-k3:high
+  advisor: clinepass/cline-pass/deepseek-v4-pro:high
   vision: zai/glm-5v-turbo:auto
   REVIEWER1: clinepass/cline-pass/deepseek-v4-pro
   REVIEWER2: clinepass/cline-pass/kimi-k3
-  slow: kilo/moonshotai/kimi-k3:max
+  slow: clinepass/cline-pass/kimi-k3:max
   judge: typesafe/jev-1.14.0
   task: zai/glm-5.3-flash:auto
 symbolPreset: nerd
