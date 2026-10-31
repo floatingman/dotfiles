@@ -436,3 +436,6 @@ if _have kubectl; then
   alias kgcj='kubectl get cj'
   alias kn='kubectl config set-context --current --namespace'
 fi
+
+alias omp-work='AWS_PROFILE=bedrock AWS_REGION=us-east-1 omp'
+alias pi-work='AWS_PROFILE=bedrock AWS_REGION=us-east-1 pi'
