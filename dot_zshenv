@@ -72,3 +72,15 @@ else
     esac
 fi
 . "$HOME/.cargo/env"
+# ensure ~/.local/bin in every zsh (non-login servers, herdr panes)
+export PATH="$HOME/.local/bin:$PATH"
+
+# BEGIN asdf for non-interactive zsh (mirror of /etc/zsh/zshrc ansible block; herdr server, ssh exec)
+if [ -d /opt/asdf ]; then
+    export ASDF_DIR="/opt/asdf"
+    export ASDF_DATA_DIR="/opt/asdf"
+    if [ -f "$ASDF_DIR/asdf.sh" ]; then
+        . "$ASDF_DIR/asdf.sh"
+    fi
+fi
+# END asdf non-interactive mirror

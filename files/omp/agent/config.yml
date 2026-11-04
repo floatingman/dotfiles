@@ -138,3 +138,6 @@ commands:
 hindsight:
   apiUrl: https://hindsight.thenewmans.casa
 interruptMode: immediate
+disabledProviders:
+  - amazon-bedrock
+  - bedrock-mantle
