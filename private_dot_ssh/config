@@ -18,10 +18,6 @@ Host tracks
   User dnewman
   IdentityFile ~/.ssh/id_ed25519_dlp
 
-Host 45.33.107.248
-  User jumpuser
-  IdentityFile ~/.ssh/jenkins-elliptic-validation.pem
-
 Host *
   AddKeysToAgent yes
   ForwardAgent yes
