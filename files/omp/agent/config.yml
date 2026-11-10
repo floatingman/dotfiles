@@ -16,7 +16,7 @@ composer:
 theme:
   dark: dark-gruvbox
   light: light-gruvbox
-setupVersion: 2
+setupVersion: 3
 skills:
   customDirectories:
     - /home/dnewman/.pi/agent/skills
@@ -36,6 +36,7 @@ stt:
   submitTrigger: never
 update:
   channel: stable
+  auto: false
 features:
   unexpectedStopDetection: smart
 contextPromotion:
