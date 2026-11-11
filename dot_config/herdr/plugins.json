@@ -689,6 +689,64 @@
     }
   },
   {
+    "plugin_id": "herdr-newtab-plus",
+    "name": "New Tab Plus",
+    "version": "0.2.1",
+    "min_herdr_version": "0.7.4",
+    "description": "New tab with a folder picker that completes real paths, and an optional agent to start",
+    "manifest_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-newtab-plus-fe8c3e182d8e/1261296-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-newtab-plus-fe8c3e182d8e/1261296-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "sh",
+          "scripts/install.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "New tab",
+        "description": "Pick a folder and an optional agent, then open a tab there",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "sh",
+          "-c",
+          "herdr_bin=\"${HERDR_BIN_PATH:-herdr}\"; [ -x \"$herdr_bin\" ] || herdr_bin=herdr; exec \"$herdr_bin\" plugin pane open --plugin herdr-newtab-plus --entrypoint newtab --placement popup"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "newtab",
+        "title": "New tab",
+        "description": "Pick a folder and an optional agent, then open a tab there",
+        "placement": "popup",
+        "width": 110,
+        "height": 30,
+        "command": [
+          "bin/herdr-newtab-plus"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "jeffarese",
+      "repo": "herdr-newtab-plus",
+      "resolved_commit": "f012a6df3cbbcae0aaf77bbb9e484f0f2abfdcf5",
+      "managed_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-newtab-plus-fe8c3e182d8e/1261296-0/checkout",
+      "installed_unix_ms": 1794369907055
+    }
+  },
+  {
     "plugin_id": "herdr-projects",
     "name": "Projects",
     "version": "1.0.1",
