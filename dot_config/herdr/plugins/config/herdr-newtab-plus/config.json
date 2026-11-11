@@ -1,0 +1,14 @@
+{
+  "roots": ["~/workspace", "~/git"],
+  "create": "smart",
+  "agents": "auto",
+  "default_agent": "last",
+  "skip_permission_flags": { "gemini": ["--yolo"] },
+  "zoxide": "auto",
+  "hidden": false,
+  "mouse": true,
+  "agent_icons": "auto",
+  "preview": "auto",
+  "colors": { "accent": "#7aa2f7", "agent_claude": "#d97757" },
+  "selection_background": "auto"
+}

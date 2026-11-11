@@ -153,6 +153,12 @@ key = "prefix+k"
 type = "plugin_action"
 command = "herdr-bar.open"
 description = "command bar"
+
+[[keys.command]]
+key = ["cmd+t", "prefix+t"]
+type = "plugin_action"
+command = "herdr-newtab-plus.open"
+description = "new tab"
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
