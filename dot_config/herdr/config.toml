@@ -148,7 +148,11 @@ name = "gruvbox-light"
 # command = "lazygit"
 # width = "80%"
 # height = "80%"
-
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]

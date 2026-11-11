@@ -1,0 +1,809 @@
+[
+  {
+    "plugin_id": "devswha.herdr-web-ui",
+    "name": "herdr web ui",
+    "version": "0.4.10",
+    "min_herdr_version": "0.9.0",
+    "description": "Browser and phone client for herdr: chat and live terminal for every agent pane, remote PCs over SSH, web push alerts",
+    "manifest_path": "/home/dnewman/.config/herdr/plugins/github-installations/devswha.herdr-web-ui-210f619d6b7b/884860-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/dnewman/.config/herdr/plugins/github-installations/devswha.herdr-web-ui-210f619d6b7b/884860-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/preflight.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/preflight.ps1"
+        ]
+      },
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "install"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "bun",
+          "install"
+        ]
+      },
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "run",
+          "build"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "build"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "scripts/plugin.ts",
+          "start"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/plugin.ps1",
+          "start"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "phone",
+        "title": "Phone setup",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "herdr",
+          "plugin",
+          "pane",
+          "open",
+          "--plugin",
+          "devswha.herdr-web-ui",
+          "--entrypoint",
+          "phone",
+          "--placement",
+          "zoomed",
+          "--focus"
+        ]
+      },
+      {
+        "id": "phone-windows",
+        "title": "Phone setup",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "herdr",
+          "plugin",
+          "pane",
+          "open",
+          "--plugin",
+          "devswha.herdr-web-ui",
+          "--entrypoint",
+          "phone-windows",
+          "--placement",
+          "zoomed",
+          "--focus"
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Start herdr web ui",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "scripts/plugin.ts",
+          "start"
+        ]
+      },
+      {
+        "id": "start-windows",
+        "title": "Start herdr web ui",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/plugin.ps1",
+          "start"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "herdr web ui status",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "scripts/plugin.ts",
+          "status"
+        ]
+      },
+      {
+        "id": "status-windows",
+        "title": "herdr web ui status",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/plugin.ps1",
+          "status"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Stop herdr web ui",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "scripts/plugin.ts",
+          "stop"
+        ]
+      },
+      {
+        "id": "stop-windows",
+        "title": "Stop herdr web ui",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/plugin.ps1",
+          "stop"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "phone",
+        "title": "Phone setup",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "placement": "zoomed",
+        "command": [
+          "sh",
+          "scripts/with-bun.sh",
+          "scripts/plugin.ts",
+          "phone-setup"
+        ]
+      },
+      {
+        "id": "phone-windows",
+        "title": "Phone setup",
+        "platforms": [
+          "windows"
+        ],
+        "placement": "zoomed",
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/plugin.ps1",
+          "phone-setup"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "devswha",
+      "repo": "herdr-web-ui",
+      "requested_ref": "v0.4.10",
+      "resolved_commit": "aa624cb56f550f9a7dd8bf4d59ed99ffc3921741",
+      "managed_path": "/home/dnewman/.config/herdr/plugins/github-installations/devswha.herdr-web-ui-210f619d6b7b/884860-0/checkout",
+      "installed_unix_ms": 1792109741584
+    }
+  },
+  {
+    "plugin_id": "herdr-bar",
+    "name": "Bar",
+    "version": "0.14.0",
+    "min_herdr_version": "0.9.0",
+    "description": "Cmd+K command bar with agent icons, fuzzy search, and optional automatic tab titles",
+    "manifest_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/1245990-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/1245990-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/install.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/install.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--open"
+        ]
+      },
+      {
+        "id": "open-windows",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "bin/herdr-bar.exe",
+          "--open"
+        ]
+      },
+      {
+        "id": "start-titles",
+        "title": "Start tab watcher",
+        "description": "Start task title and tab status updates enabled in the plugin config",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles",
+          "--resume"
+        ]
+      },
+      {
+        "id": "stop-titles",
+        "title": "Stop tab watcher",
+        "description": "Stop this server's title and status watcher, restoring bare tab names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--stop-titles"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "bar",
+        "title": "Bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "placement": "popup",
+        "width": "74%",
+        "height": "62%",
+        "command": [
+          "bin/herdr-bar"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "jeffarese",
+      "repo": "herdr-bar",
+      "resolved_commit": "5099a62a786331af9c3512d3cb2aa960ba06c9f3",
+      "managed_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/1245990-0/checkout",
+      "installed_unix_ms": 1794369364636
+    }
+  },
+  {
+    "plugin_id": "herdr-dagr",
+    "name": "herdr-dagr",
+    "version": "0.3.1",
+    "min_herdr_version": "0.8.0",
+    "description": "Your agent swarm as a live DAG: an orchestration graph with attempts, review gates, and evidence, in a herdr split pane.",
+    "manifest_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-dagr-bd0ed2fe5515/22166-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-dagr-bd0ed2fe5515/22166-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/install.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/install.ps1"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-dagr",
+        "title": "Open dagr",
+        "description": "Open the live run DAG in a split pane beside the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-dagr.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "open-dagr-down",
+        "title": "Open dagr (below)",
+        "description": "Open the live run DAG in a split pane below the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-dagr.sh",
+          "down"
+        ]
+      },
+      {
+        "id": "open-dagr-down-windows",
+        "title": "Open dagr (below)",
+        "description": "Open the live run DAG in a split pane below the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=(((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-dagr'}|Select-Object -First 1).plugin_root); if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-dagr.ps1') down"
+        ]
+      },
+      {
+        "id": "open-dagr-left",
+        "title": "Open dagr (left)",
+        "description": "Open the live run DAG in a split pane left of the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-dagr.sh",
+          "left"
+        ]
+      },
+      {
+        "id": "open-dagr-left-windows",
+        "title": "Open dagr (left)",
+        "description": "Open the live run DAG in a split pane left of the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=(((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-dagr'}|Select-Object -First 1).plugin_root); if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-dagr.ps1') left"
+        ]
+      },
+      {
+        "id": "open-dagr-right",
+        "title": "Open dagr (right)",
+        "description": "Open the live run DAG in a split pane right of the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-dagr.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "open-dagr-right-windows",
+        "title": "Open dagr (right)",
+        "description": "Open the live run DAG in a split pane beside the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=(((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-dagr'}|Select-Object -First 1).plugin_root); if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-dagr.ps1') right"
+        ]
+      },
+      {
+        "id": "open-dagr-up",
+        "title": "Open dagr (above)",
+        "description": "Open the live run DAG in a split pane above the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/open-dagr.sh",
+          "up"
+        ]
+      },
+      {
+        "id": "open-dagr-up-windows",
+        "title": "Open dagr (above)",
+        "description": "Open the live run DAG in a split pane above the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=(((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-dagr'}|Select-Object -First 1).plugin_root); if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-dagr.ps1') up"
+        ]
+      },
+      {
+        "id": "open-dagr-windows",
+        "title": "Open dagr",
+        "description": "Open the live run DAG in a split pane beside the current work.",
+        "contexts": [
+          "workspace"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "$u=New-Object System.Text.UTF8Encoding($false); [Console]::OutputEncoding=$u; $OutputEncoding=$u; $b=$env:HERDR_BIN_PATH; if(-not $b){$b='herdr'}; $p=(((& $b plugin list --json|ConvertFrom-Json).result.plugins|?{$_.plugin_id -eq 'herdr-dagr'}|Select-Object -First 1).plugin_root); if($p -and $p.StartsWith('\\\\?\\')){$p=$p.Substring(4)}; & (Join-Path (Join-Path $p 'scripts') 'open-dagr.ps1') right"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "dagr",
+        "title": "dagr",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "placement": "split",
+        "command": [
+          "/bin/sh",
+          "-c",
+          "exec \"${HERDR_PLUGIN_ROOT:?not launched by herdr}/bin/dagr\" view"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "aemrebarut",
+      "repo": "herdr-dagr",
+      "resolved_commit": "52991f9a95a2b8c11518ed66f9530d938c1ba254",
+      "managed_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-dagr-bd0ed2fe5515/22166-0/checkout",
+      "installed_unix_ms": 1792094123955
+    }
+  },
+  {
+    "plugin_id": "herdr-projects",
+    "name": "Projects",
+    "version": "1.0.1",
+    "min_herdr_version": "0.9.3",
+    "description": "A work board: one list of tasks, each delegated one an ordinary herdr agent in its own space",
+    "manifest_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/17012-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/17012-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "--fetch"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "approve-current",
+        "title": "Approve the task in the focused pane (the board asks first)",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "approve-current"
+        ]
+      },
+      {
+        "id": "coordinator",
+        "title": "Go into the Coordinator's chat",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "open-coordinator"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Open the work board",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "open"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "pane.agent_status_changed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "pane.closed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "worktree.removed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "board",
+        "title": "Work board",
+        "placement": "tab",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "board"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "eliasstravik",
+      "repo": "herdr-projects",
+      "resolved_commit": "b4989c7423f6b48bf6e82736e7b749c285d2e65a",
+      "managed_path": "/home/dnewman/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/17012-0/checkout",
+      "installed_unix_ms": 1792093839350
+    }
+  }
+]
