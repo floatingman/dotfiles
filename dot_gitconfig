@@ -121,9 +121,10 @@
 # for GitHub HTTPS remotes; every other transport/protocol combination works.
 [http "https://github.com/"]
 	version = HTTP/1.1
-# asdf is a shared root-owned install (/opt/asdf, wired by /etc/profile.d/asdf.sh);
-# its plugin repos are root-owned, so git refuses them as this user without
-# these exceptions. Needed for `asdf plugin list --urls` / `asdf plugin update`.
+# asdf is a shared root-owned install (/opt/asdf, wired by
+# /etc/profile.d/asdf.sh); its plugin repos are owned by asdf_user, so git
+# refuses them as a regular user ("detected dubious ownership") and asdf
+# surfaces that as "not a git repository" from `asdf plugin list --urls`.
 [safe]
 	directory = /opt/asdf/plugins/*
 	directory = /opt/asdf/plugin-index
