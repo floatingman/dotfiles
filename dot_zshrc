@@ -178,7 +178,7 @@ zinit light starship/starship
 # --foreground keeps keychain in the shell's foreground process group so ssh-add can
 # prompt on /dev/tty (a background pgroup gets SIGTTIN/SIGTTOU-stopped). SIGINT at
 # timeout lets keychain's cleanup run, leaving coordination state consistent.
-eval "$(timeout --foreground --signal=INT 15 keychain add --eval --quiet --immediate id_ed25519_dlp id_ed25519_suse)"
+eval "$(timeout --foreground --signal=INT 15 keychain add --eval --quiet --immediate id_ed25519_dlp )"
 
 # opencode
 [[ -d "$HOME/.opencode/" ]] && export PATH=/home/dnewman/.opencode/bin:$PATH
