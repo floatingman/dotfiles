@@ -32,3 +32,16 @@
     enabled = {{ $piEnabled }}
     repo = {{ $piRepo | quote }}
     reviewerRepo = {{ $piReviewerRepo | quote }}
+
+  [data.desktop]
+    {{- /* Prompted once per machine (cached in chezmoistate.boltdb); drives the
+          Linux desktop-config block in .chezmoiignore. Machines declare desktop
+          status once instead of .chezmoiignore stat-probing WM binaries, so
+          supporting a new WM/DE never requires a template edit. The prompt
+          default below is only a hint from installed session binaries. */ -}}
+    {{- $desktopProbe := false }}
+    {{- range list "/usr/bin/plasmashell" "/usr/bin/gnome-shell" "/usr/bin/Hyprland" "/usr/bin/i3" "/usr/bin/sway" "/usr/bin/niri" "/usr/bin/quickshell" }}
+    {{- if stat . }}{{ $desktopProbe = true }}{{ end }}
+    {{- end }}
+    {{- $desktopEnabled := promptBoolOnce . "desktop.enabled" (printf "Desktop machine (installs WM/DE configs; session binaries detected: %t)?" $desktopProbe) $desktopProbe }}
+    enabled = {{ $desktopEnabled }}

@@ -228,8 +228,7 @@ secrets).
 Configs are automatically filtered based on:
 
 - **Operating system:** Linux, macOS, Windows
-- **Desktop environment:** Desktop vs headless Linux
-- **Display detection:** Checks for i3, gnome-shell, plasma-shell, Hyprland
+- **Desktop environment:** Desktop vs headless Linux, via the per-machine `desktop.enabled` flag in `~/.config/chezmoi/chezmoi.toml` ([data.desktop]; prompted once at `chezmoi init`, cached; edit the value there to change a machine's role)
 
 ### What Installs Where
 

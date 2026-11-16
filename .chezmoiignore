@@ -1,37 +1,11 @@
-# Ignore Linux desktop configs on non-Linux systems (macOS, Windows)
-{{- if ne .chezmoi.os "linux" }}
-.config/i3
-.config/i3blocks
-.config/i3status
-.config/rofi
-.config/polybar
-.config/dunst
-.config/picom
-.config/bspwm
-.config/sxhkd
-.config/swaylock
-.config/fuzzel
-.config/wofi
-.config/waybar
-.config/wlogout
-.config/awesome
-.config/hypr
-.config/mpv
-.config/cmus
-.config/gammastep
-.config/matugen
-.config/viewnior
-.config/zathura
-.config/qutebrowser
-.config/teiler
-.config/youtube-dl
-.config/yt-dlp
-.config/autorandr
-.Xresources.d
-{{- end }}
-
-# Ignore Linux desktop configs on headless Linux servers
-{{- if and (eq .chezmoi.os "linux") (not (or (stat "/usr/bin/i3") (stat "/usr/bin/gnome-shell") (stat "/usr/bin/plasma-shell") (stat "/usr/bin/Hyprland"))) }}
+# Ignore Linux-only desktop (WM/DE) configs unless this is a Linux machine
+# flagged as a desktop. The flag lives in ~/.config/chezmoi/chezmoi.toml
+# ([data.desktop] enabled), prompted once per machine by .chezmoi.toml.tmpl.
+# The default-dict guards let machines whose config predates a section keep
+# rendering (they keep the previous behavior until they answer the prompt).
+{{- $desktopOn := eq (index (index . "desktop" | default (dict)) "enabled") true }}
+{{- $piOn := eq (index (index . "pi" | default (dict)) "enabled") true }}
+{{- if not (and (eq .chezmoi.os "linux") $desktopOn) }}
 .config/i3
 .config/i3blocks
 .config/i3status
@@ -81,7 +55,7 @@ files/
 # pi-agent config — only applied where [data.pi].enabled is true (see .chezmoi.toml.tmpl).
 # The install scripts clone pi-skills + pi-reviewer in place; settings.json/mcp.json
 # are chezmoi-managed. Scripts skip gracefully if a repo isn't reachable.
-{{- if not .pi.enabled }}
+{{- if not $piOn }}
 .chezmoiscripts/run_once_install-pi-agent.sh.tmpl
 .chezmoiscripts/run_once_install-pi-reviewer.sh.tmpl
 .pi/agent/settings.json
