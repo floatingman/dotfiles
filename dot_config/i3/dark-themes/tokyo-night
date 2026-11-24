@@ -1,0 +1,32 @@
+# Tokyo_Night theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #7aa2f7 #7aa2f7 #1a1b26 #bb9af7   #7aa2f7
+client.focused_inactive #24283b #24283b #c0caf5 #24283b   #24283b
+client.unfocused        #24283b #24283b #c0caf5 #24283b   #24283b
+client.urgent           #f7768e #f7768e #1a1b26 #f7768e   #f7768e
+client.placeholder      #1a1b26 #1a1b26 #c0caf5 #1a1b26   #1a1b26
+client.background       #1a1b26
+
+# Tokyo_Night colors
+set $bg       #1a1b26
+set $fg       #c0caf5
+set $primary  #7aa2f7
+set $secondary #bb9af7
+set $alert    #f7768e
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #1a1b26
+        statusline         #c0caf5
+        focused_statusline #c0caf5
+        active_workspace   #1a1b26 #c0caf5 #bb9af7
+        focused_separator  #1a1b26
+        focused_workspace  #1a1b26 #c0caf5 #7aa2f7
+        inactive_workspace #1a1b26 #1a1b26 #7e84a2
+        urgent_workspace   #1a1b26 #1a1b26 #f7768e
+        binding_mode       #1a1b26 #1a1b26 #7e84a2
+    }
+}

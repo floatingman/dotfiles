@@ -1,0 +1,32 @@
+# Butterbox theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #feb939 #feb939 #222b2b #fd7c19   #feb939
+client.focused_inactive #2e3938 #2e3938 #ece3d2 #2e3938   #2e3938
+client.unfocused        #2e3938 #2e3938 #ece3d2 #2e3938   #2e3938
+client.urgent           #e8574a #e8574a #222b2b #e8574a   #e8574a
+client.placeholder      #222b2b #222b2b #ece3d2 #222b2b   #222b2b
+client.background       #222b2b
+
+# Butterbox colors
+set $bg       #222b2b
+set $fg       #ece3d2
+set $primary  #feb939
+set $secondary #fd7c19
+set $alert    #e8574a
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #222b2b
+        statusline         #ece3d2
+        focused_statusline #ece3d2
+        active_workspace   #222b2b #ece3d2 #fd7c19
+        focused_separator  #222b2b
+        focused_workspace  #222b2b #ece3d2 #feb939
+        inactive_workspace #222b2b #222b2b #9b998f
+        urgent_workspace   #222b2b #222b2b #e8574a
+        binding_mode       #222b2b #222b2b #9b998f
+    }
+}

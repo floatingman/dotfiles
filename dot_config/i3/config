@@ -143,7 +143,7 @@ mode "focused" {
 bindsym Mod1+Shift+c reload
 
 # Theme switching
-# bindsym $mod+Shift+t exec ~/.config/i3/scripts/toggle-theme.sh
+bindsym $mod+Shift+g exec ~/.config/i3/scripts/theme-picker.sh
 bindsym $mod+Shift+bracketleft exec ~/.config/i3/scripts/toggle-theme.sh dark
 bindsym $mod+Shift+bracketright exec ~/.config/i3/scripts/toggle-theme.sh light
 

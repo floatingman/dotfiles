@@ -1,0 +1,32 @@
+# Catppuccin theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #ca9ee6 #ca9ee6 #232634 #8caaee   #ca9ee6
+client.focused_inactive #51576d #51576d #c6d0f5 #51576d   #51576d
+client.unfocused        #51576d #51576d #c6d0f5 #51576d   #51576d
+client.urgent           #e5c890 #e5c890 #232634 #e5c890   #e5c890
+client.placeholder      #232634 #232634 #c6d0f5 #232634   #232634
+client.background       #232634
+
+# Catppuccin colors
+set $bg       #232634
+set $fg       #c6d0f5
+set $primary  #ca9ee6
+set $secondary #8caaee
+set $alert    #e5c890
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #232634
+        statusline         #c6d0f5
+        focused_statusline #c6d0f5
+        active_workspace   #232634 #c6d0f5 #8caaee
+        focused_separator  #232634
+        focused_workspace  #232634 #c6d0f5 #ca9ee6
+        inactive_workspace #232634 #232634 #858ca8
+        urgent_workspace   #232634 #232634 #e5c890
+        binding_mode       #232634 #232634 #858ca8
+    }
+}

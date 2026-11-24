@@ -1,0 +1,32 @@
+# Eldritch theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #37f499 #37f499 #212337 #04d1f9   #37f499
+client.focused_inactive #292e42 #292e42 #ebfafa #292e42   #292e42
+client.unfocused        #292e42 #292e42 #ebfafa #292e42   #292e42
+client.urgent           #f16c75 #f16c75 #212337 #f16c75   #f16c75
+client.placeholder      #212337 #212337 #ebfafa #212337   #212337
+client.background       #212337
+
+# Eldritch colors
+set $bg       #212337
+set $fg       #ebfafa
+set $primary  #37f499
+set $secondary #04d1f9
+set $alert    #f16c75
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #212337
+        statusline         #ebfafa
+        focused_statusline #ebfafa
+        active_workspace   #212337 #ebfafa #04d1f9
+        focused_separator  #212337
+        focused_workspace  #212337 #ebfafa #37f499
+        inactive_workspace #212337 #212337 #9aa4ac
+        urgent_workspace   #212337 #212337 #f16c75
+        binding_mode       #212337 #212337 #9aa4ac
+    }
+}

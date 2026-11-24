@@ -45,6 +45,26 @@ update_i3status_colors() {
                 sed -i 's/^        color_degraded =.*/        color_degraded = "#ebcb8b"/' ~/.config/i3status/config
             fi
             ;;
+        aura|butterbox|catppuccin|dracula|eldritch|everforest|kanagawa|monokai|moonfly|retro|rose-pine|tokyo-night)
+            # butter set: dark-only, good/bad/degraded from each theme's green/red/yellow
+            case "$theme" in
+                aura)        color_good="#61ffca"; color_bad="#ff6767"; color_degraded="#ffca85" ;;
+                butterbox)   color_good="#a5b56a"; color_bad="#e8574a"; color_degraded="#feb939" ;;
+                catppuccin)  color_good="#A6E3A1"; color_bad="#F38BA8"; color_degraded="#F9E2AF" ;;
+                dracula)     color_good="#50fa7b"; color_bad="#ff5555"; color_degraded="#f1fa8c" ;;
+                eldritch)    color_good="#37f499"; color_bad="#f9515d"; color_degraded="#e9f941" ;;
+                everforest)  color_good="#a7c080"; color_bad="#e67e80"; color_degraded="#dbbc7f" ;;
+                kanagawa)    color_good="#76946a"; color_bad="#c34043"; color_degraded="#c0a36e" ;;
+                monokai)     color_good="#a6e22e"; color_bad="#f92672"; color_degraded="#e6db74" ;;
+                moonfly)     color_good="#8cc85f"; color_bad="#ff5d5d"; color_degraded="#e3c78a" ;;
+                retro)       color_good="#7a9c4a"; color_bad="#e05c1c"; color_degraded="#f0a020" ;;
+                rose-pine)   color_good="#3e8fb0"; color_bad="#eb6f92"; color_degraded="#f6c177" ;;
+                tokyo-night) color_good="#9ece6a"; color_bad="#f7768e"; color_degraded="#e0af68" ;;
+            esac
+            sed -i "s/^        color_good =.*/        color_good = \"$color_good\"/" ~/.config/i3status/config
+            sed -i "s/^        color_bad =.*/        color_bad = \"$color_bad\"/" ~/.config/i3status/config
+            sed -i "s/^        color_degraded =.*/        color_degraded = \"$color_degraded\"/" ~/.config/i3status/config
+            ;;
     esac
 
     # Reload i3status (i3 inherits new bar on next reload)

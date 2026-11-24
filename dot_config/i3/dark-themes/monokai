@@ -1,0 +1,32 @@
+# Monokai theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #f92672 #f92672 #272822 #66d9ef   #f92672
+client.focused_inactive #3e3d32 #3e3d32 #f8f8f2 #3e3d32   #3e3d32
+client.unfocused        #3e3d32 #3e3d32 #f8f8f2 #3e3d32   #3e3d32
+client.urgent           #fd971f #fd971f #272822 #fd971f   #fd971f
+client.placeholder      #272822 #272822 #f8f8f2 #272822   #272822
+client.background       #272822
+
+# Monokai colors
+set $bg       #272822
+set $fg       #f8f8f2
+set $primary  #f92672
+set $secondary #66d9ef
+set $alert    #fd971f
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #272822
+        statusline         #f8f8f2
+        focused_statusline #f8f8f2
+        active_workspace   #272822 #f8f8f2 #66d9ef
+        focused_separator  #272822
+        focused_workspace  #272822 #f8f8f2 #f92672
+        inactive_workspace #272822 #272822 #a4a59f
+        urgent_workspace   #272822 #272822 #fd971f
+        binding_mode       #272822 #272822 #a4a59f
+    }
+}

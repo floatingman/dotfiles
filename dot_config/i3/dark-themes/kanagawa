@@ -1,0 +1,32 @@
+# Kanagawa theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #7e9cd8 #7e9cd8 #1F1F28 #ff9e3b   #7e9cd8
+client.focused_inactive #2A2A37 #2A2A37 #DCD7BA #2A2A37   #2A2A37
+client.unfocused        #2A2A37 #2A2A37 #DCD7BA #2A2A37   #2A2A37
+client.urgent           #ff5d62 #ff5d62 #1F1F28 #ff5d62   #ff5d62
+client.placeholder      #1F1F28 #1F1F28 #DCD7BA #1F1F28   #1F1F28
+client.background       #1F1F28
+
+# Kanagawa colors
+set $bg       #1F1F28
+set $fg       #DCD7BA
+set $primary  #7e9cd8
+set $secondary #ff9e3b
+set $alert    #ff5d62
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #1F1F28
+        statusline         #DCD7BA
+        focused_statusline #DCD7BA
+        active_workspace   #1F1F28 #DCD7BA #ff9e3b
+        focused_separator  #1F1F28
+        focused_workspace  #1F1F28 #DCD7BA #7e9cd8
+        inactive_workspace #1F1F28 #1F1F28 #908d80
+        urgent_workspace   #1F1F28 #1F1F28 #ff5d62
+        binding_mode       #1F1F28 #1F1F28 #908d80
+    }
+}

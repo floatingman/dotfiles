@@ -66,7 +66,20 @@ wezterm.on("gui-startup", function()
   window:gui_window():maximize()
 end)
 
-local colors = scheme_for_appearance(get_theme())
+-- Colors follow the i3 theme picker via the current-theme.lua symlink;
+-- if it does not resolve, fall back to gruvbox by mode (original behavior)
+local function picker_colors()
+  local ok, theme = pcall(
+    dofile,
+    wezterm.home_dir .. "/.config/wezterm/current-theme.lua"
+  )
+  if ok and type(theme) == "table" then
+    return theme
+  end
+  return nil
+end
+
+local colors = picker_colors() or scheme_for_appearance(get_theme())
 
 return {
   colors = colors,

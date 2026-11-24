@@ -1,0 +1,32 @@
+# Aura theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #a277ff #a277ff #15141b #61ffca   #a277ff
+client.focused_inactive #29263c #29263c #edecee #29263c   #29263c
+client.unfocused        #29263c #29263c #edecee #29263c   #29263c
+client.urgent           #ff6767 #ff6767 #15141b #ff6767   #ff6767
+client.placeholder      #15141b #15141b #edecee #15141b   #15141b
+client.background       #15141b
+
+# Aura colors
+set $bg       #15141b
+set $fg       #edecee
+set $primary  #a277ff
+set $secondary #61ffca
+set $alert    #ff6767
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #15141b
+        statusline         #edecee
+        focused_statusline #edecee
+        active_workspace   #15141b #edecee #61ffca
+        focused_separator  #15141b
+        focused_workspace  #15141b #edecee #a277ff
+        inactive_workspace #15141b #15141b #97969a
+        urgent_workspace   #15141b #15141b #ff6767
+        binding_mode       #15141b #15141b #97969a
+    }
+}

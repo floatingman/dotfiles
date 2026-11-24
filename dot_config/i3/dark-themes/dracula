@@ -1,0 +1,32 @@
+# Dracula theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #bd93f9 #bd93f9 #282a36 #6272a4   #bd93f9
+client.focused_inactive #44475a #44475a #f8f8f2 #44475a   #44475a
+client.unfocused        #44475a #44475a #f8f8f2 #44475a   #44475a
+client.urgent           #ffb86c #ffb86c #282a36 #ffb86c   #ffb86c
+client.placeholder      #282a36 #282a36 #f8f8f2 #282a36   #282a36
+client.background       #282a36
+
+# Dracula colors
+set $bg       #282a36
+set $fg       #f8f8f2
+set $primary  #bd93f9
+set $secondary #6272a4
+set $alert    #ffb86c
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #282a36
+        statusline         #f8f8f2
+        focused_statusline #f8f8f2
+        active_workspace   #282a36 #f8f8f2 #6272a4
+        focused_separator  #282a36
+        focused_workspace  #282a36 #f8f8f2 #bd93f9
+        inactive_workspace #282a36 #282a36 #a5a6a7
+        urgent_workspace   #282a36 #282a36 #ffb86c
+        binding_mode       #282a36 #282a36 #a5a6a7
+    }
+}

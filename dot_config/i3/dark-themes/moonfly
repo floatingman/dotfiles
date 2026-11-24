@@ -1,0 +1,32 @@
+# Moonfly theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #80a0ff #80a0ff #080808 #80a0ff   #80a0ff
+client.focused_inactive #323437 #323437 #b2b2b2 #323437   #323437
+client.unfocused        #323437 #323437 #b2b2b2 #323437   #323437
+client.urgent           #ff5d5d #ff5d5d #080808 #ff5d5d   #ff5d5d
+client.placeholder      #080808 #080808 #b2b2b2 #080808   #080808
+client.background       #080808
+
+# Moonfly colors
+set $bg       #080808
+set $fg       #b2b2b2
+set $primary  #80a0ff
+set $secondary #e3c78a
+set $alert    #ff5d5d
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #080808
+        statusline         #b2b2b2
+        focused_statusline #b2b2b2
+        active_workspace   #080808 #b2b2b2 #e3c78a
+        focused_separator  #080808
+        focused_workspace  #080808 #b2b2b2 #80a0ff
+        inactive_workspace #080808 #080808 #6e6e6e
+        urgent_workspace   #080808 #080808 #ff5d5d
+        binding_mode       #080808 #080808 #6e6e6e
+    }
+}

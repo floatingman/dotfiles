@@ -1,0 +1,32 @@
+# Rose_Pine_Moon theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #c4a7e7 #c4a7e7 #232136 #9ccfd8   #c4a7e7
+client.focused_inactive #2a273f #2a273f #e0def4 #2a273f   #2a273f
+client.unfocused        #2a273f #2a273f #e0def4 #2a273f   #2a273f
+client.urgent           #eb6f92 #eb6f92 #232136 #eb6f92   #eb6f92
+client.placeholder      #232136 #232136 #e0def4 #232136   #232136
+client.background       #232136
+
+# Rose_Pine_Moon colors
+set $bg       #232136
+set $fg       #e0def4
+set $primary  #c4a7e7
+set $secondary #9ccfd8
+set $alert    #eb6f92
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #232136
+        statusline         #e0def4
+        focused_statusline #e0def4
+        active_workspace   #232136 #e0def4 #9ccfd8
+        focused_separator  #232136
+        focused_workspace  #232136 #e0def4 #c4a7e7
+        inactive_workspace #232136 #232136 #9492a8
+        urgent_workspace   #232136 #232136 #eb6f92
+        binding_mode       #232136 #232136 #9492a8
+    }
+}

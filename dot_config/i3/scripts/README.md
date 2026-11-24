@@ -6,6 +6,7 @@ This system provides unified theme switching across all your applications with a
 
 ## Keybindings
 
+- **`$mod+Shift+g`** - Rofi theme picker (github/gruvbox/nord × light/dark, plus 12 butter dark themes)
 - **`$mod+Shift+t`** - Toggle between light and dark themes
 - **`$mod+Shift+[`** - Switch to dark theme
 - **`$mod+Shift+]`** - Switch to light theme
@@ -41,6 +42,15 @@ This system provides unified theme switching across all your applications with a
 
 # Show help
 ~/.config/i3/scripts/toggle-theme.sh --help
+
+# Rofi picker (menu of supported theme x mode combos)
+~/.config/i3/scripts/theme-picker.sh
+
+# Direct apply
+~/.config/i3/scripts/theme-picker.sh github dark
+
+# Force re-apply of the current theme (skips the already-current no-op)
+~/.config/i3/scripts/theme-picker.sh -f github dark
 ```
 
 ## Theme Locations

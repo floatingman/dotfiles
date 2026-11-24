@@ -25,6 +25,9 @@ Themes:
   github     - GitHub (winner of daylight testing)
   gruvbox    - Gruvbox (warm colors)
   nord       - Nord (cool, desaturated)
+  Dark-only set (from butter's i3 setup; mode is always dark):
+  aura, butterbox, catppuccin, dracula, eldritch, everforest,
+  kanagawa, monokai, moonfly, retro, rose-pine, tokyo-night
 
 Modes:
   light      - Light background (default)
@@ -50,7 +53,11 @@ if [ -z "$1" ]; then
 fi
 
 THEME="$1"
-MODE="${2:-light}"
+# github/gruvbox/nord are dual-mode (default light); the butter set is dark-only
+case "$THEME" in
+    github|gruvbox|nord) MODE="${2:-light}" ;;
+    *) MODE="${2:-dark}" ;;
+esac
 
 case "$THEME" in
     github)
@@ -111,6 +118,34 @@ case "$THEME" in
                 ;;
             *)
                 echo "✗ Unknown mode: $MODE"
+                show_usage
+                exit 1
+                ;;
+        esac
+        ;;
+    aura|butterbox|catppuccin|dracula|eldritch|everforest|kanagawa|monokai|moonfly|retro|rose-pine|tokyo-night)
+        case "$MODE" in
+            dark)
+                KITTY_FILE="$KITTY_DARK_DIR/${THEME}.conf"
+                WEZTERM_FILE="$WEZTERM_DARK_DIR/${THEME}.lua"
+                I3_FILE="$I3_DARK_DIR/${THEME}"
+                case "$THEME" in
+                    aura)        THEME_NAME="Aura" ;;
+                    butterbox)   THEME_NAME="Butterbox" ;;
+                    catppuccin)  THEME_NAME="Catppuccin" ;;
+                    dracula)     THEME_NAME="Dracula" ;;
+                    eldritch)    THEME_NAME="Eldritch" ;;
+                    everforest)  THEME_NAME="Everforest" ;;
+                    kanagawa)    THEME_NAME="Kanagawa" ;;
+                    monokai)     THEME_NAME="Monokai" ;;
+                    moonfly)     THEME_NAME="Moonfly" ;;
+                    retro)       THEME_NAME="Retro" ;;
+                    rose-pine)   THEME_NAME="Rose Pine Moon" ;;
+                    tokyo-night) THEME_NAME="Tokyo Night" ;;
+                esac
+                ;;
+            *)
+                echo "✗ $THEME is dark-only (no light variant)"
                 show_usage
                 exit 1
                 ;;

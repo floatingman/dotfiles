@@ -1,0 +1,32 @@
+# Everforest theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #a7c080 #a7c080 #2B3339 #7FBBB3   #a7c080
+client.focused_inactive #414b50 #414b50 #D5C9AB #414b50   #414b50
+client.unfocused        #414b50 #414b50 #D5C9AB #414b50   #414b50
+client.urgent           #E69875 #E69875 #2B3339 #E69875   #E69875
+client.placeholder      #2B3339 #2B3339 #D5C9AB #2B3339   #2B3339
+client.background       #2B3339
+
+# Everforest colors
+set $bg       #2B3339
+set $fg       #D5C9AB
+set $primary  #a7c080
+set $secondary #7fbbb3
+set $alert    #E69875
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #2B3339
+        statusline         #D5C9AB
+        focused_statusline #D5C9AB
+        active_workspace   #2B3339 #D5C9AB #7fbbb3
+        focused_separator  #2B3339
+        focused_workspace  #2B3339 #D5C9AB #a7c080
+        inactive_workspace #2B3339 #2B3339 #918d7d
+        urgent_workspace   #2B3339 #2B3339 #E69875
+        binding_mode       #2B3339 #2B3339 #918d7d
+    }
+}

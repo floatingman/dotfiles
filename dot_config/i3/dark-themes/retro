@@ -1,0 +1,32 @@
+# Retro theme for i3 (palette from butter/i3)
+# Window colors         Border  BG      Text    Indicator Child Border
+client.focused          #ff8e1f #ff8e1f #160B00 #FF7F00   #ff8e1f
+client.focused_inactive #2A1200 #2A1200 #DE7B1B #2A1200   #2A1200
+client.unfocused        #2A1200 #2A1200 #DE7B1B #2A1200   #2A1200
+client.urgent           #FFAA44 #FFAA44 #160B00 #FFAA44   #FFAA44
+client.placeholder      #160B00 #160B00 #DE7B1B #160B00   #160B00
+client.background       #160B00
+
+# Retro colors
+set $bg       #160B00
+set $fg       #DE7B1B
+set $primary  #ff8e1f
+set $secondary #ff7f00
+set $alert    #FFAA44
+
+# Start i3bar
+bar {
+    status_command py3status
+    position top
+    colors {
+        background         #160B00
+        statusline         #DE7B1B
+        focused_statusline #DE7B1B
+        active_workspace   #160B00 #DE7B1B #ff7f00
+        focused_separator  #160B00
+        focused_workspace  #160B00 #DE7B1B #ff8e1f
+        inactive_workspace #160B00 #160B00 #8e4e10
+        urgent_workspace   #160B00 #160B00 #FFAA44
+        binding_mode       #160B00 #160B00 #8e4e10
+    }
+}
